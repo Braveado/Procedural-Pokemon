@@ -5,7 +5,7 @@ import PokemonOptions from './components/PokemonOptions';
 function App() {
   // Constants.
   const apiUrl = 'https://pokeapi.co/api/v2/';
-  const pokemonCount = 1118;
+  const pokemonCount = 15;
   const randomRolls = {
     pokemons: 9,
     movesets: 6,
@@ -18,26 +18,6 @@ function App() {
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [loading, setLoading] = useState(true);
-
-
-   
-  /* useEffect(() => {
-    let cancel = false;
-    setLoading(true);
- 
-    const fetchData = async () => {
-      const result = await axios('https://hn.algolia.com/api/v1/search?query=redux');
-      if (!cancel)
-        setData(result.data);
-    };
-    fetchData();
- 
-    return () => {
-      cancel = true;
-    };
-  }, []); */
-
-
 
   // Fetch pokemonList from api on mount.
   useEffect(() => {
@@ -58,15 +38,13 @@ function App() {
   useEffect(() => {
     let cancel = false;
 
-    if(pokemonList.length) {     
-      let pokemon = {};
+    if(pokemonList.length) {           
       let pokemons = [];
 
       async function fetchData() {
         for (let index = 0; index < randomRolls.pokemons; index++) {
-          pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-          const result = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);          
-          pokemons.push(result.data);
+          const pokemon = await getNewPokemon(pokemons)
+          pokemons.push(pokemon);
         }
         if (!cancel)          
           setPokemonOptions(pokemons);
@@ -76,6 +54,22 @@ function App() {
     
     return () => cancel = true;
   }, [pokemonList, randomRolls.pokemons]);
+
+  async function getNewPokemon(currentPokemons) {    
+    let done = false;
+    let newPokemonName = '';
+
+    do {
+      let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
+      if(!currentPokemons.find(p => p.name === pokemon.name)) {
+        newPokemonName = pokemon.name;
+        done = true;      
+      }
+    } while (!done)
+
+    const newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemonName}`);
+    return newPokemon.data
+  };
 
   // Set loading on pokemonOptions change.
   useEffect(() => {
