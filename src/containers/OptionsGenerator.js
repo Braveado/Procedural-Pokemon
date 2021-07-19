@@ -5,7 +5,7 @@ import PokemonOptions from '../components/PokemonOptions';
 export default function OptionsGenerator() {
   // Constants.
   const apiUrl = 'https://pokeapi.co/api/v2/';
-  const pokemonCount = 1118;
+  const pokemonCount = 210;
   const randomRolls = {
     pokemons: 9,
     movesets: 6,
@@ -62,11 +62,53 @@ export default function OptionsGenerator() {
     let newPokemonName = '';
 
     do {
-      let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-      if(!currentPokemons.find(p => p.name === pokemon.name)) {
-        newPokemonName = pokemon.name;
-        done = true;      
-      }
+        let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
+
+        // WIP
+        // get evolution chain
+        const possiblePokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
+        const species = await axios.get(possiblePokemon.data.species.url);
+        const evolutions = await axios.get(species.data.evolution_chain.url);
+        
+        // format the chain
+        let evoChain = [];
+        let evoData = evolutions.data.chain;
+        do {
+            // add the starter species in chain first
+            evoChain.push(evoData.species.name);
+
+            // get number of immediate evolutions for that species
+            let numberOfEvolutions = evoData['evolves_to'].length;  
+          
+            // add an array of species names if there are multiple immediate evolutions.
+            if(numberOfEvolutions > 1) {
+                let species = []
+                for (let i = 0; i < numberOfEvolutions; i++) { 
+                    species.push(evoData.evolves_to[i].species.name);
+                }
+                evoChain.push(species);
+                // stop the chain
+                evoData = null;
+            }
+            else {
+                // set the next evolution in chain
+                evoData = evoData['evolves_to'][0];
+            }
+          
+            // repeat if the chain continues.
+        } while (!!evoData && evoData.hasOwnProperty('evolves_to'));        
+
+        // grab the/a final evolution for the chain.
+        let finalPokemon = evoChain[evoChain.length - 1];
+        if(Array.isArray(finalPokemon))
+            finalPokemon = finalPokemon[Math.floor(Math.random()*finalPokemon.length)];
+        // WIP
+
+
+        if(!currentPokemons.find(p => p.name === finalPokemon)) {
+            newPokemonName = finalPokemon;
+            done = true;      
+        }
     } while (!done)
 
     const newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemonName}`);
