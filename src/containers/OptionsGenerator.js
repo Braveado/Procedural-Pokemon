@@ -78,7 +78,7 @@ export default function OptionsGenerator() {
     <div className="flex flex-col justify-start items-center bg-gray-100 h-screen w-screen p-8">
         <button 
             type="button" disabled={loading} onClick={generateOptions}
-            className="bg-blue-500 text-white w-48 p-4 rounded-md hover:bg-blue-600"
+            className="bg-gray-900 text-white w-48 p-4 rounded-md hover:bg-gray-600"
         >
             Generate Options
         </button>
