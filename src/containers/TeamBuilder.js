@@ -91,6 +91,10 @@ export default function TeamBuilder() {
                 }
                 evoChain.push(species);                
                 evoData = null;
+
+                // Dont stop the chain to include cases like:
+                // Wurmple => Cascoon => Beautifly
+                //         => Silcoon => Dustox
             }
             else {                
                 evoData = evoData['evolves_to'][0];
