@@ -5,19 +5,19 @@ import {
   Route
 } from "react-router-dom";
 import Navbar from './components/Navbar';
-import OptionsGenerator from './containers/OptionsGenerator';
+import TeamBuilder from './containers/TeamBuilder';
 
 export default function App() {
   return (  
-    <div className="bg-gray-100 ">     
+    <div className="bg-gray-100 min-h-screen">     
       <Router>
         <Navbar />        
         <Switch>
           <Route path="/about">
             <About />
           </Route>
-          <Route path="/generator">
-            <OptionsGenerator />
+          <Route path="/builder">
+            <TeamBuilder />
           </Route>
           <Route path="/">
             <Home />

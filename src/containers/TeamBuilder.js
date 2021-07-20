@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import PokemonOptions from '../components/PokemonOptions';
 
-export default function OptionsGenerator() {
+export default function TeamBuilder() {
   // Constants.
   const apiUrl = 'https://pokeapi.co/api/v2/';
   const pokemonCount = 898;
@@ -137,16 +137,31 @@ export default function OptionsGenerator() {
     return newPokemon.data
   };  
 
+  const optionsGenerator = () => {
+    if(loading) {
+      return (
+        <p className="p-4">
+          Generating Pokemons...
+        </p>
+      );
+    }
+    else {
+      return (
+        <button 
+          type="button" disabled={loading} onClick={generateOptions}
+          className="bg-gray-900 text-white w-48 p-4 rounded-md hover:bg-gray-600 transition duration-150 ease-in-out"
+        >
+          Generate Options
+        </button>
+      );
+    }
+  }
+
   // Render.
   return (  
     <div className="flex flex-col justify-start items-center w-full p-8">
-        <button 
-          type="button" disabled={loading} onClick={generateOptions}
-          className="bg-gray-900 text-white w-48 p-4 rounded-md hover:bg-gray-600"
-        >
-          {!loading ? 'Generate Options' : 'Generating...'}
-        </button>
-        <div className="flex flex-col justify-center items-center m-8">            
+        {optionsGenerator()}
+        <div className="flex flex-col justify-center items-center p-8 w-full">            
           <PokemonOptions options={pokemonOptions} />
         </div>      
     </div>     
