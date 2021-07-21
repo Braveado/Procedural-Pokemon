@@ -57,16 +57,6 @@ export default function TeamBuilder() {
     return () => cancel = true;
   }, []);
 
-  useEffect (() => {
-    let selected = 0;
-    pokemonOptions.forEach(p => {
-      if(p.selected)
-        selected = selected + 1;
-    });
-
-    setSelectionsMade(s => { return {...s, pokemons: selected}});
-  }, [pokemonOptions]);
-
   // Get a new set of options.
   async function generateOptions() {
     await getPokemonOptions();
@@ -86,7 +76,7 @@ export default function TeamBuilder() {
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;
-        pokemon.selected = Math.random() < 0.66 ? true : false;
+        pokemon.selected = false;
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
 
         pokemons.push(pokemon);
@@ -191,6 +181,30 @@ export default function TeamBuilder() {
     return total;
   }   
 
+  const selectPokemon = (pokemon) => {
+    let options = pokemonOptions;
+    options = options.map(p => {
+      if(p.name === pokemon.name){
+        if(p.selected)      
+          p.selected = false;
+        else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons)
+          p.selected = true;
+      }
+      return p;
+    })
+    setPokemonOptions(options); 
+  }
+
+  useEffect (() => {
+    let selected = 0;
+    pokemonOptions.forEach(p => {
+      if(p.selected)
+        selected = selected + 1;
+    });
+
+    setSelectionsMade(s => { return {...s, pokemons: selected}});
+  }, [pokemonOptions]);  
+
   const optionsGenerator = () => {
     if(loading) {
       return (
@@ -216,7 +230,8 @@ export default function TeamBuilder() {
   return (  
     <TeamBuilderContext.Provider value={{
       selectionsNeeded: selectionsNeeded,
-      selectionsMade: selectionsMade
+      selectionsMade: selectionsMade,
+      selectPokemon: selectPokemon
     }}>
       <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
           {optionsGenerator()}                   

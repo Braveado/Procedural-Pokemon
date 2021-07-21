@@ -2,9 +2,8 @@ import React from 'react';
 import { TeamBuilderContext } from '../context/TeamBuilder';
 import Pokemon from './Pokemon';
 
-export default function PokemonOptions({ options, selected }) {
+export default function PokemonOptions({ options }) {
     const context = React.useContext(TeamBuilderContext);
-    console.log(context);
     
     const setOptions = () => {
         if (options.length) {
@@ -25,7 +24,7 @@ export default function PokemonOptions({ options, selected }) {
     // Render.
     return (
         <div className="flex flex-col w-full">
-            <p className="text-lg">Pokemon Options</p>
+            <p className="text-lg">Pokemon Options</p>            
             <div className={`flex flex-wrap justify-center items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200 transition duration-150 ease-in-out
                 ${context.selectionsMade.pokemons >= context.selectionsNeeded.pokemons ? 'border-green-200 ring ring-green-100' : ''}`}>
                 {setOptions()}

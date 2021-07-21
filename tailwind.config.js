@@ -22,6 +22,15 @@ module.exports = {
         'dragon': '#7038f8',
         'steel': '#b8b8d0',
         'fairy': '#f0b6bc',
+      },
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 5s ease-in-out infinite',
       }
     }
   },

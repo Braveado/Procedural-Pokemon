@@ -1,10 +1,13 @@
 import React from 'react'
+import { TeamBuilderContext } from '../context/TeamBuilder';
 import PokemonType from './PokemonType';
 import PokemonStats from './PokemonStats';
 import { FaGenderless } from 'react-icons/fa';
 import { CgGenderMale, CgGenderFemale } from 'react-icons/cg';
 
 export default function Pokemon({pokemon}) {
+    const context = React.useContext(TeamBuilderContext);
+
     const getRarity = () => {
         if(pokemon.is_legendary)
             return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
@@ -26,13 +29,14 @@ export default function Pokemon({pokemon}) {
     }    
 
     return (
-        <div className={`relative flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
-            ${pokemon.selected ? 'border-green-200 ring ring-green-100' : ''}`}>            
+        <div onClick={() => context.selectPokemon(pokemon)} 
+            className={`relative cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
+            ${pokemon.selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>                        
 
-            <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-multiply`} />
+            <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-none`} />
             <img 
-                src={pokemon.sprites.front_default} alt=" " width="96px" height="96px"
-                className="absolute"
+                src={pokemon.sprites.front_default} alt="" width="96px" height="96px"
+                className="absolute animate-wiggle"
             />
             <div style={{width: '96px', height:'96px'}} />
             
