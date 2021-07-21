@@ -24,6 +24,8 @@ export default function TeamBuilder() {
     abilities: 6,
     items: 6
   };
+
+  // Filters
   const pokemonFilter = [ // Exclude pokemons with this keywords.
     // Legendaries: forms above the 720 total stats.
     'primal', 'ultra', 'eternamax',
@@ -36,6 +38,7 @@ export default function TeamBuilder() {
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
   ];
+  const moveStatusLimit = 3; // Max number of status moves in a moveset.
 
   // State.
   const [pokemonList, setPokemonList] = useState([]);
@@ -76,7 +79,7 @@ export default function TeamBuilder() {
     setPokemonOptions([]);
     setMovesetOptions([]); 
 
-    await getPokemonOptions();
+    //await getPokemonOptions();
     await getMovesetOptions();
 
     setLoading(false);
@@ -213,28 +216,29 @@ export default function TeamBuilder() {
   async function getNewMoveset() {    
     let done = false;
     let newMoveset = [];
-
-    // Get initial moves.
-    for (let index = 0; index < randomRolls.moves; index++) {
-      let move = '';
-      do{
-        move = moveList[Math.floor(Math.random()*moveList.length)];
-      } while (newMoveset.find(m => m.name === move.name) || 
-              move.name.split('-').some(keyword => moveFilter.includes(keyword)))
-
-      const initialMove = await axios.get(`${apiUrl}move/${move.name}`);
-      newMoveset.push(initialMove.data);      
-      console.log('initial: '+initialMove.data.name);
-    }
+    let status = false;
+    let statusMoves = 0;    
     
+    for (let index = 0; index < randomRolls.moves; index++) {
+      let move = '';      
 
-    do{
-      
-      
-      console.log('----- done -----');
-      
-      done = true;
-    } while(!done)
+      do{        
+        move = moveList[Math.floor(Math.random()*moveList.length)];
+        move = await axios.get(`${apiUrl}move/${move.name}`);
+        status = move.data.damage_class && move.data.damage_class.name === 'status';
+      } while (newMoveset.find(m => m.name === move.data.name) || 
+              move.data.name.split('-').some(keyword => moveFilter.includes(keyword)) ||
+              (status && statusMoves >= moveStatusLimit))
+
+      newMoveset.push(move.data);      
+      if(status){
+        statusMoves = statusMoves + 1;
+        status = false;
+      }
+      //console.log('initial: '+move.data.name);
+      //console.log(statusMoves);
+    }
+    //console.log('----- done -----');
     return newMoveset;
   }
 
