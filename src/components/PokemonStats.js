@@ -9,6 +9,7 @@ export default function PokemonStats({stats}) {
             case 3: return 'SA';
             case 4: return 'SD';
             case 5: return 'Spe';
+            case 6: return 'Total';
             default: break;
         }
     }
@@ -21,6 +22,7 @@ export default function PokemonStats({stats}) {
             case 3: return 'bg-blue-400';
             case 4: return 'bg-green-400';
             case 5: return 'bg-purple-400';
+            case 6: return 'bg-gray-300';
             default: break;
         }
     }
@@ -48,15 +50,7 @@ export default function PokemonStats({stats}) {
             return 'w-11/12';
         else
             return 'w-full';            
-    }
-
-    const getTotalStats = (stats) => {
-        let total = 0;
-        stats.forEach(s => {
-            total = total + s.base_stat; 
-        });        
-        return total;
-    }
+    }    
 
     return (
         <div className="flex flex-col justify-center items-start w-full text-sm">
@@ -73,15 +67,6 @@ export default function PokemonStats({stats}) {
                     </div>
                 )
             })}                            
-            <div className="flex w-full">
-                <div className="flex w-1/2">
-                    <p className="w-10">Total:</p>
-                    <p>{getTotalStats(stats)}</p>                                        
-                </div>
-                <div className="flex w-1/2">
-                    <div className={`flex bg-gray-300 rounded-md my-1 ${getStatWidth(getTotalStats(stats), true)}`}/>
-                </div>
-            </div>
         </div>
     )
 }

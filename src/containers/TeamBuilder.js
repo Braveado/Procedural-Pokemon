@@ -14,10 +14,10 @@ export default function TeamBuilder() {
     items: 9
   };
   const varietiesFilter = [ // Exclude pokemons with this keywords.
-    // Legendaries: forms outside the 600-700 total stats.
-    'black', 'white', 'primal', '10', 'complete', 'ultra', 'crowned', 'eternamax',
+    // Legendaries: forms above the 720 total stats.
+    'primal', 'ultra', 'eternamax',
     // Normal: stronger/weaker forms.
-    'mega', 'eternal', 'totem', 'ash', 'solo', 'gmax'
+    'mega', 'gmax', 'eternal', 'ash', 'solo', 'totem'
   ];
 
   // State.
@@ -46,7 +46,7 @@ export default function TeamBuilder() {
     await getPokemonOptions();
   }
 
-  // Geta set of pokemon options.  
+  // Get a set of pokemon options.  
   async function getPokemonOptions() {
     setLoading(true);
     
@@ -56,6 +56,12 @@ export default function TeamBuilder() {
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons)
+        const species = await axios.get(pokemon.species.url);
+        pokemon.gender_rate = species.data.gender_rate;
+        pokemon.is_mythical = species.data.is_mythical;
+        pokemon.is_legendary = species.data.is_legendary;
+        pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
+
         pokemons.push(pokemon);
         setPokemonOptions([...pokemons]); 
       }                 
@@ -71,7 +77,7 @@ export default function TeamBuilder() {
 
     do {                
         let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-        console.log('initial: '+pokemon.name);
+        //console.log('initial: '+pokemon.name);
 
         const initialPokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
         const species = await axios.get(initialPokemon.data.species.url);
@@ -80,35 +86,44 @@ export default function TeamBuilder() {
         // Get an array of evolutions.
         let evoChain = [];
         let evoData = evolutions.data.chain;
-        do {            
+        do {                        
+            // Current.
             evoChain.push(evoData.species.name);            
             let numberOfEvolutions = evoData['evolves_to'].length;  
-                      
+                                  
+            // Branching evolutions.
             if(numberOfEvolutions > 1) {
-                let species = []
-                for (let i = 0; i < numberOfEvolutions; i++) { 
-                    species.push(evoData.evolves_to[i].species.name);
-                }
-                evoChain.push(species);                
-                evoData = null;
+              let nextSpecies = [];
+              let lastSpecies = [];
+              for (let i = 0; i < numberOfEvolutions; i++) {                  
+                nextSpecies.push(evoData.evolves_to[i].species.name);
+                
+                // Branch continuation.
+                if(evoData.evolves_to[i].hasOwnProperty('evolves_to') && evoData.evolves_to[i].evolves_to.length > 0)
+                  lastSpecies.push(evoData.evolves_to[i].evolves_to[0].species.name);
+              }
+              evoChain.push(nextSpecies);
 
-                // Dont stop the chain to include cases like:
-                // Wurmple => Cascoon => Beautifly
-                //         => Silcoon => Dustox
+              if(lastSpecies.length > 0)
+              evoChain.push(lastSpecies);
+              
+              // Stop the chain, all branching evolutions are symmetrical.
+              evoData = null;
             }
             else {                
-                evoData = evoData['evolves_to'][0];
+              // Evolution.
+              evoData = evoData['evolves_to'][0];
             }
                       
         } while (!!evoData && evoData.hasOwnProperty('evolves_to')); 
-        console.log('evolutions: '+evoChain);       
+        //console.log('evolutions: '+evoChain);       
         
         // Get the/a final evolution.
         let finalEvolution = evoChain[evoChain.length - 1];
         if(Array.isArray(finalEvolution)){
           finalEvolution = finalEvolution[Math.floor(Math.random()*finalEvolution.length)];        
         }
-        console.log('final evolution: '+finalEvolution);
+        //console.log('final evolution: '+finalEvolution);
 
         // Get the varieties for the final evolution.
         const finalSpecies = await axios.get(`${apiUrl}pokemon-species/${finalEvolution}`);
@@ -116,30 +131,38 @@ export default function TeamBuilder() {
         finalSpecies.data.varieties.forEach((v, i) => {
           varieties.push(finalSpecies.data.varieties[i].pokemon.name)
         });                
-        console.log('final evolution varieties: '+varieties);
+        //console.log('final evolution varieties: '+varieties);
 
         // Filter varieties for more balance.
         varieties = varieties.filter(v => {          
           return !v.split('-').some(keyword => varietiesFilter.includes(keyword))
         });
-        console.log('filtered varieties: '+varieties);        
+        //console.log('filtered varieties: '+varieties);        
 
         // Get the final pokemon from the varieties.
         let finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
-        console.log('final pokemon: '+finalPokemon);
+        //console.log('final pokemon: '+finalPokemon);
 
         if(!currentPokemons.find(p => p.name === finalPokemon)) {
           newPokemonName = finalPokemon;          
           done = true;      
-          console.log('-----not duplicated: next-----');
+          //console.log('-----not duplicated: next-----');
         }
         else {
-          console.log('-----DUPLICATED: REROLL-----');
+          //console.log('-----DUPLICATED: REROLL-----');
         }
     } while (!done)    
     const newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemonName}`);
     return newPokemon.data
   };  
+
+  const getTotalStats = (stats) => {
+    let total = 0;
+    stats.forEach(s => {
+        total = total + s.base_stat; 
+    });        
+    return total;
+  } 
 
   const optionsGenerator = () => {
     if(loading) {
