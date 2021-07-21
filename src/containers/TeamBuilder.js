@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import PokemonOptions from '../components/PokemonOptions';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder() {
   // Constants.
@@ -13,7 +14,14 @@ export default function TeamBuilder() {
     abilities: 9,
     items: 9
   };
-  const varietiesFilter = [ // Exclude pokemons with this keywords.
+  const selections = {
+    pokemons: 6,    
+    movesets: 6,
+    moves: 4,
+    abilities: 6,
+    items: 6
+  };
+  const pokemonFilter = [ // Exclude pokemons with this keywords.
     // Legendaries: forms above the 720 total stats.
     'primal', 'ultra', 'eternamax',
     // Normal: stronger/weaker forms.
@@ -135,7 +143,7 @@ export default function TeamBuilder() {
 
         // Filter varieties for more balance.
         varieties = varieties.filter(v => {          
-          return !v.split('-').some(keyword => varietiesFilter.includes(keyword))
+          return !v.split('-').some(keyword => pokemonFilter.includes(keyword))
         });
         //console.log('filtered varieties: '+varieties);        
 
@@ -167,8 +175,9 @@ export default function TeamBuilder() {
   const optionsGenerator = () => {
     if(loading) {
       return (
-        <p className="p-4">
-          Generating Pokemons...
+        <p className="p-4 flex gap-4 items-center justify-center text-lg">
+          <BiLoaderAlt className="animate-spin text-3xl" />
+          {pokemonOptions.length < randomRolls.pokemons ? `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})` : 'Done'}
         </p>
       );
     }
@@ -176,7 +185,7 @@ export default function TeamBuilder() {
       return (
         <button 
           type="button" disabled={loading} onClick={generateOptions}
-          className="bg-gray-900 text-white w-48 p-4 rounded-md hover:bg-gray-600 transition duration-150 ease-in-out"
+          className="bg-gray-900 text-lg text-white w-48 p-4 rounded-md hover:bg-gray-600 transition duration-150 ease-in-out"
         >
           Generate Options
         </button>
@@ -186,11 +195,9 @@ export default function TeamBuilder() {
 
   // Render.
   return (  
-    <div className="flex flex-col justify-start items-center w-full p-8">
-        {optionsGenerator()}
-        <div className="flex flex-col justify-center items-center p-8 w-full">            
-          <PokemonOptions options={pokemonOptions} />
-        </div>      
+    <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
+        {optionsGenerator()}                   
+        <PokemonOptions options={pokemonOptions} />             
     </div>     
   );
 }

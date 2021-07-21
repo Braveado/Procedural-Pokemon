@@ -1,6 +1,8 @@
 import React from 'react'
 import PokemonType from './PokemonType';
 import PokemonStats from './PokemonStats';
+import { FaGenderless } from 'react-icons/fa';
+import { CgGenderMale, CgGenderFemale } from 'react-icons/cg';
 
 export default function Pokemon({pokemon}) {
     const getRarity = () => {
@@ -12,10 +14,19 @@ export default function Pokemon({pokemon}) {
         return 'bg-blue-300 animate-ping';
     }
 
+    const getGenders = () => {
+        if(pokemon.gender_rate < 0)
+            return <FaGenderless />
+        else if (pokemon.gender_rate === 0)
+            return <CgGenderMale />
+        else 
+            return <span className="flex"><CgGenderMale /><CgGenderFemale /></span>
+    }    
+
     return (
         <div className="relative flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto">            
 
-            <span className={`absolute h-12 w-12 top-10 absolute inline-flex rounded-full opacity-75 animate-ping ${getRarity()}`} />
+            <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-5 animate-pulse ${getRarity()}`} />
             
             <img 
                 src={pokemon.sprites.front_default} alt=" " width="96px" height="96px"
@@ -34,7 +45,13 @@ export default function Pokemon({pokemon}) {
                 })}                           
             </div>
 
-            <PokemonStats stats={pokemon.stats}/>                        
+            <PokemonStats stats={pokemon.stats}/> 
+
+            <div className="flex w-full justify-between items-center text-xs">
+                <p>{pokemon.height/10}m</p>
+                <p>{pokemon.weight/10}kg</p>
+                <p className="text-base">{getGenders()}</p>
+            </div>                       
         </div>
     )
 }
