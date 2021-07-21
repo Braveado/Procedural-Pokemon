@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { TeamBuilderContext } from '../context/TeamBuilder';
 import axios from 'axios';
 import PokemonOptions from '../components/PokemonOptions';
 import { BiLoaderAlt } from 'react-icons/bi';
@@ -14,7 +15,7 @@ export default function TeamBuilder() {
     abilities: 9,
     items: 9
   };
-  const selections = {
+  const selectionsNeeded = {
     pokemons: 6,    
     movesets: 6,
     moves: 4,
@@ -31,10 +32,17 @@ export default function TeamBuilder() {
   // State.
   const [pokemonList, setPokemonList] = useState([]);
   const [pokemonOptions, setPokemonOptions] = useState([]);
+  const [selectionsMade, setSelectionsMade] = useState({
+    pokemons: 0,
+    movesets: 0,
+    moves: 0,
+    abilities: 0,
+    items: 0
+  });
   const [loading, setLoading] = useState(true);
 
   // Fetch pokemonList from api on mount.
-  useEffect(() => {
+  useEffect (() => {
     let cancel = false;
     setLoading(true);  
 
@@ -48,6 +56,16 @@ export default function TeamBuilder() {
     setLoading(false);
     return () => cancel = true;
   }, []);
+
+  useEffect (() => {
+    let selected = 0;
+    pokemonOptions.forEach(p => {
+      if(p.selected)
+        selected = selected + 1;
+    });
+
+    setSelectionsMade(s => { return {...s, pokemons: selected}});
+  }, [pokemonOptions]);
 
   // Get a new set of options.
   async function generateOptions() {
@@ -68,6 +86,7 @@ export default function TeamBuilder() {
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;
+        pokemon.selected = Math.random() < 0.66 ? true : false;
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
 
         pokemons.push(pokemon);
@@ -170,7 +189,7 @@ export default function TeamBuilder() {
         total = total + s.base_stat; 
     });        
     return total;
-  } 
+  }   
 
   const optionsGenerator = () => {
     if(loading) {
@@ -195,9 +214,14 @@ export default function TeamBuilder() {
 
   // Render.
   return (  
-    <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
-        {optionsGenerator()}                   
-        <PokemonOptions options={pokemonOptions} />             
-    </div>     
+    <TeamBuilderContext.Provider value={{
+      selectionsNeeded: selectionsNeeded,
+      selectionsMade: selectionsMade
+    }}>
+      <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
+          {optionsGenerator()}                   
+          <PokemonOptions options={pokemonOptions} />             
+      </div>     
+    </TeamBuilderContext.Provider>
   );
 }

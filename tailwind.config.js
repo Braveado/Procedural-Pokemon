@@ -13,7 +13,7 @@ module.exports = {
         'fighting': '#c03028',
         'poison': '#a040a0',
         'ground': '#e0c068',
-        'flying': '#e0c068',
+        'flying': '#a890f0',
         'psychic': '#f85888',
         'bug': '#a8b820',
         'rock': '#b8a038',
