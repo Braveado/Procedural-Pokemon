@@ -1,21 +1,13 @@
 import React from 'react'
-import { TeamBuilderContext } from '../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilder';
 import PokemonType from './PokemonType';
 import PokemonStats from './PokemonStats';
+import PokemonSprite from './PokemonSprite';
 import { FaGenderless } from 'react-icons/fa';
 import { CgGenderMale, CgGenderFemale } from 'react-icons/cg';
 
 export default function Pokemon({pokemon}) {
     const context = React.useContext(TeamBuilderContext);
-
-    const getRarity = () => {
-        if(pokemon.is_legendary)
-            return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
-        else if(pokemon.is_mythical)
-            return "bg-purple-100 border-2 border-purple-200 ring ring-purple-100 animate-pulse"
-        else if(pokemon.stats[6].base_stat >= 600)
-            return "bg-blue-100 border-2 border-blue-200 ring ring-blue-100 animate-pulse"
-    }
 
     const getGenders = () => {
         if(pokemon.gender_rate < 0)
@@ -30,18 +22,12 @@ export default function Pokemon({pokemon}) {
 
     return (
         <div onClick={() => context.selectPokemon(pokemon)} 
-            className={`relative cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
+            className={`cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
             ${pokemon.selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>                        
 
-            <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-none`} />
-            <img 
-                src={pokemon.sprites.front_default} alt="" width="96px" height="96px"
-                className="absolute animate-wiggle"
-            />
-            <div style={{width: '96px', height:'96px'}} />
-            
+            <PokemonSprite pokemon={pokemon} />            
 
-            <div className="capitalize">{pokemon.name.replace(/-/g, " ")}</div>
+            <div className="capitalize text-center">{pokemon.name.replace(/-/g, " ")}</div>
             <div className="flex justify-center items-center gap-2">
                 {pokemon.types.map((t, i) => {
                     return (                                    

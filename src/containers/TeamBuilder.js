@@ -1,13 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import { TeamBuilderContext } from '../context/TeamBuilder';
 import axios from 'axios';
-import PokemonOptions from '../components/PokemonOptions';
+import PokemonOptions from '../components/pokemon/PokemonOptions';
+import MovesetOptions from '../components/moves/MovesetOptions';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder() {
   // Constants.
   const apiUrl = 'https://pokeapi.co/api/v2/';
   const pokemonCount = 898;
+  const moveCount = 826;
   const randomRolls = {
     pokemons: 9,
     movesets: 6,
@@ -28,10 +30,18 @@ export default function TeamBuilder() {
     // Normal: stronger/weaker forms.
     'mega', 'gmax', 'eternal', 'ash', 'solo', 'totem'
   ];
+  const moveFilter = [ // Exclude moves with this keywords.
+    // Stronger moves: max and z moves.
+    'max', 'physical', 'special',
+    'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
+    'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
+  ];
 
   // State.
   const [pokemonList, setPokemonList] = useState([]);
+  const [moveList, setMoveList] = useState([]);
   const [pokemonOptions, setPokemonOptions] = useState([]);
+  const [movesetOptions, setMovesetOptions] = useState([]);
   const [selectionsMade, setSelectionsMade] = useState({
     pokemons: 0,
     movesets: 0,
@@ -41,15 +51,18 @@ export default function TeamBuilder() {
   });
   const [loading, setLoading] = useState(true);
 
-  // Fetch pokemonList from api on mount.
+  // Fetch lists from api on mount.
   useEffect (() => {
     let cancel = false;
     setLoading(true);  
 
     async function fetchData() {      
-      const result = await axios.get(`${apiUrl}pokemon?limit=${pokemonCount}`);
-      if(!cancel)
-        setPokemonList(result.data.results);
+      const pokemonResults = await axios.get(`${apiUrl}pokemon?limit=${pokemonCount}`);
+      const moveResults = await axios.get(`${apiUrl}move?limit=${moveCount}`);
+      if(!cancel) {
+        setPokemonList(pokemonResults.data.results);
+        setMoveList(moveResults.data.results);
+      }
     };
     fetchData();
 
@@ -59,16 +72,20 @@ export default function TeamBuilder() {
 
   // Get a new set of options.
   async function generateOptions() {
+    setLoading(true);
+    setPokemonOptions([]);
+    setMovesetOptions([]); 
+
     await getPokemonOptions();
+    await getMovesetOptions();
+
+    setLoading(false);
   }
 
   // Get a set of pokemon options.  
-  async function getPokemonOptions() {
-    setLoading(true);
-    
+  async function getPokemonOptions() {    
     if(pokemonList.length) {           
-      let pokemons = [];      
-      setPokemonOptions(pokemons); 
+      let pokemons = [];            
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons)
@@ -83,8 +100,6 @@ export default function TeamBuilder() {
         setPokemonOptions([...pokemons]); 
       }                 
     }   
-     
-    setLoading(false);
   }
 
   // Get a new pokemon option.
@@ -181,6 +196,48 @@ export default function TeamBuilder() {
     return total;
   }   
 
+  // Get a set of moveset options.  
+  async function getMovesetOptions() {    
+    if(moveList.length) {           
+      let movesets = [];            
+
+      for (let index = 0; index < randomRolls.movesets; index++) {
+        const moveset = await getNewMoveset()
+        movesets.push(moveset);
+        setMovesetOptions([...movesets]); 
+      }                 
+    }   
+  }
+
+  // Get a new moveset option.
+  async function getNewMoveset() {    
+    let done = false;
+    let newMoveset = [];
+
+    // Get initial moves.
+    for (let index = 0; index < randomRolls.moves; index++) {
+      let move = '';
+      do{
+        move = moveList[Math.floor(Math.random()*moveList.length)];
+      } while (newMoveset.find(m => m.name === move.name) || 
+              move.name.split('-').some(keyword => moveFilter.includes(keyword)))
+
+      const initialMove = await axios.get(`${apiUrl}move/${move.name}`);
+      newMoveset.push(initialMove.data);      
+      console.log('initial: '+initialMove.data.name);
+    }
+    
+
+    do{
+      
+      
+      console.log('----- done -----');
+      
+      done = true;
+    } while(!done)
+    return newMoveset;
+  }
+
   const selectPokemon = (pokemon) => {
     let options = pokemonOptions;
     options = options.map(p => {
@@ -205,12 +262,21 @@ export default function TeamBuilder() {
     setSelectionsMade(s => { return {...s, pokemons: selected}});
   }, [pokemonOptions]);  
 
+  const generationProgress = () => {
+    if(pokemonOptions.length < randomRolls.pokemons)
+      return `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})`;   
+    else if(movesetOptions.length < randomRolls.movesets)
+      return `Generating Movesets (${movesetOptions.length}/${randomRolls.movesets})`;
+    else
+      return 'Done!';
+  }
+
   const optionsGenerator = () => {
     if(loading) {
       return (
         <p className="p-4 flex gap-4 items-center justify-center text-lg">
-          <BiLoaderAlt className="animate-spin text-3xl" />
-          {pokemonOptions.length < randomRolls.pokemons ? `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})` : 'Done'}
+          <BiLoaderAlt className="animate-spin text-2xl" />
+          {generationProgress()}
         </p>
       );
     }
@@ -235,7 +301,8 @@ export default function TeamBuilder() {
     }}>
       <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
           {optionsGenerator()}                   
-          <PokemonOptions options={pokemonOptions} />             
+          <PokemonOptions options={pokemonOptions} />
+          <MovesetOptions options={movesetOptions} />             
       </div>     
     </TeamBuilderContext.Provider>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TeamBuilderContext } from '../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilder';
 import Pokemon from './Pokemon';
 
 export default function PokemonOptions({ options }) {
@@ -25,11 +25,13 @@ export default function PokemonOptions({ options }) {
     return (
         <div className="flex flex-col w-full">
             <div className="flex justify-between items-center">
-                <p className="text-lg">Pokemon Options</p>
-                <p className="text-base text-gray-300">Selected pokemons are available to assign in other sections</p>
-                <p className="text-lg">{context.selectionsMade.pokemons}/{context.selectionsNeeded.pokemons} Pokemon Selected</p>
+                <span className="flex gap-4 items-center">
+                    <p className="text-lg">Pokemon Options</p>
+                    <p className="text-base text-gray-300">Selected pokemons are available to assign in other sections</p>
+                </span>
+                <p className="text-lg">{context.selectionsMade.pokemons}/{context.selectionsNeeded.pokemons} Pokemons Selected</p>
             </div>            
-            <div className={`flex flex-wrap justify-center items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200 transition duration-150 ease-in-out
+            <div className={`flex flex-wrap justify-center items-start gap-4 p-4 w-full border-2 rounded-md border-gray-200 transition duration-150 ease-in-out
                 ${context.selectionsMade.pokemons >= context.selectionsNeeded.pokemons ? 'border-green-200 ring ring-green-100' : ''}`}>
                 {setOptions()}
             </div>
