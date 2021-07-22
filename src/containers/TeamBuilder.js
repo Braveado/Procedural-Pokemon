@@ -48,7 +48,7 @@ export default function TeamBuilder() {
   const [selectionsMade, setSelectionsMade] = useState({
     pokemons: 0,
     movesets: 0,
-    moves: 0,
+    moves: [0, 0, 0, 0, 0, 0],
     abilities: 0,
     items: 0
   });
@@ -233,7 +233,7 @@ export default function TeamBuilder() {
         statusMoves = statusMoves + 1;
         status = false;
       }
-      //console.log('initial: '+move.data.name);
+      //console.log(move.data.name);
       //console.log(statusMoves);
     }
     //console.log('----- done -----');
@@ -241,17 +241,23 @@ export default function TeamBuilder() {
   }
 
   const selectPokemon = (pokemon) => {
+    let change = false;
     let options = pokemonOptions;
     options = options.map(p => {
       if(p.name === pokemon.name){
-        if(p.selected)      
+        if(p.selected) {      
           p.selected = false;
-        else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons)
+          change = true;
+        }
+        else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
           p.selected = true;
+          change = true;
+        }
       }
       return p;
     })
-    setPokemonOptions(options); 
+    if(change)
+      setPokemonOptions(options); 
   }
 
   useEffect (() => {
@@ -264,30 +270,32 @@ export default function TeamBuilder() {
     setSelectionsMade(s => { return {...s, pokemons: selected}});
   }, [pokemonOptions]);  
 
-  const selectMove = (move, moveset) => {
-    //console.log('moveset '+moveset+ ' move: '+ move.name);
+  const selectMove = (move, moveset) => {  
+    let change = false;  
     let msOptions = movesetOptions;    
     msOptions[moveset] = msOptions[moveset].map(m => {
       if(m.name === move.name){
-        if(m.selected)      
+        if(m.selected){      
           m.selected = false;
-        else //if(!m.selected && selectionsMade.moves < selectionsNeeded.moves)
+          change = true;
+        }
+        else if(!m.selected && selectionsMade.moves[moveset] < selectionsNeeded.moves){
           m.selected = true;
+          change = true;
+        }
       }
       return m;
-    })
-    setMovesetOptions([...msOptions]);
+    });
+    if(change)
+      setMovesetOptions([...msOptions]);
   }
 
   useEffect (() => {
-    /* let selected = 0;
-    movesetOptions.forEach(p => {
-      if(p.selected)
-        selected = selected + 1;
+    let msOptions = [];
+    movesetOptions.forEach(ms => {
+      msOptions.push(ms.filter(m => m.selected).length)
     });
-
-    setSelectionsMade(s => { return {...s, pokemons: selected}}); */
-    console.log('asdasda');
+    setSelectionsMade(s => {return {...s, moves: msOptions}});
   }, [movesetOptions]);
 
   const generationProgress = () => {
