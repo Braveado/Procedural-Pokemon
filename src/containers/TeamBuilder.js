@@ -43,6 +43,7 @@ export default function TeamBuilder() {
   // State.
   const [pokemonList, setPokemonList] = useState([]);
   const [moveList, setMoveList] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
   const [selectionsMade, setSelectionsMade] = useState({
@@ -52,7 +53,7 @@ export default function TeamBuilder() {
     abilities: 0,
     items: 0
   });
-  const [loading, setLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
 
   // Fetch lists from api on mount.
   useEffect (() => {
@@ -75,14 +76,14 @@ export default function TeamBuilder() {
 
   // Get a new set of options.
   async function generateOptions() {
-    setLoading(true);
+    setGenerating(true);
     setPokemonOptions([]);
     setMovesetOptions([]); 
 
     await getPokemonOptions();
     await getMovesetOptions();
 
-    setLoading(false);
+    setGenerating(false);
   }
 
   // Get a set of pokemon options.  
@@ -334,18 +335,19 @@ export default function TeamBuilder() {
   }
 
   const optionsGenerator = () => {
-    if(loading) {
+    if(generating || loading) {
       return (
         <p className="p-4 flex gap-4 items-center justify-center text-lg">
           <BiLoaderAlt className="animate-spin text-2xl" />
-          {generationProgress()}
+          {generating ? generationProgress() : null}
+          {loading ? 'Fetching data from PokeAPI' : ''}
         </p>
       );
     }
     else {
       return (
         <button 
-          type="button" disabled={loading} onClick={generateOptions}
+          type="button" disabled={generating} onClick={generateOptions}
           className="bg-gray-900 text-lg text-white w-48 p-4 rounded-md hover:bg-gray-600 transition duration-150 ease-in-out"
         >
           Generate Options
