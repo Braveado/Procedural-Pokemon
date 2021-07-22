@@ -18,8 +18,12 @@ export default function Move({move, moveset}) {
         }
         else {
             return (
-                <p className="text-center">
-                    No available effect entries.
+                <p className="text-center flex flex-col">
+                    No available effect entries from PokeAPI.
+                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank"
+                        className="text-blue-400 hover:text-blue-500">
+                        Check the move in Bulbapedia.
+                    </a>
                 </p>
             )
         }
