@@ -9,7 +9,7 @@ export default function MovesetOptions({ options }) {
         if (options.length) {
             return (
                 options.map((m, i) => (
-                    <Moveset key={i} moveset={m} />
+                    <Moveset key={i} index={i} moveset={m} />
                 ))
             );
         } else {

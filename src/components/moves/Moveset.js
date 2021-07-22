@@ -2,13 +2,14 @@ import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilder';
 import Move from './Move';
 
-export default function Moveset({ moveset }) {
+export default function Moveset({ moveset, index }) {
     const context = React.useContext(TeamBuilderContext);
+    
     const setMoves = () => {
         if (moveset.length) {
             return (
                 moveset.map(m => (
-                    <Move key={m.id} move={m} />
+                    <Move moveset={index} key={m.id} move={m} />
                 ))
             );
         } else {

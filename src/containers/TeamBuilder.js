@@ -214,14 +214,12 @@ export default function TeamBuilder() {
 
   // Get a new moveset option.
   async function getNewMoveset() {    
-    let done = false;
     let newMoveset = [];
+    let move = '';
     let status = false;
     let statusMoves = 0;    
     
-    for (let index = 0; index < randomRolls.moves; index++) {
-      let move = '';      
-
+    for (let index = 0; index < randomRolls.moves; index++) {            
       do{        
         move = moveList[Math.floor(Math.random()*moveList.length)];
         move = await axios.get(`${apiUrl}move/${move.name}`);
@@ -229,7 +227,7 @@ export default function TeamBuilder() {
       } while (newMoveset.find(m => m.name === move.data.name) || 
               move.data.name.split('-').some(keyword => moveFilter.includes(keyword)) ||
               (status && statusMoves >= moveStatusLimit))
-
+      move.data.selected = false;
       newMoveset.push(move.data);      
       if(status){
         statusMoves = statusMoves + 1;
@@ -266,6 +264,32 @@ export default function TeamBuilder() {
     setSelectionsMade(s => { return {...s, pokemons: selected}});
   }, [pokemonOptions]);  
 
+  const selectMove = (move, moveset) => {
+    //console.log('moveset '+moveset+ ' move: '+ move.name);
+    let msOptions = movesetOptions;    
+    msOptions[moveset] = msOptions[moveset].map(m => {
+      if(m.name === move.name){
+        if(m.selected)      
+          m.selected = false;
+        else //if(!m.selected && selectionsMade.moves < selectionsNeeded.moves)
+          m.selected = true;
+      }
+      return m;
+    })
+    setMovesetOptions([...msOptions]);
+  }
+
+  useEffect (() => {
+    /* let selected = 0;
+    movesetOptions.forEach(p => {
+      if(p.selected)
+        selected = selected + 1;
+    });
+
+    setSelectionsMade(s => { return {...s, pokemons: selected}}); */
+    console.log('asdasda');
+  }, [movesetOptions]);
+
   const generationProgress = () => {
     if(pokemonOptions.length < randomRolls.pokemons)
       return `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})`;   
@@ -301,7 +325,8 @@ export default function TeamBuilder() {
     <TeamBuilderContext.Provider value={{
       selectionsNeeded: selectionsNeeded,
       selectionsMade: selectionsMade,
-      selectPokemon: selectPokemon
+      selectPokemon: selectPokemon,
+      selectMove: selectMove
     }}>
       <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
           {optionsGenerator()}                   

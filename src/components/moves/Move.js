@@ -1,8 +1,11 @@
 import React from 'react'
+import { TeamBuilderContext } from '../../context/TeamBuilder';
 import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
 
-export default function Move({move}) {
+export default function Move({move, moveset}) {
+    const context = React.useContext(TeamBuilderContext);
+
     const getEffects = () => {
         if(move.effect_entries.length > 0) {
             return move.effect_entries.map(e => {
@@ -23,7 +26,10 @@ export default function Move({move}) {
     }
 
     return (
-        <div className="cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out">
+        <div onClick={() => context.selectMove(move, moveset)}
+            className={`cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out 
+            ${move.selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>
+            {move.selected}
             <div className="flex justify-between items-center w-full gap-2">
                 <p className="capitalize">{move.name.replace(/-/g, " ")}</p>
                 <div className="flex justify-center gap-2">
