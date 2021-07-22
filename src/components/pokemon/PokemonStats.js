@@ -62,7 +62,7 @@ export default function PokemonStats({stats}) {
                             <p>{s.base_stat}</p>                                        
                         </div>
                         <div className="flex w-1/2">
-                            <div className={`flex ${getStatColor(i)} rounded-md my-1 ${getStatWidth(s.base_stat)}`}/>
+                            <div className={`flex ${getStatColor(i)} rounded-md my-1 ${getStatWidth(s.base_stat, (i === stats.length - 1))}`}/>
                         </div>
                     </div>
                 )

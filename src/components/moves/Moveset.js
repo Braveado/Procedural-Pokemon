@@ -1,6 +1,7 @@
 import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilder';
 import Move from './Move';
+import SelectedPokemon from '../pokemon/SelectedPokemon';
 
 export default function Moveset({ moveset, index }) {
     const context = React.useContext(TeamBuilderContext);
@@ -23,9 +24,14 @@ export default function Moveset({ moveset, index }) {
 
     return (
         <div className="flex flex-col justify-start items-end">
-            <p className="text-lg">{context.selectionsMade.moves[index]}/{context.selectionsNeeded.moves} Moves Selected</p>
+            <div className="flex w-full justify-between items-center">
+                <p className="text-lg">{!context.pokemonOptions.find(p => p.moveset === index) ? 'No ' : ''}Pokemon Assigned</p>
+                <p className="text-lg">{context.selectionsMade.moves[index]}/{context.selectionsNeeded.moves} Moves Selected</p>
+            </div>
             <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
-                ${context.selectionsMade.moves[index] >= context.selectionsNeeded.moves ? 'border-green-200 ring ring-green-100' : ''}`}>
+                ${context.selectionsMade.moves[index] >= context.selectionsNeeded.moves &&
+                context.pokemonOptions.find(p => p.moveset === index) ? 'border-green-200 ring ring-green-100' : ''}`}>
+                <SelectedPokemon moveset={index} />
                 {setMoves()}
             </div>
         </div>

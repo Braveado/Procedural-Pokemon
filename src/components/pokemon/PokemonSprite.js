@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function PokemonSprite({pokemon}) {
+export default function PokemonSprite({pokemon, assign}) {
     const getRarity = () => {
         if(pokemon.is_legendary)
             return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
@@ -12,7 +12,8 @@ export default function PokemonSprite({pokemon}) {
 
     return (
         <>            
-            <div className="relative" style={{width: '96px', height:'96px'}}>
+            <div onClick={assign} 
+                className="cursor-pointer relative" style={{width: '96px', height:'96px'}}>
                 <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-none`} />
                 <img 
                     src={pokemon.sprites.front_default} alt="" width="96px" height="96px"

@@ -79,7 +79,7 @@ export default function TeamBuilder() {
     setPokemonOptions([]);
     setMovesetOptions([]); 
 
-    //await getPokemonOptions();
+    await getPokemonOptions();
     await getMovesetOptions();
 
     setLoading(false);
@@ -95,9 +95,10 @@ export default function TeamBuilder() {
         const species = await axios.get(pokemon.species.url);
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
-        pokemon.is_legendary = species.data.is_legendary;
-        pokemon.selected = false;
+        pokemon.is_legendary = species.data.is_legendary;        
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
+        pokemon.selected = false;
+        pokemon.moveset = null;
 
         pokemons.push(pokemon);
         setPokemonOptions([...pokemons]); 
@@ -107,8 +108,8 @@ export default function TeamBuilder() {
 
   // Get a new pokemon option.
   async function getNewPokemon(currentPokemons) {    
-    let done = false;
-    let newPokemonName = '';
+    let newPokemon = '';
+    let finalPokemon = '';
 
     do {                
         let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
@@ -175,19 +176,12 @@ export default function TeamBuilder() {
         //console.log('filtered varieties: '+varieties);        
 
         // Get the final pokemon from the varieties.
-        let finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
+        finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
         //console.log('final pokemon: '+finalPokemon);
-
-        if(!currentPokemons.find(p => p.name === finalPokemon)) {
-          newPokemonName = finalPokemon;          
-          done = true;      
-          //console.log('-----not duplicated: next-----');
-        }
-        else {
-          //console.log('-----DUPLICATED: REROLL-----');
-        }
-    } while (!done)    
-    const newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemonName}`);
+        
+        newPokemon = finalPokemon; 
+    } while (currentPokemons.find(p => p.name === finalPokemon))    
+    newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemon}`);
     return newPokemon.data
   };  
 
@@ -223,7 +217,7 @@ export default function TeamBuilder() {
       do{        
         move = moveList[Math.floor(Math.random()*moveList.length)];
         move = await axios.get(`${apiUrl}move/${move.name}`);
-        status = move.data.damage_class && move.data.damage_class.name === 'status';
+        status = move.data.damage_class && move.data.damage_class.name === 'status';        
       } while (newMoveset.find(m => m.name === move.data.name) || 
               move.data.name.split('-').some(keyword => moveFilter.includes(keyword)) ||
               (status && statusMoves >= moveStatusLimit))
@@ -247,6 +241,7 @@ export default function TeamBuilder() {
       if(p.name === pokemon.name){
         if(p.selected) {      
           p.selected = false;
+          p.moveset = null;
           change = true;
         }
         else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
@@ -298,6 +293,37 @@ export default function TeamBuilder() {
     setSelectionsMade(s => {return {...s, moves: msOptions}});
   }, [movesetOptions]);
 
+  const assignMoveset = (moveset, pokemon) => {
+    //console.log(moveset + ' ' + pokemon.name);
+    let change = false;
+    let pokemons = pokemonOptions;
+    pokemons = pokemons.map(p => {
+      if(p.name === pokemon.name){
+        if(p.moveset !== moveset)
+          p.moveset = moveset;
+        else
+          p.moveset = null;
+        change = true;
+      }
+      if(p.moveset === moveset && p.name !== pokemon.name){
+        p.moveset = null;
+        change = true;
+      }
+      return p;
+    })
+    if(change)    
+      setPokemonOptions(pokemons);
+  }
+
+  useEffect (() => {
+    let msAssigned = 0;
+    pokemonOptions.forEach(p => {
+      if(p.moveset != null)
+        msAssigned = msAssigned + 1;
+    });
+    setSelectionsMade(s => {return {...s, movesets: msAssigned}});
+  }, [pokemonOptions]);
+
   const generationProgress = () => {
     if(pokemonOptions.length < randomRolls.pokemons)
       return `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})`;   
@@ -331,10 +357,12 @@ export default function TeamBuilder() {
   // Render.
   return (  
     <TeamBuilderContext.Provider value={{
+      pokemonOptions: pokemonOptions,
       selectionsNeeded: selectionsNeeded,
       selectionsMade: selectionsMade,
       selectPokemon: selectPokemon,
-      selectMove: selectMove
+      selectMove: selectMove,
+      assignMoveset: assignMoveset
     }}>
       <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
           {optionsGenerator()}                   
