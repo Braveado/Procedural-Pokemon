@@ -3,6 +3,7 @@ import { TeamBuilderContext } from '../context/TeamBuilder';
 import axios from 'axios';
 import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
+import AbilityOptions from '../components/abilities/AbilityOptions';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder() {
@@ -10,6 +11,7 @@ export default function TeamBuilder() {
   const apiUrl = 'https://pokeapi.co/api/v2/';
   const pokemonCount = 898;
   const moveCount = 826;
+  const abilityCount = 267;
   const randomRolls = {
     pokemons: 9,
     movesets: 6,
@@ -39,13 +41,19 @@ export default function TeamBuilder() {
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
   ];
   const moveStatusLimit = 3; // Max number of status moves in a moveset.
+  const abilityFilter = [ // Exclude abilities with this keywords.
+    // Unusable abilities
+    
+  ];
 
   // State.
   const [pokemonList, setPokemonList] = useState([]);
   const [moveList, setMoveList] = useState([]);
+  const [abilityList, setAbilityList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
+  const [abilityOptions, setAbilityOptions] = useState([]);
   const [selectionsMade, setSelectionsMade] = useState({
     pokemons: 0,
     movesets: 0,
@@ -63,9 +71,11 @@ export default function TeamBuilder() {
     async function fetchData() {      
       const pokemonResults = await axios.get(`${apiUrl}pokemon?limit=${pokemonCount}`);
       const moveResults = await axios.get(`${apiUrl}move?limit=${moveCount}`);
+      const abilityResults = await axios.get(`${apiUrl}ability?limit=${abilityCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
         setMoveList(moveResults.data.results);
+        setAbilityList(abilityResults.data.results);
       }
     };
     fetchData();
@@ -79,9 +89,11 @@ export default function TeamBuilder() {
     setGenerating(true);
     setPokemonOptions([]);
     setMovesetOptions([]); 
+    setAbilityOptions([]);
 
     await getPokemonOptions();
     await getMovesetOptions();
+    await getAbilityOptions();
 
     setGenerating(false);
   }
@@ -100,6 +112,8 @@ export default function TeamBuilder() {
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
         pokemon.selected = false;
         pokemon.moveset = null;
+        pokemon.ability = null;
+        pokemon.item = null;
 
         pokemons.push(pokemon);
         setPokemonOptions([...pokemons]); 
@@ -238,6 +252,33 @@ export default function TeamBuilder() {
     return newMoveset;
   }
 
+  // Get a set of ability options.
+  async function getAbilityOptions() {
+    if(abilityList.length) {           
+      let abilities = [];            
+
+      for (let index = 0; index < randomRolls.abilities; index++) {
+        const ability = await getNewAbility(abilities);
+        abilities.push(ability);
+        setAbilityOptions([...abilities]); 
+      }                 
+    }
+  }
+
+  // Get a new ability option.
+  async function getNewAbility(currentAbilities) {    
+    let newAbility = '';       
+   
+    do{        
+      let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
+      newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
+    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || 
+            newAbility.data.name.split('-').some(keyword => abilityFilter.includes(keyword)))
+    //console.log(newAbility.data.name);
+
+    return newAbility.data;
+  }
+
   const selectPokemon = (pokemon) => {
     let change = false;
     let options = pokemonOptions;
@@ -246,6 +287,8 @@ export default function TeamBuilder() {
         if(p.selected) {      
           p.selected = false;
           p.moveset = null;
+          p.ability = null;
+          p.item = null;          
           change = true;
         }
         else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
@@ -328,11 +371,44 @@ export default function TeamBuilder() {
     setSelectionsMade(s => {return {...s, movesets: msAssigned}});
   }, [pokemonOptions]);
 
+  const assignAbility = (ability, pokemon) => {
+    //console.log(ability + ' ' + pokemon.name);
+    let change = false;
+    let pokemons = pokemonOptions;
+    pokemons = pokemons.map(p => {
+      if(p.name === pokemon.name){
+        if(p.ability !== ability)
+          p.ability = ability;
+        else
+          p.ability = null;
+        change = true;
+      }
+      if(p.ability === ability && p.name !== pokemon.name){
+        p.ability = null;
+        change = true;
+      }
+      return p;
+    })
+    if(change)    
+      setPokemonOptions(pokemons);
+  }
+
+  useEffect (() => {
+    let aAssigned = 0;
+    pokemonOptions.forEach(p => {
+      if(p.ability != null)
+      aAssigned = aAssigned + 1;
+    });
+    setSelectionsMade(s => {return {...s, abilities: aAssigned}});
+  }, [pokemonOptions]);
+
   const generationProgress = () => {
     if(pokemonOptions.length < randomRolls.pokemons)
       return `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})`;   
     else if(movesetOptions.length < randomRolls.movesets)
       return `Generating Movesets (${movesetOptions.length}/${randomRolls.movesets})`;
+    else if(abilityOptions.length < randomRolls.abilities)
+      return `Generating Abilities (${abilityOptions.length}/${randomRolls.abilities})`;
     else
       return 'Done!';
   }
@@ -367,12 +443,14 @@ export default function TeamBuilder() {
       selectionsMade: selectionsMade,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
-      assignMoveset: assignMoveset
+      assignMoveset: assignMoveset,
+      assignAbility: assignAbility
     }}>
       <div className="flex flex-col gap-8 justify-start items-center w-full p-8">
           {optionsGenerator()}                   
           <PokemonOptions options={pokemonOptions} />
-          <MovesetOptions options={movesetOptions} />             
+          <MovesetOptions options={movesetOptions} />  
+          <AbilityOptions options={abilityOptions} />           
       </div>     
     </TeamBuilderContext.Provider>
   );
