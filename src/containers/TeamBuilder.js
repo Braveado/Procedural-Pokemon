@@ -179,12 +179,15 @@ export default function TeamBuilder() {
         // Get the final pokemon from the varieties.
         finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
         //console.log('final pokemon: '+finalPokemon);
-        
-        newPokemon = finalPokemon; 
-    } while (currentPokemons.find(p => p.name === finalPokemon))    
-    newPokemon = await axios.get(`${apiUrl}pokemon/${newPokemon}`);
+
+    } while (checkDuplicatedName(currentPokemons, finalPokemon))    
+    newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
     return newPokemon.data
   };  
+
+  const checkDuplicatedName = (currentObjects, newObjectName) => {
+    return currentObjects.find(co => co.name === newObjectName)
+  }
 
   const getTotalStats = (stats) => {
     let total = 0;
@@ -219,7 +222,7 @@ export default function TeamBuilder() {
         move = moveList[Math.floor(Math.random()*moveList.length)];
         move = await axios.get(`${apiUrl}move/${move.name}`);
         status = move.data.damage_class && move.data.damage_class.name === 'status';        
-      } while (newMoveset.find(m => m.name === move.data.name) || 
+      } while (checkDuplicatedName(newMoveset, move.data.name) || 
               move.data.name.split('-').some(keyword => moveFilter.includes(keyword)) ||
               (status && statusMoves >= moveStatusLimit))
       move.data.selected = false;

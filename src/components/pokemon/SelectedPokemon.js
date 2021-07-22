@@ -1,4 +1,3 @@
-import { assertDebuggerStatement } from '@babel/types';
 import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilder';
 import PokemonSprite from './PokemonSprite'

@@ -20,7 +20,7 @@ export default function Move({move, moveset}) {
             return (
                 <p className="text-center flex flex-col">
                     No available effect entries from PokeAPI.
-                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank"
+                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank" rel="noreferrer"
                         className="text-blue-400 hover:text-blue-500">
                         Check the move in Bulbapedia.
                     </a>
