@@ -24,7 +24,7 @@ export default function PokemonOptions({ options }) {
     // Render.
     return (
         <div className="flex flex-col w-full">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Pokemon Options</p>
                     <p className="text-base text-gray-300">Selected pokemons are available to assign in other sections</p>

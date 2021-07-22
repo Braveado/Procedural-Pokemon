@@ -25,8 +25,8 @@ export default function Moveset({ moveset, index }) {
     return (
         <div className="flex flex-col justify-start items-end">
             <div className="flex w-full justify-between items-center">
-                <p className="text-lg">{!context.pokemonOptions.find(p => p.moveset === index) ? 'No ' : ''}Pokemon Assigned</p>
-                <p className="text-lg">{context.selectionsMade.moves[index]}/{context.selectionsNeeded.moves} Moves Selected</p>
+                <p className="text-base">{!context.pokemonOptions.find(p => p.moveset === index) ? 'No ' : ''}Pokemon Assigned</p>
+                <p className="text-base">{context.selectionsMade.moves[index]}/{context.selectionsNeeded.moves} Moves Selected</p>
             </div>
             <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                 ${context.selectionsMade.moves[index] >= context.selectionsNeeded.moves &&
