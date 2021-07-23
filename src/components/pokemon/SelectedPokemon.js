@@ -2,7 +2,7 @@ import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilder';
 import PokemonSprite from './PokemonSprite'
 
-export default function SelectedPokemon({ moveset, ability }) {
+export default function SelectedPokemon({ moveset, ability, item }) {
     const context = React.useContext(TeamBuilderContext);   
     const selectedPokemon = context.pokemonOptions.filter(p => p.selected);      
 
@@ -11,6 +11,10 @@ export default function SelectedPokemon({ moveset, ability }) {
             return selectedPokemon.find(p => p.moveset === moveset)
         else if(ability != null)            
             return selectedPokemon.find(p => p.ability === ability)
+        else if(item != null)            
+            return selectedPokemon.find(p => p.item === item)
+        else
+            return null;
     }
     let assignedPokemon = getAssigned();
 
@@ -19,6 +23,10 @@ export default function SelectedPokemon({ moveset, ability }) {
             return pokemon.moveset !== null;
         else if (ability != null)
             return pokemon.ability !== null;
+        else if (item != null)
+            return pokemon.item !== null;
+        else
+            return null;
     }
 
     const callAssign = (pokemon) => {
@@ -26,6 +34,8 @@ export default function SelectedPokemon({ moveset, ability }) {
             context.assignMoveset(moveset, pokemon);
         else if(ability != null)
             context.assignAbility(ability, pokemon);
+        else if (item != null)
+            context.assignItem(item, pokemon);        
     }    
 
     const getSelectedPokemons = () => {        
