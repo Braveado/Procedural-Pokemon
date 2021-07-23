@@ -1,5 +1,5 @@
 import React from 'react'
-import { TeamBuilderContext } from '../../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import SelectedPokemon from '../pokemon/SelectedPokemon';
 
 export default function Ability({ability, index}) {
@@ -35,7 +35,7 @@ export default function Ability({ability, index}) {
             </div> */}
             <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out  
                 ${selected ? 'border-green-200 ring ring-green-100' : ''}`}>            
-                <SelectedPokemon ability={index} />
+                <SelectedPokemon assignable={{ability: index}} />
                 <div className={`flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                     ${selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>
                     <div className="flex justify-center items-center w-full gap-2">

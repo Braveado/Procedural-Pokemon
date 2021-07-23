@@ -1,5 +1,5 @@
 import React from 'react';
-import { TeamBuilderContext } from '../../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import Pokemon from './Pokemon';
 
 export default function PokemonOptions({ options }) {

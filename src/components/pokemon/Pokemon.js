@@ -1,5 +1,5 @@
 import React from 'react'
-import { TeamBuilderContext } from '../../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import PokemonType from './PokemonType';
 import PokemonStats from './PokemonStats';
 import PokemonSprite from './PokemonSprite';

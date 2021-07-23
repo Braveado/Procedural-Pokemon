@@ -1,5 +1,5 @@
 import React from 'react'
-import { TeamBuilderContext } from '../../context/TeamBuilder';
+import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import Move from './Move';
 import SelectedPokemon from '../pokemon/SelectedPokemon';
 
@@ -31,7 +31,7 @@ export default function Moveset({ moveset, index }) {
             <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                 ${context.selectionsMade.moves[index] >= context.selectionsNeeded.moves &&
                 context.pokemonOptions.find(p => p.moveset === index) ? 'border-green-200 ring ring-green-100' : ''}`}>
-                <SelectedPokemon moveset={index} />
+                <SelectedPokemon assignable={{moveset: index}} />
                 {setMoves()}
             </div>
         </div>
