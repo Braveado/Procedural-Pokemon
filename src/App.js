@@ -19,7 +19,7 @@ export default function App() {
     pokemons: 9,
     movesets: 6,
     moves: 6,
-    abilities: 50,
+    abilities: 9,
     items: 9
   };
   const selectionsNeeded = {
@@ -49,7 +49,12 @@ export default function App() {
   const moveStatusLimit = 3; // Max number of status moves in a moveset.
   const abilityFilter = [ // Exclude abilities with this keywords.
     // Unusable abilities.
-    
+    'run', 'stance', 'sweet', 'one', 'telepathy', 'harvest', 'honey', 'forecast', 'battle', 'rks',
+    'gulp', 'receiver', 'gift', 'zen', 'aroma', 'illuminate', 'klutz', 'construct', 'face', 'hunger',
+    'alchemy', 'battery', 'ball', 'plus', 'minus', 'shields', 'star', 'schooling', 'truant'
+  ];
+  const abilityAllow = [ // Include abilities with this keywords even when excluded by filter.    
+    'armor', 
   ];
   const itemFilter = [ // Exclude items with this keywords.
     // Group items.
@@ -113,10 +118,10 @@ export default function App() {
     setAbilityOptions([]);
     setItemOptions([]);
 
-    //await getPokemonOptions();
-    //await getMovesetOptions();
+    await getPokemonOptions();
+    await getMovesetOptions();
     await getAbilityOptions();
-    //await getItemOptions();
+    await getItemOptions();
 
     setGenerating(false);
   }
@@ -291,7 +296,7 @@ export default function App() {
     do{        
       let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
       newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
-    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter))
+    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow))
     //console.log(newAbility.data.name);
 
     return newAbility.data;
