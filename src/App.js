@@ -19,7 +19,7 @@ export default function App() {
     pokemons: 9,
     movesets: 6,
     moves: 6,
-    abilities: 9,
+    abilities: 50,
     items: 9
   };
   const selectionsNeeded = {
@@ -40,8 +40,9 @@ export default function App() {
     'totem'
   ];
   const moveFilter = [ // Exclude moves with this keywords.
-    // Stronger moves: max and z moves.
+    // General: max and z moves.
     'max', 'physical', 'special',
+    // Specific z moves.
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
   ];
@@ -51,8 +52,15 @@ export default function App() {
     
   ];
   const itemFilter = [ // Exclude items with this keywords.
-    // Unusable items.
-    
+    // Group items.
+    'power', 'deep', 'scale', 'scarf', 'ball', 'powder', 'orb',
+    // Specific items.
+    'heat', 'smooth', 'icy', 'damp', 'protector', 'clay', 'destiny', 'punch', 'stick', 'reaper',
+    'luck', 'egg', 'pure', 'coin', 'everstone', 'disc', 'magmarizer', 'electirizer', 'macho', 'exp',
+    'cleanse', 'grip', 'sludge', 'thick', 'dew', 'soothe', 'grade', 'sticky'
+  ];
+  const itemAllow = [ // Include items with this keywords even when excluded by filter.    
+    'herb', 'choice', 'bright', 'silver', 'life'
   ];
 
   // State.
@@ -105,10 +113,10 @@ export default function App() {
     setAbilityOptions([]);
     setItemOptions([]);
 
-    await getPokemonOptions();
-    await getMovesetOptions();
+    //await getPokemonOptions();
+    //await getMovesetOptions();
     await getAbilityOptions();
-    await getItemOptions();
+    //await getItemOptions();
 
     setGenerating(false);
   }
@@ -248,8 +256,7 @@ export default function App() {
         move = moveList[Math.floor(Math.random()*moveList.length)];
         move = await axios.get(`${apiUrl}move/${move.name}`);
         status = move.data.damage_class && move.data.damage_class.name === 'status';        
-      } while (checkDuplicatedName(newMoveset, move.data.name) || 
-              move.data.name.split('-').some(keyword => moveFilter.includes(keyword)) ||
+      } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter) ||
               (status && statusMoves >= moveStatusLimit))
       move.data.selected = false;
       newMoveset.push(move.data);      
@@ -284,8 +291,7 @@ export default function App() {
     do{        
       let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
       newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
-    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || 
-            newAbility.data.name.split('-').some(keyword => abilityFilter.includes(keyword)))
+    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter))
     //console.log(newAbility.data.name);
 
     return newAbility.data;
@@ -311,8 +317,7 @@ export default function App() {
     do{        
       let item = itemList[Math.floor(Math.random()*itemList.length)];      
       newItem = await axios.get(`${apiUrl}item/${item.name}`);            
-    } while (checkDuplicatedName(currentItems, newItem.data.name) || 
-            newItem.data.name.split('-').some(keyword => itemFilter.includes(keyword)))
+    } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow))
     //console.log(newItem.data.name);
 
     return newItem.data;
@@ -321,6 +326,15 @@ export default function App() {
   // Check for duplicate names in an array of objects.
   const checkDuplicatedName = (currentObjects, newObjectName) => {
     return currentObjects.find(co => co.name === newObjectName)
+  }
+
+  // Filter.
+  const FindKeywords = (string, separator, filter, allow) => {
+    let found = false;
+    found = string.split(separator).some(keyword => filter.includes(keyword))
+    if(found && allow)
+      found = !string.split(separator).some(keyword => allow.includes(keyword))
+    return found;
   }
 
   // Select a pokemon.

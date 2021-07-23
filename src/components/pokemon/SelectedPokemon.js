@@ -29,16 +29,6 @@ export default function SelectedPokemon({ assignable }) {
             return null;
     }
 
-    /* const callAssign = (pokemon) => {
-        
-        if(moveset != null)
-            context.assignMoveset(moveset, pokemon);
-        else if(ability != null)
-            context.assignAbility(ability, pokemon);
-        else if (item != null)
-            context.assignItem(item, pokemon);        
-    }  */   
-
     const getSelectedPokemons = () => {        
         if(selectedPokemon.length > 0 ) {
             return selectedPokemon.map((p, i) => {
@@ -63,7 +53,7 @@ export default function SelectedPokemon({ assignable }) {
     }
 
     return (
-        <div className={`flex flex-wrap gap-2 justify-center items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
+        <div className={`cursor-pointer flex flex-wrap gap-2 justify-center items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out 
             ${assignedPokemon ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>
             {getSelectedPokemons()}
         </div>

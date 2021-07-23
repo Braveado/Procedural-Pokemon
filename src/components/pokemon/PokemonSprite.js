@@ -14,7 +14,7 @@ export default function PokemonSprite({pokemon, assign, opacity}) {
 
     return (                 
         <div onClick={assign} 
-            className={`cursor-pointer relative ${opacity ? 'opacity-10' : ''} transition duration-150 ease-in-out`}
+            className={`relative ${opacity ? 'opacity-10' : ''} transition duration-150 ease-in-out`}
             style={{width: '96px', height:'96px'}}>
             <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-none`} />
             <img 
