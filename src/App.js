@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { TeamBuilderContext } from './context/TeamBuilderContext';
 import Navbar from './components/Navbar';

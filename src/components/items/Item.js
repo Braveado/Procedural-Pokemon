@@ -34,7 +34,7 @@ export default function Item({item, index}) {
     }
 
     return (
-        <div className="flex flex-col justify-start items-end">
+        <div className="animate-enter flex flex-col justify-start items-end">
             {/* <div className="flex w-full justify-start items-center">
                 <p className="text-base">{!selected ? 'No ' : ''}Pokemon Assigned</p>
             </div> */}

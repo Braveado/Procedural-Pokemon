@@ -22,7 +22,7 @@ export default function Pokemon({pokemon}) {
 
     return (
         <div onClick={() => context.selectPokemon(pokemon)} 
-            className={`cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
+            className={`animate-enter cursor-pointer flex flex-col gap-2 justify-start items-center bg-white rounded-md p-4 w-48 h-auto border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out
             ${pokemon.selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>                        
 
             <PokemonSprite pokemon={pokemon} />            
