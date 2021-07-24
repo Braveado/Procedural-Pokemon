@@ -7,7 +7,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder({
     loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
-    }) {
+    }) {   
 
     const getControls = () => {
         if(loading || generating){
@@ -21,18 +21,16 @@ export default function TeamBuilder({
         else {
             return (
                 <>
-                    <button type="button" disabled={true} onClick={() => clearChoices()}
-                        className={`animate-enter flex items-center justify-center text-lg p-4 rounded-md border-2 border-gray-200 w-48 transition duration-150 ease-in-out
-                        ${true ? 'text-gray-300 cursor-not-allowed' : 'bg-white hover:bg-gray-200'}`}>
+                    <button type="button" onClick={() => clearChoices()}
+                        className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Clear Choices
                     </button>
-                    <button type="button" disabled={loading || generating} onClick={() => generateOptions()}
+                    <button type="button" onClick={() => generateOptions()}
                         className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
                         Generate Options
                     </button>
-                    <button type="button" disabled={true} onClick={() => exportTeam()}
-                        className={`animate-enter flex items-center justify-center text-lg p-4 rounded-md border-2 border-gray-200 w-48 transition duration-150 ease-in-out
-                        ${true ? 'text-gray-300 cursor-not-allowed' : 'bg-white hover:bg-gray-200'}`}>
+                    <button type="button" onClick={() => exportTeam()}
+                        className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Export Team
                     </button>
                 </>

@@ -470,6 +470,36 @@ export default function App() {
     return string.replace(/\b\w/g, l => l.toUpperCase())
   }
 
+  // Clear all selections and assignments.
+  const clearChoices = () => {
+    const choicesMade = Object.values(selectionsMade).some(val => val.length ? val.some(i => i) : val);
+    if(choicesMade){
+      let options = pokemonOptions;
+      options = options.map(p => {      
+        p.selected = false;
+        p.moveset = null;
+        p.ability = null;
+        p.item = null;                  
+        return p;
+      });
+      setPokemonOptions(options);
+ 
+      let msOptions = movesetOptions;    
+      msOptions.forEach(ms => {
+        ms = ms.map(m => {   
+          m.selected = false;
+          return m;
+        });
+      });          
+      setMovesetOptions([...msOptions]);
+
+      setToast('Controls', 'Choices cleared, start again!', {success: true});
+    }
+    else {
+      setToast('Controls', 'There are no choices to clear.', {warning: true});
+    }
+  }
+
   // Manage completed sections.
   const checkSectionCompleted = useCallback((string, val) => {
     let sCompleted = sectionsCompleted;
@@ -593,6 +623,7 @@ export default function App() {
     setSelectionsMade(s => {return {...s, moves: mSelected}});
   }, [movesetOptions, checkSectionCompleted]);  
 
+  // Show a toast notification.
   const setToast = (title, content, type) => {    
     toast.custom((t) => (
       <div onClick={() => toast.dismiss(t.id)}
@@ -639,7 +670,8 @@ export default function App() {
                 abilityOptions={abilityOptions}
                 itemOptions={itemOptions}
                 generating={generating}
-                generateOptions={generateOptions}
+                generateOptions={generateOptions}                
+                clearChoices={clearChoices}
               />
             </Route>
             <Route path="/">
