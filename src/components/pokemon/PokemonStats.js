@@ -17,7 +17,7 @@ export default function PokemonStats({stats}) {
     const getStatColor = (stat) => {
         switch (stat) {
             case 0: return 'bg-red-400';
-            case 1: return 'bg-yellow-400';
+            case 1: return 'bg-yellow-500';
             case 2: return 'bg-yellow-300';
             case 3: return 'bg-blue-400';
             case 4: return 'bg-green-400';

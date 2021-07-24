@@ -26,7 +26,7 @@ export default function AbilityOptions({options}) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Ability Options</p>
-                    <p className="text-base text-gray-300">Assign your selected pokemons to an ability</p>
+                    <p className="text-base text-gray-300">Assign your selected pokemons to an ability.</p>
                 </span>
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">{context.selectionsMade.abilities}/{context.selectionsNeeded.abilities} Pokemons Assigned</p>                    

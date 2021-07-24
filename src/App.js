@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { TeamBuilderContext } from './context/TeamBuilderContext';
 import axios from 'axios';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
+import { TeamBuilderContext } from './context/TeamBuilderContext';
 import Navbar from './components/Navbar';
 import Home from './containers/Home';
 import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
+//import { HiOutlineX } from 'react-icons/hi';
 
 export default function App() {
   // Constants.
@@ -21,14 +23,7 @@ export default function App() {
     moves: 6,
     abilities: 9,
     items: 9
-  };
-  const selectionsNeeded = {
-    pokemons: 6,    
-    movesets: 6,
-    moves: 4,
-    abilities: 6,
-    items: 6
-  };
+  };  
 
   // Filters
   const pokemonFilter = [ // Exclude pokemons with this keywords.
@@ -79,13 +74,21 @@ export default function App() {
   const [movesetOptions, setMovesetOptions] = useState([]);
   const [abilityOptions, setAbilityOptions] = useState([]);
   const [itemOptions, setItemOptions] = useState([]);
+  const [selectionsNeeded] = useState({
+    pokemons: 6,    
+    movesets: 6,
+    moves: 4,
+    abilities: 6,
+    items: 6
+  });
   const [selectionsMade, setSelectionsMade] = useState({
     pokemons: 0,
     movesets: 0,
     moves: [0, 0, 0, 0, 0, 0],
     abilities: 0,
     items: 0
-  });  
+  });
+  const [teamBuilded, setTeamBuilded] = useState(false);
 
   // Fetch lists from api on mount.
   useEffect (() => {
@@ -102,7 +105,7 @@ export default function App() {
         setMoveList(moveResults.data.results);
         setAbilityList(abilityResults.data.results);
         setItemList(itemResults.data.results);
-        setLoading(false);
+        setLoading(false);              
       }
     };
     fetchData();
@@ -123,7 +126,8 @@ export default function App() {
     await getAbilityOptions();
     await getItemOptions();
 
-    setGenerating(false);
+    setGenerating(false);   
+    setToast('Team Builder', 'Options generated, build your team!', {success: true});
   }
 
   // Get a set of pokemon options.  
@@ -359,6 +363,9 @@ export default function App() {
           p.selected = true;
           change = true;
         }
+        else {
+          setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemon options can be selected.`, {warning: true});
+        }
       }
       return p;
     })
@@ -379,6 +386,9 @@ export default function App() {
         else if(!m.selected && selectionsMade.moves[moveset] < selectionsNeeded.moves){
           m.selected = true;
           change = true;
+        }
+        else {
+          setToast('Moveset Options', `Only ${selectionsNeeded.moves} moves can be selected in a moveset.`, {warning: true});
         }
       }
       return m;
@@ -420,18 +430,27 @@ export default function App() {
           if(p.moveset === assignable.moveset) {
             p.moveset = null;
             change = true;
+            setToast('Moveset Options',
+            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to moveset ${assignable.moveset+1}.`,
+            {warning: true});
           }
         }
         if(assignable.ability != null){
           if(p.ability === assignable.ability) {
             p.ability = null;
             change = true;
+            setToast('Ability Options',
+            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to ability ${upperCaseWords(abilityOptions[assignable.ability].name)}.`,
+            {warning: true});
           }
         }
         if(assignable.item != null){
           if(p.item === assignable.item) {
             p.item = null;
             change = true;
+            setToast('Item Options',
+            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to item ${upperCaseWords(itemOptions[assignable.item].name)}.`,
+            {warning: true});
           }
         }
       }
@@ -440,6 +459,10 @@ export default function App() {
     if(change)    
       setPokemonOptions(pokemons);
   }  
+
+  const upperCaseWords = (string) => {
+    return string.replace(/\b\w/g, l => l.toUpperCase())
+  }
 
   // Respond to changes in slections/assignments for pokemon, movesets, abilities and items.
   useEffect (() => {
@@ -457,7 +480,7 @@ export default function App() {
         aAssigned = aAssigned + 1;
       if(p.item != null)
         iAssigned = iAssigned + 1;
-    });
+    });    
 
     setSelectionsMade(s => { return {
       ...s,
@@ -468,7 +491,7 @@ export default function App() {
     }});
   }, [pokemonOptions]); 
 
-  // Respond to changes in slections for moves.
+  // Respond to changes in selections for moves.
   useEffect (() => {
     let msOptions = [];
     movesetOptions.forEach(ms => {
@@ -476,6 +499,62 @@ export default function App() {
     });
     setSelectionsMade(s => {return {...s, moves: msOptions}});
   }, [movesetOptions]);
+
+/*   // Respond to changes in selections made.
+  useEffect (() => {
+    let builded = 0;    
+    if(selectionsMade.pokemons >= selectionsNeeded.pokemons){
+      builded = builded + 1;
+      setToast('Pokemon Options', `All ${selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
+    }
+    if(selectionsMade.movesets >= selectionsNeeded.movesets){
+      builded = builded + 1;
+      setToast('Moveset Options', `All ${selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
+    }
+    let sm = 0;        
+    selectionsMade.moves.forEach(m => {
+        sm = sm + m
+    });    
+    if(sm >= selectionsNeeded.movesets * selectionsNeeded.moves){
+      builded = builded + 1;
+      setToast('Moveset Options', `All ${selectionsNeeded.movesets * selectionsNeeded.moves} moves have been selected.`, {success: true});
+    }
+    if(selectionsMade.abilities >= selectionsNeeded.abilities){
+      builded = builded + 1;
+      setToast('Ability Options', `All ${selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
+    }
+    if(selectionsMade.items >= selectionsNeeded.items){
+      builded = builded + 1;
+      setToast('Item Options', `All ${selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
+    }
+    setTeamBuilded(builded >= 5);
+  }, [selectionsMade, selectionsNeeded]);
+
+  // Respond to changes in team builded.
+  useEffect (() => {
+    if(teamBuilded)
+      setToast('Team Builder', `Team builded, export your team!`, {success: true});
+  }, [teamBuilded]); */
+
+  const setToast = (title, content, type) => {    
+    toast.custom((t) => (
+      <div onClick={() => toast.dismiss(t.id)}
+        className={`cursor-pointer max-w-md w-full flex flex-col gap-2 bg-white p-2 rounded-md pointer-events-auto flex border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out 
+        ${t.visible ? 'animate-enter' : 'animate-leave'}
+        ${type.success ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}
+        ${type.warning ? 'bg-yellow-100 border-yellow-200 ring ring-yellow-100' : ''}
+        ${type.error ? 'bg-red-100 border-red-200 ring ring-red-100' : ''}`}
+      >
+        <div className="flex justify-between items-center w-full">
+          <p className="text-base capitalize">{title}</p>
+          {/* <HiOutlineX className="cursor-pointer text-2xl hover:text-gray-600" onClick={() => toast.dismiss(t.id)}/> */}
+        </div>          
+        <div className="flex text-sm">
+          <p>{content}</p>
+        </div>
+      </div>
+    ));
+  }
 
   // Render.
   return (        
@@ -512,6 +591,11 @@ export default function App() {
           </Switch>
         </Router>      
       </div>
+      <Toaster
+        position="bottom-right"
+        reverseOrder={false}
+        gutter={8}
+      />
     </TeamBuilderContext.Provider>
   );
 }

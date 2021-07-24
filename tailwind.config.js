@@ -27,10 +27,21 @@ module.exports = {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
+        },
+        enter: {
+          '0%': { transform: 'scale(0.5)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        leave: {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '5%': { transform: 'scale(0.5)', opacity: '0' },
+          '6%': { transform: 'scale(0)', opacity: '0' },
         }
       },
       animation: {
         wiggle: 'wiggle 5s ease-in-out infinite',
+        enter: 'enter 200ms ease-in-out',
+        leave: 'leave 4s ease-in-out',
       }
     }
   },

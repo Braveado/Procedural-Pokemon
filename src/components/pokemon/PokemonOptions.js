@@ -27,7 +27,7 @@ export default function PokemonOptions({ options }) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Pokemon Options</p>
-                    <p className="text-base text-gray-300">Select pokemons for your team</p>
+                    <p className="text-base text-gray-300">Select pokemons for your team.</p>
                 </span>
                 <p className="text-lg">{context.selectionsMade.pokemons}/{context.selectionsNeeded.pokemons} Pokemons Selected</p>
             </div>            

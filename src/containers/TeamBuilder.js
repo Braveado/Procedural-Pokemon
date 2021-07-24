@@ -20,7 +20,7 @@ export default function TeamBuilder({
             return `Generating Items (${itemOptions.length}/${randomRolls.items})`;
         else
             return 'Done!';
-    }
+    }    
 
     return (
         <div className="flex flex-col gap-8 justify-start items-center w-full p-8">

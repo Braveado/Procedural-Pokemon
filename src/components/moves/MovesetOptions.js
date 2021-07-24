@@ -34,7 +34,7 @@ export default function MovesetOptions({ options }) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Moveset Options</p>
-                    <p className="text-base text-gray-300">Assign your selected pokemons to a moveset and select their moves</p>
+                    <p className="text-base text-gray-300">Assign your selected pokemons to a moveset and select their moves.</p>
                 </span>
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">{context.selectionsMade.movesets}/{context.selectionsNeeded.movesets} Pokemons Assigned</p>

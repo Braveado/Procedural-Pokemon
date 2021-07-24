@@ -26,7 +26,7 @@ export default function ItemOptions({options}) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Item Options</p>
-                    <p className="text-base text-gray-300">Assign your selected pokemons to an item</p>
+                    <p className="text-base text-gray-300">Assign your selected pokemons to an item.</p>
                 </span>
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">{context.selectionsMade.items}/{context.selectionsNeeded.items} Pokemons Assigned</p>                    
