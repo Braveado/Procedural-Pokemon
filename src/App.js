@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -23,7 +23,7 @@ export default function App() {
     moves: 6,
     abilities: 9,
     items: 9
-  };  
+  };
 
   // Filters
   const pokemonFilter = [ // Exclude pokemons with this keywords.
@@ -88,7 +88,13 @@ export default function App() {
     abilities: 0,
     items: 0
   });
-  const [teamBuilded, setTeamBuilded] = useState(false);
+  const [sectionsCompleted, setSectionsCompleted] = useState({
+    pokemons: false,
+    movesets: false,
+    moves: false,
+    abilities: false,
+    items: false
+  });
 
   // Fetch lists from api on mount.
   useEffect (() => {
@@ -364,7 +370,7 @@ export default function App() {
           change = true;
         }
         else {
-          setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemon options can be selected.`, {warning: true});
+          setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
         }
       }
       return p;
@@ -464,10 +470,85 @@ export default function App() {
     return string.replace(/\b\w/g, l => l.toUpperCase())
   }
 
+  // Manage completed sections.
+  const checkSectionCompleted = useCallback((string, val) => {
+    let sCompleted = sectionsCompleted;
+    let change = false;
+    switch(string){
+      case 'pokemons':
+        if(!sCompleted.pokemons && val >= selectionsNeeded.pokemons){
+          sCompleted.pokemons = true;
+          change = true;
+          setToast('Pokemon Options', `All ${selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
+        }
+        else if(sCompleted.pokemons && val < selectionsNeeded.pokemons){
+          sCompleted.pokemons = false;
+          change = true;
+          setToast('Pokemon Options', `There must be ${selectionsNeeded.pokemons} pokemons selected.`, {warning: true});
+        }
+        break;
+      case 'movesets':
+        if(!sCompleted.movesets && val >= selectionsNeeded.movesets){
+          sCompleted.movesets = true;
+          change = true;
+          setToast('Moveset Options', `All ${selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
+        }
+        else if(sCompleted.movesets && val < selectionsNeeded.movesets){
+          sCompleted.movesets = false;
+          change = true;
+          setToast('Moveset Options', `There must be ${selectionsNeeded.movesets} pokemons assigned to a moveset.`, {warning: true});
+        }
+        break;
+      case 'moves':
+        if(!sCompleted.moves && val >= selectionsNeeded.movesets * selectionsNeeded.moves){
+          sCompleted.moves = true;
+          change = true;
+          setToast('Moveset Options', `All ${selectionsNeeded.movesets * selectionsNeeded.moves} moves have been selected.`, {success: true});    
+        }
+        else if(sCompleted.moves && val < selectionsNeeded.movesets * selectionsNeeded.moves){
+          sCompleted.moves = false;
+          change = true;
+          setToast('Moveset Options', `There must be ${selectionsNeeded.movesets * selectionsNeeded.moves} moves selected.`, {warning: true});    
+        }
+        break;
+      case 'abilities':
+        if(!sCompleted.abilities && val >= selectionsNeeded.abilities){
+          sCompleted.abilities = true;
+          change = true;
+          setToast('Ability Options', `All ${selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
+        }
+        else if(sCompleted.abilities && val < selectionsNeeded.abilities){
+          sCompleted.abilities = false;
+          change = true;
+          setToast('Ability Options', `There must be ${selectionsNeeded.abilities} pokemons assigned to an ability.`, {warning: true});
+        }
+        break;
+      case 'items':
+        if(!sCompleted.items && val >= selectionsNeeded.items){
+          sCompleted.items = true;
+          change = true;
+          setToast('Item Options', `All ${selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
+        }
+        else if(sCompleted.items && val < selectionsNeeded.items){
+          sCompleted.items = false;
+          change = true;
+          setToast('Item Options', `There must be ${selectionsNeeded.items} pokemons assigned to an item.`, {warning: true});
+        }
+        break;
+      default:
+        break;
+    }
+    if(change){
+      setSectionsCompleted(sCompleted);
+      if(Object.values(sCompleted).every(val => val))
+        setToast('Team Builder', `Team completely built, export your team!`, {success: true});
+    }
+  }, [sectionsCompleted, selectionsNeeded]);
+
   // Respond to changes in slections/assignments for pokemon, movesets, abilities and items.
   useEffect (() => {
     let pSelected = 0;
-    let msAssigned = 0;
+    let msAssigned = 0;    
     let aAssigned = 0;
     let iAssigned = 0;
 
@@ -481,6 +562,11 @@ export default function App() {
       if(p.item != null)
         iAssigned = iAssigned + 1;
     });    
+    
+    checkSectionCompleted('pokemons', pSelected);
+    checkSectionCompleted('movesets', msAssigned);
+    checkSectionCompleted('abilities', aAssigned);
+    checkSectionCompleted('items', iAssigned);
 
     setSelectionsMade(s => { return {
       ...s,
@@ -489,52 +575,23 @@ export default function App() {
       abilities: aAssigned,
       items: iAssigned
     }});
-  }, [pokemonOptions]); 
+  }, [pokemonOptions, checkSectionCompleted]); 
 
   // Respond to changes in selections for moves.
   useEffect (() => {
-    let msOptions = [];
+    let mSelected = [];
+    let mSelectedAmount = 0;
+
     movesetOptions.forEach(ms => {
-      msOptions.push(ms.filter(m => m.selected).length)
+      let msSelected = ms.filter(m => m.selected).length;
+      mSelected.push(msSelected);
+      mSelectedAmount = mSelectedAmount + msSelected;
     });
-    setSelectionsMade(s => {return {...s, moves: msOptions}});
-  }, [movesetOptions]);
 
-/*   // Respond to changes in selections made.
-  useEffect (() => {
-    let builded = 0;    
-    if(selectionsMade.pokemons >= selectionsNeeded.pokemons){
-      builded = builded + 1;
-      setToast('Pokemon Options', `All ${selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
-    }
-    if(selectionsMade.movesets >= selectionsNeeded.movesets){
-      builded = builded + 1;
-      setToast('Moveset Options', `All ${selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
-    }
-    let sm = 0;        
-    selectionsMade.moves.forEach(m => {
-        sm = sm + m
-    });    
-    if(sm >= selectionsNeeded.movesets * selectionsNeeded.moves){
-      builded = builded + 1;
-      setToast('Moveset Options', `All ${selectionsNeeded.movesets * selectionsNeeded.moves} moves have been selected.`, {success: true});
-    }
-    if(selectionsMade.abilities >= selectionsNeeded.abilities){
-      builded = builded + 1;
-      setToast('Ability Options', `All ${selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
-    }
-    if(selectionsMade.items >= selectionsNeeded.items){
-      builded = builded + 1;
-      setToast('Item Options', `All ${selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
-    }
-    setTeamBuilded(builded >= 5);
-  }, [selectionsMade, selectionsNeeded]);
+    checkSectionCompleted('moves', mSelectedAmount);
 
-  // Respond to changes in team builded.
-  useEffect (() => {
-    if(teamBuilded)
-      setToast('Team Builder', `Team builded, export your team!`, {success: true});
-  }, [teamBuilded]); */
+    setSelectionsMade(s => {return {...s, moves: mSelected}});
+  }, [movesetOptions, checkSectionCompleted]);  
 
   const setToast = (title, content, type) => {    
     toast.custom((t) => (
