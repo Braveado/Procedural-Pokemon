@@ -30,7 +30,7 @@ export default function MovesetOptions({ options }) {
     }
     
     return (
-        <div className="flex flex-col w-full">
+        <div id="movesets" className="flex flex-col w-full">
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Moveset Options</p>

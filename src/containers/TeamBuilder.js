@@ -22,15 +22,15 @@ export default function TeamBuilder({
             return (
                 <>
                     <button type="button" onClick={() => clearChoices()}
-                        className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Clear Choices
                     </button>
                     <button type="button" onClick={() => generateOptions()}
-                        className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
+                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
                         Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="animate-enter flex items-center justify-center text-lg p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Export Team
                     </button>
                 </>
@@ -73,24 +73,25 @@ export default function TeamBuilder({
         }                            
     }
 
-    return (
-            <div className="flex flex-col gap-8 justify-start items-center w-full p-8">  
-                <div className="flex flex-col w-full">
-                    <div className="flex justify-start items-center gap-4 text-center">                    
-                        <p className="text-lg">Controls</p>
-                        <p className="text-base text-gray-300">Actions for building your team.</p>
-                    </div>            
-                    <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
-                        <div className="flex flex-wrap justify-center items-center gap-4">
-                            {getControls()}
-                        </div>                            
-                        {getTeamExport()}                                            
-                    </div>                                                            
-                </div>                          
-                <PokemonOptions id="pokemons" options={pokemonOptions} />
-                <MovesetOptions options={movesetOptions} />  
-                <AbilityOptions options={abilityOptions} />   
-                <ItemOptions options={itemOptions} />        
+    return (           
+        <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
+            <div id="controls" className="flex flex-col w-full">
+                <div className="flex justify-start items-center gap-4 text-center">                    
+                    <p className="text-lg">Controls</p>
+                    <p className="text-base text-gray-300">Actions for building your team.</p>
+                </div>            
+                <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
+                    <div className="flex flex-wrap justify-center items-center gap-4">
+                        {getControls()}
+                    </div>                            
+                    {getTeamExport()}                                            
+                </div>                                                            
             </div>
+            <PokemonOptions options={pokemonOptions} />
+            <MovesetOptions options={movesetOptions} />  
+            <AbilityOptions options={abilityOptions} />   
+            <ItemOptions options={itemOptions} />        
+
+        </div>                    
     )
 }

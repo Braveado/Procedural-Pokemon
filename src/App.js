@@ -1,13 +1,12 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { TeamBuilderContext } from './context/TeamBuilderContext';
 import Navbar from './components/Navbar';
 import Home from './containers/Home';
 import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
-//import { HiOutlineX } from 'react-icons/hi';
 
 export default function App() {
   // Constants.
@@ -694,31 +693,33 @@ export default function App() {
       assignPokemon: assignPokemon
     }}>
       <div className="bg-gray-100 min-h-screen">
-        <Router>
-          <Navbar />        
-          <Switch>          
-            <Route path="/about">
-              <About />
-            </Route>
-            <Route path="/builder">        
-              <TeamBuilder
-                loading={loading}
-                randomRolls={randomRolls}
-                pokemonOptions={pokemonOptions}
-                movesetOptions={movesetOptions}
-                abilityOptions={abilityOptions}
-                itemOptions={itemOptions}
-                generating={generating}
-                generateOptions={generateOptions}                
-                clearChoices={clearChoices}
-                exportTeam={exportTeam}
-                teamExport={teamExport}
-              />
-            </Route>
-            <Route path="/">
-              <Home />
-            </Route>          
-          </Switch>
+        <Router basename="/React-Procedural-Pokemon">           
+          <div className="flex flex-col">
+            <Navbar />             
+            <Switch>          
+              <Route path="/about">
+                <About />
+              </Route>
+              <Route path="/builder">        
+                <TeamBuilder
+                  loading={loading}
+                  randomRolls={randomRolls}
+                  pokemonOptions={pokemonOptions}
+                  movesetOptions={movesetOptions}
+                  abilityOptions={abilityOptions}
+                  itemOptions={itemOptions}
+                  generating={generating}
+                  generateOptions={generateOptions}                
+                  clearChoices={clearChoices}
+                  exportTeam={exportTeam}
+                  teamExport={teamExport}
+                />
+              </Route>
+              <Route path="/">
+                <Home />
+              </Route>          
+            </Switch>
+          </div> 
         </Router>      
       </div>
       <Toaster
