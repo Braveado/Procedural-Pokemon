@@ -95,6 +95,7 @@ export default function App() {
     abilities: false,
     items: false
   });
+  const [teamExport, setTeamExport] = useState([]);
 
   // Fetch lists from api on mount.
   useEffect (() => {
@@ -126,6 +127,7 @@ export default function App() {
     setMovesetOptions([]); 
     setAbilityOptions([]);
     setItemOptions([]);
+    setTeamExport([]);
 
     await getPokemonOptions();
     await getMovesetOptions();
@@ -133,7 +135,7 @@ export default function App() {
     await getItemOptions();
 
     setGenerating(false);   
-    setToast('Team Builder', 'Options generated, build your team!', {success: true});
+    setToast('Controls', 'Options generated, build your team!', {success: true});
   }
 
   // Get a set of pokemon options.  
@@ -375,8 +377,10 @@ export default function App() {
       }
       return p;
     })
-    if(change)
+    if(change){
       setPokemonOptions(options); 
+      clearTeamExport();
+    }
   }   
 
   // Select a move.
@@ -399,8 +403,10 @@ export default function App() {
       }
       return m;
     });
-    if(change)
+    if(change){
       setMovesetOptions([...msOptions]);
+      clearTeamExport();
+    }
   }
 
   // Assign a pokemon to a moveset, ability or item.
@@ -462,8 +468,10 @@ export default function App() {
       }
       return p;
     })
-    if(change)    
+    if(change){   
       setPokemonOptions(pokemons);
+      clearTeamExport();
+    }
   }  
 
   const upperCaseWords = (string) => {
@@ -472,7 +480,7 @@ export default function App() {
 
   // Clear all selections and assignments.
   const clearChoices = () => {
-    const choicesMade = Object.values(selectionsMade).some(val => val.length ? val.some(i => i) : val);
+    const choicesMade = Object.values(selectionsMade).some(val => Array.isArray(val) ? val.some(i => i) : val);
     if(choicesMade){
       let options = pokemonOptions;
       options = options.map(p => {      
@@ -493,10 +501,19 @@ export default function App() {
       });          
       setMovesetOptions([...msOptions]);
 
+      clearTeamExport();
       setToast('Controls', 'Choices cleared, start again!', {success: true});
     }
     else {
       setToast('Controls', 'There are no choices to clear.', {warning: true});
+    }
+  }
+
+  // Reset team export.
+  const clearTeamExport = () => {
+    if(teamExport.length){
+      setTeamExport([]);
+      setToast('Controls', 'Team export was cleared.', {warning: true});
     }
   }
 
@@ -623,6 +640,28 @@ export default function App() {
     setSelectionsMade(s => {return {...s, moves: mSelected}});
   }, [movesetOptions, checkSectionCompleted]);  
 
+  // Create an export of the team.
+  const exportTeam = () => {
+    if(Object.values(sectionsCompleted).every(val => val)) {
+      let tExport = [];      
+      pokemonOptions.forEach(p => {
+        if(p.selected){
+          let tPokemon = {};
+          tPokemon.name = p.name;
+          tPokemon.moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
+          tPokemon.ability = abilityOptions[p.ability].name;
+          tPokemon.item = itemOptions[p.item].name;
+          tExport.push(tPokemon);
+        }
+      });
+      setTeamExport(tExport);
+      setToast('Controls', 'Team exported successfully!', {success: true});
+    }
+    else {
+      setToast('Controls', 'The team is not completely built!', {warning: true});
+    }
+  }
+
   // Show a toast notification.
   const setToast = (title, content, type) => {    
     toast.custom((t) => (
@@ -672,6 +711,8 @@ export default function App() {
                 generating={generating}
                 generateOptions={generateOptions}                
                 clearChoices={clearChoices}
+                exportTeam={exportTeam}
+                teamExport={teamExport}
               />
             </Route>
             <Route path="/">

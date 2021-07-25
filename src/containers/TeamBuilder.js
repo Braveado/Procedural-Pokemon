@@ -6,7 +6,7 @@ import ItemOptions from '../components/items/ItemOptions';
 import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder({
-    loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
+    loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam, teamExport
     }) {   
 
     const getControls = () => {
@@ -51,6 +51,28 @@ export default function TeamBuilder({
             return 'Done!';
     }    
 
+    const getTeamExport = () => {
+        if(teamExport.length) {
+            return (
+                <div className="animate-enter flex flex-col gap-2 text-sm justify-start items-start rounded-md p-4 bg-white border-2 border-gray-200">
+                    {teamExport.map((p, i) => {
+                        return (
+                            <p key={i} className="capitalize">
+                                {p.name.replace(/-/g, " ")} @ {p.item.replace(/-/g, " ")}<br/>
+                                Ability: {p.ability.replace(/-/g, " ")}<br/>
+                                Level: 50<br/>
+                                - {p.moveset[0].replace(/-/g, " ")}<br/>
+                                - {p.moveset[1].replace(/-/g, " ")}<br/>
+                                - {p.moveset[2].replace(/-/g, " ")}<br/>
+                                - {p.moveset[3].replace(/-/g, " ")}<br/>                                                                                
+                            </p>
+                        )
+                    })} 
+                </div> 
+            )
+        }                            
+    }
+
     return (
             <div className="flex flex-col gap-8 justify-start items-center w-full p-8">  
                 <div className="flex flex-col w-full">
@@ -58,9 +80,12 @@ export default function TeamBuilder({
                         <p className="text-lg">Controls</p>
                         <p className="text-base text-gray-300">Actions for building your team.</p>
                     </div>            
-                    <div className="flex flex-wrap justify-center items-start gap-4 p-4 w-full border-2 rounded-md border-gray-200 transition duration-150 ease-in-out">
-                        {getControls()}                        
-                    </div>
+                    <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
+                        <div className="flex flex-wrap justify-center items-center gap-4">
+                            {getControls()}
+                        </div>                            
+                        {getTeamExport()}                                            
+                    </div>                                                            
                 </div>                          
                 <PokemonOptions id="pokemons" options={pokemonOptions} />
                 <MovesetOptions options={movesetOptions} />  
