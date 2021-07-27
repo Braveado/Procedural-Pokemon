@@ -1,4 +1,5 @@
 import React from 'react'
+import {GiSparkles} from 'react-icons/gi';
 
 export default function PokemonSprite({pokemon, assign, opacity}) {
     const getRarity = () => {
@@ -14,13 +15,13 @@ export default function PokemonSprite({pokemon, assign, opacity}) {
 
     return (                 
         <div onClick={assign} 
-            className={`relative ${opacity ? 'opacity-10' : ''} transition duration-150 ease-in-out`}
-            style={{width: '96px', height:'96px'}}>
-            <span className={`absolute h-24 w-24 absolute inline-flex rounded-full opacity-100 ${getRarity()} mix-blend-none`} />
+            className={`relative w-24 h-24 ${opacity ? 'opacity-20' : ''} transition duration-150 ease-in-out`}>
+            <span className={`absolute w-24 h-24 absolute rounded-full opacity-100 ${getRarity()}`} />
+            {pokemon.shiny ? <GiSparkles className={`absolute right-0 w-24 h-24 absolute opacity-100 text-yellow-200 animate-pulse`} /> : null}
             <img 
-                src={pokemon.sprites.front_default} alt="" width="96px" height="96px"
+                src={pokemon.shiny ? pokemon.sprites.front_shiny : pokemon.sprites.front_default} alt="" width="96px" height="96px"
                 className="absolute animate-wiggle"
-            />
+            />            
         </div>        
     )
 }

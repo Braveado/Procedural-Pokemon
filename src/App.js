@@ -139,8 +139,10 @@ export default function App() {
 
   // Get a set of pokemon options.  
   async function getPokemonOptions() {    
-    if(pokemonList.length) {           
-      let pokemons = [];            
+    if(pokemonList.length) { 
+      let pokemons = [];                           
+      let shinyIndex = Math.round((Math.random()*100 / 12.5));
+      console.log(shinyIndex);
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons)
@@ -148,7 +150,8 @@ export default function App() {
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;        
-        pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)})        
+        pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
+        pokemon.shiny = index === shinyIndex;
         pokemon.selected = false;
         pokemon.moveset = null;
         pokemon.ability = null;
@@ -647,6 +650,7 @@ export default function App() {
         if(p.selected){
           let tPokemon = {};
           tPokemon.name = p.name;
+          tPokemon.shiny = p.shiny;
           tPokemon.moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
           tPokemon.ability = abilityOptions[p.ability].name;
           tPokemon.item = itemOptions[p.item].name;

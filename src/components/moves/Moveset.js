@@ -28,7 +28,7 @@ export default function Moveset({ moveset, index }) {
                 {/* <p className="text-base">{!context.pokemonOptions.find(p => p.moveset === index) ? 'No ' : ''}Pokemon Assigned</p> */}
                 <p className="text-base">{context.selectionsMade.moves[index]}/{context.selectionsNeeded.moves} Moves Selected</p>
             </div>
-            <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
+            <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-2 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                 ${context.selectionsMade.moves[index] >= context.selectionsNeeded.moves &&
                 context.pokemonOptions.find(p => p.moveset === index) ? 'border-green-200 ring ring-green-100' : ''}`}>
                 <SelectedPokemon assignable={{moveset: index}} />

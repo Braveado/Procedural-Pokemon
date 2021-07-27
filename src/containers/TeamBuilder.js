@@ -60,7 +60,8 @@ export default function TeamBuilder({
                             <p key={i} className="capitalize">
                                 {p.name.replace(/-/g, " ")} @ {p.item.replace(/-/g, " ")}<br/>
                                 Ability: {p.ability.replace(/-/g, " ")}<br/>
-                                Level: 50<br/>
+                                {p.shiny ? 'Level: 60' : 'Level: 50'}<br/>
+                                {p.shiny ? 'Shiny: Yes' : null}{p.shiny ? <br/> : null}
                                 - {p.moveset[0].replace(/-/g, " ")}<br/>
                                 - {p.moveset[1].replace(/-/g, " ")}<br/>
                                 - {p.moveset[2].replace(/-/g, " ")}<br/>

@@ -30,7 +30,7 @@ export default function SelectedPokemon({ assignable }) {
     }
 
     const getSelectedPokemons = () => {        
-        if(selectedPokemon.length > 0 ) {
+        if(selectedPokemon.length > 0 && !assignedPokemon) {
             return selectedPokemon.map((p, i) => {
                 return (
                     <PokemonSprite key={i} pokemon={p} assign={() => context.assignPokemon(p, assignable)}
@@ -40,9 +40,9 @@ export default function SelectedPokemon({ assignable }) {
                 )
             })            
         }
-        /* else if(selectedPokemon.length > 0 && assignedPokemon) {
-            return <PokemonSprite pokemon={assignedPokemon} assign={() => callAssign(assignedPokemon)} />            
-        } */
+        else if(selectedPokemon.length > 0 && assignedPokemon) {
+            return <PokemonSprite pokemon={assignedPokemon} assign={() => context.assignPokemon(assignedPokemon, assignable)} />            
+        }
         else {
             return (
                 <div className="p-4 text-gray-300">

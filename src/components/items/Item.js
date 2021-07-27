@@ -38,7 +38,7 @@ export default function Item({item, index}) {
             {/* <div className="flex w-full justify-start items-center">
                 <p className="text-base">{!selected ? 'No ' : ''}Pokemon Assigned</p>
             </div> */}
-            <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-4 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out  
+            <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-2 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out  
                 ${selected ? 'border-green-200 ring ring-green-100' : ''}`}>            
                 <SelectedPokemon assignable={{item: index}} />
                 <div className={`flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
