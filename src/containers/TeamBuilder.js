@@ -3,10 +3,10 @@ import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
 import ItemOptions from '../components/items/ItemOptions';
-import { BiLoaderAlt } from 'react-icons/bi';
+import { BiLoaderAlt, BiExport } from 'react-icons/bi';
 
 export default function TeamBuilder({
-    loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam, teamExport
+    loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
     }) {   
 
     const getControls = () => {
@@ -30,8 +30,9 @@ export default function TeamBuilder({
                         Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className="animate-enter relative flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Export Team
+                        {/* <div className="absolute right-2 rounded-full bg-green-100 p-1 text-2xl"><BiExport className="text-green-300" /></div> */}
                     </button>
                 </>
             )
@@ -51,29 +52,6 @@ export default function TeamBuilder({
             return 'Done!';
     }    
 
-    const getTeamExport = () => {
-        if(teamExport.length) {
-            return (
-                <div className="animate-enter flex flex-col gap-2 text-sm justify-start items-start rounded-md p-4 bg-white border-2 border-gray-200">
-                    {teamExport.map((p, i) => {
-                        return (
-                            <p key={i} className="capitalize">
-                                {p.name.replace(/-/g, " ")} @ {p.item.replace(/-/g, " ")}<br/>
-                                Ability: {p.ability.replace(/-/g, " ")}<br/>
-                                {p.shiny ? 'Level: 60' : 'Level: 50'}<br/>
-                                {p.shiny ? 'Shiny: Yes' : null}{p.shiny ? <br/> : null}
-                                - {p.moveset[0].replace(/-/g, " ")}<br/>
-                                - {p.moveset[1].replace(/-/g, " ")}<br/>
-                                - {p.moveset[2].replace(/-/g, " ")}<br/>
-                                - {p.moveset[3].replace(/-/g, " ")}<br/>                                                                                
-                            </p>
-                        )
-                    })} 
-                </div> 
-            )
-        }                            
-    }
-
     return (           
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
             <div id="controls" className="flex flex-col w-full">
@@ -84,8 +62,7 @@ export default function TeamBuilder({
                 <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
                     <div className="flex flex-wrap justify-center items-center gap-4">
                         {getControls()}
-                    </div>                            
-                    {getTeamExport()}                                            
+                    </div>                                                                       
                 </div>                                                            
             </div>
             <PokemonOptions options={pokemonOptions} />

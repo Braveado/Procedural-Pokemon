@@ -94,7 +94,6 @@ export default function App() {
     abilities: false,
     items: false
   });
-  const [teamExport, setTeamExport] = useState([]);
 
   // Fetch lists from api on mount.
   useEffect (() => {
@@ -126,7 +125,6 @@ export default function App() {
     setMovesetOptions([]); 
     setAbilityOptions([]);
     setItemOptions([]);
-    setTeamExport([]);
 
     await getPokemonOptions();
     await getMovesetOptions();
@@ -142,7 +140,6 @@ export default function App() {
     if(pokemonList.length) { 
       let pokemons = [];                           
       let shinyIndex = Math.round((Math.random()*100 / 12.5));
-      console.log(shinyIndex);
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons)
@@ -151,7 +148,7 @@ export default function App() {
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;        
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
-        pokemon.shiny = index === shinyIndex;
+        pokemon.shiny = (index === shinyIndex);
         pokemon.selected = false;
         pokemon.moveset = null;
         pokemon.ability = null;
@@ -381,7 +378,6 @@ export default function App() {
     })
     if(change){
       setPokemonOptions(options); 
-      clearTeamExport();
     }
   }   
 
@@ -407,7 +403,6 @@ export default function App() {
     });
     if(change){
       setMovesetOptions([...msOptions]);
-      clearTeamExport();
     }
   }
 
@@ -472,7 +467,6 @@ export default function App() {
     })
     if(change){   
       setPokemonOptions(pokemons);
-      clearTeamExport();
     }
   }  
 
@@ -503,19 +497,10 @@ export default function App() {
       });          
       setMovesetOptions([...msOptions]);
 
-      clearTeamExport();
       setToast('Controls', 'Choices cleared, start again!', {success: true});
     }
     else {
       setToast('Controls', 'There are no choices to clear.', {warning: true});
-    }
-  }
-
-  // Reset team export.
-  const clearTeamExport = () => {
-    if(teamExport.length){
-      setTeamExport([]);
-      setToast('Controls', 'Team export was cleared.', {warning: true});
     }
   }
 
@@ -645,24 +630,63 @@ export default function App() {
   // Create an export of the team.
   const exportTeam = () => {
     if(Object.values(sectionsCompleted).every(val => val)) {
-      let tExport = [];      
+      let exportText = "";         
       pokemonOptions.forEach(p => {
         if(p.selected){
-          let tPokemon = {};
-          tPokemon.name = p.name;
-          tPokemon.shiny = p.shiny;
-          tPokemon.moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
-          tPokemon.ability = abilityOptions[p.ability].name;
-          tPokemon.item = itemOptions[p.item].name;
-          tExport.push(tPokemon);
+          let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
+          exportText += capitalizeWords(p.name, "-");
+          exportText += " @ " + capitalizeWords(itemOptions[p.item].name, "-");
+          exportText += "\r\nAbility: " + capitalizeWords(abilityOptions[p.ability].name, "-");
+          exportText += "\r\n" + (p.shiny ? "Level: 60\r\nShiny: Yes" : "Level: 50");
+          exportText += "\r\n- " + capitalizeWords(moveset[0], "-");
+          exportText += "\r\n- " + capitalizeWords(moveset[1], "-");
+          exportText += "\r\n- " + capitalizeWords(moveset[2], "-");
+          exportText += "\r\n- " + capitalizeWords(moveset[3], "-");    
+          exportText += "\r\n\r\n";                             
         }
       });
-      setTeamExport(tExport);
-      setToast('Controls', 'Team exported successfully!', {success: true});
+      copyTextToClipboard(exportText);      
     }
     else {
-      setToast('Controls', 'The team is not completely built!', {warning: true});
+      setToast('Controls', 'The team is not completely built!', {warning: true});      
     }
+  }
+
+  const capitalizeWords = (text, separator) => {
+    return text.split(separator).map((word) => {return word[0].toUpperCase() + word.substring(1)}).join(" ");
+  }
+
+  // Copy the exported team t clipboard.
+  function fallbackCopyTextToClipboard(text) {
+    var textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();  
+    try {
+      var successful = document.execCommand("copy");
+      if(successful)
+        setToast('Controls', 'Team copied to clipboard!', {success: true});      
+      else
+        setToast('Controls', 'Error copying the team to clipboard!', {error: true});
+    } catch (err) {
+      setToast('Controls', 'Unable to copy the team to clipboard!', {error: true});
+    }  
+    document.body.removeChild(textArea);
+  }
+  function copyTextToClipboard(text) {
+    if (!navigator.clipboard) {
+      fallbackCopyTextToClipboard(text);
+      return;
+    }
+    navigator.clipboard.writeText(text).then(
+      function() {
+        setToast('Controls', 'Team copied to clipboard!', {success: true});
+      },
+      function(err) {
+        setToast('Controls', 'Error copying the team to clipboard!', {error: true});
+      }
+    );
   }
 
   // Show a toast notification.
@@ -673,7 +697,7 @@ export default function App() {
         ${t.visible ? 'animate-enter' : 'animate-leave'}
         ${type.success ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}
         ${type.warning ? 'bg-yellow-100 border-yellow-200 ring ring-yellow-100' : ''}
-        ${type.error ? 'bg-red-100 border-red-200 ring ring-red-100' : ''}`}
+        ${type.error ? 'bg-red-200 border-red-300 ring ring-red-200' : ''}`}
       >
         <div className="flex justify-between items-center w-full">
           <p className="text-base capitalize">{title}</p>
@@ -716,7 +740,6 @@ export default function App() {
                   generateOptions={generateOptions}                
                   clearChoices={clearChoices}
                   exportTeam={exportTeam}
-                  teamExport={teamExport}
                 />
               </Route>
               <Route path="/">
