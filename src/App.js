@@ -42,24 +42,38 @@ export default function App() {
   ];
   const moveStatusLimit = 3; // Max number of status moves in a moveset.
   const abilityFilter = [ // Exclude abilities with this keywords.
-    // Unusable abilities.
-    'run', 'stance', 'sweet', 'one', 'telepathy', 'harvest', 'honey', 'forecast', 'battle', 'rks',
-    'gulp', 'receiver', 'gift', 'zen', 'aroma', 'illuminate', 'klutz', 'construct', 'face', 'hunger',
-    'alchemy', 'battery', 'ball', 'plus', 'minus', 'shields', 'star', 'schooling', 'truant'
+    // Unusable in format.
+    'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
+    'telepathy', 'star', 'cheek', 'dancer', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
+    'medicine', 'one',
+    // Pokemon forms specific.
+    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger', 
+    // Item related, very few use cases.
+    'pickup', 'sticky', 'unburden', 'pickpocket', 'magician', 'symbiosis', 'compound',
+    // Harmful to owner.
+    'truant', 'stall', 'klutz', 'slow', 'defeatist', 
+    // Unusable in tournaments.
+    'anticipation', 'forewarn', 'frisk', 
+    // Would require branch logic, possibly not worth it.
+    'multitype', 'rks', 'gulp', 
   ];
-  const abilityAllow = [ // Include abilities with this keywords even when excluded by filter.    
-    'armor', 
+  const abilityAllow = [ // Include abilities with this keywords even when excluded by filter.
+    'parental', 
   ];
   const itemFilter = [ // Exclude items with this keywords.
-    // Group items.
-    'power', 'deep', 'scale', 'scarf', 'ball', 'powder', 'orb',
-    // Specific items.
-    'heat', 'smooth', 'icy', 'damp', 'protector', 'clay', 'destiny', 'punch', 'stick', 'reaper',
-    'luck', 'egg', 'pure', 'coin', 'everstone', 'disc', 'magmarizer', 'electirizer', 'macho', 'exp',
-    'cleanse', 'grip', 'sludge', 'thick', 'dew', 'soothe', 'grade', 'sticky'
+    // Unusable in format.
+    'power', 'scarf', 'orb', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
+    'pure', 
+    // Evolution related or pokemon specific.    
+    'deep', 'scale', 'powder', 'dew', 'everstone', 'grade', 'punch', 'thick', 'stick', 'protector',
+    'disc', 'magmarizer', 'electirizer', 'reaper',
+    // Harmful to user.
+    'full', 'lagging', 'sticky', 
+    // Would require branch logic, possibly not worth it.
+    'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp',
   ];
   const itemAllow = [ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'life'
+    'herb', 'choice', 'bright', 'silver', 'life', 
   ];
 
   // State.
