@@ -15,8 +15,8 @@ export default function App() {
   const pokemonCount = 898;
   const moveCount = 826;
   const abilityCount = 267;
-  const itemCount = 115;
-  const itemOffset = 189;
+  const itemCount = [115, 9, 9, 6];
+  const itemOffset = [189, 581, 678, 844];
   const typeCount = 18; 
 
   // ----- STATE -----
@@ -86,17 +86,17 @@ export default function App() {
   const [itemFilter] = useState([ // Exclude items with this keywords.
     // Unusable in format.
     'power', 'scarf', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
-    'pure', 
+    'pure', 'ability', 
     // Evolution related or pokemon specific.    
     'deep', 'scale', 'powder', 'dew', 'everstone', 'grade', 'punch', 'thick', 'stick', 'protector',
-    'disc', 'magmarizer', 'electirizer', 'reaper',
+    'disc', 'magmarizer', 'electirizer', 'reaper', 'whipped', 'sachet', 
     // Harmful to user.
-    'full', 'lagging', 'sticky', 
+    'full', 'lagging', 'sticky', 'target',
     // Would require branch logic, possibly not worth it.
     'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp', 'orb'
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'life'
+    'herb', 'choice', 'bright', 'silver', 'life', 'silk'
   ]);
 
   // Selections.
@@ -132,13 +132,17 @@ export default function App() {
       const pokemonResults = await axios.get(`${apiUrl}pokemon?limit=${pokemonCount}`);
       const moveResults = await axios.get(`${apiUrl}move?limit=${moveCount}`);
       const abilityResults = await axios.get(`${apiUrl}ability?limit=${abilityCount}`);
-      const itemResults = await axios.get(`${apiUrl}item?limit=${itemCount}&offset=${itemOffset}`);
+      let itemResults = [];
+      for(let i = 0; i < itemCount.length; i++){
+        itemResults.push(await (await axios.get(`${apiUrl}item?limit=${itemCount[i]}&offset=${itemOffset[i]}`)).data.results);
+      };      
+      itemResults = itemResults[0].concat(itemResults[1], itemResults[2], itemResults[3]);
       const typeResults = await axios.get(`${apiUrl}type?limit=${typeCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
         setMoveList(moveResults.data.results);
         setAbilityList(abilityResults.data.results);
-        setItemList(itemResults.data.results);
+        setItemList(itemResults);
         setTypeList(typeResults.data.results);
         setLoading(false);              
       }
@@ -146,6 +150,8 @@ export default function App() {
     fetchData();
     
     return () => cancel = true;
+    // Disable dependency warning, itemCount and itemOffset will never change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, []);
 
   function generateOptions() {        
@@ -348,49 +354,24 @@ export default function App() {
     }    
     return () => cancel = true;
   }, [generating, generationStep, movesetOptions, randomRolls, typeList]);
-  
+
   const getTypeFromEffect = useCallback((effect) => {
     return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
   }, [optionsData]);
 
-  const checkMovesetType = useCallback((type) => {    
-    return optionsData.movesetsPerType.find(mt => mt.name === type && mt.movesets > 0);
-  }, [optionsData]);
-
-  const checkUsability = useCallback((category, object) => {  
-    let usable = true;
-    switch (category) {
-      case 'ability':
-        break;
-      case 'item':
-        //console.log(object.name + object.category.name);
-        switch(object.category.name){
-          case 'held-items':
-            // power herb, check if there are 2 turn moves.
-            // muscle band, check if there are physical moves.
-            // wise glasses, check if there are special moves.
-            // grip claw, check if there are multi turn trapping moves.
-            // big root, check if there are draining moves, ingrain ro aqua ring.
-            break;
-          case 'plates':
-            // check if there are moves of that type, judgement, arceus, or multitype.
-            break;
-          case 'type-enhancement':
-            // check if there are moves of that type.            
-            let type = getTypeFromEffect(object.effect_entries.find(e => e.language.name === 'en').short_effect.toLowerCase());
-            usable = checkMovesetType(type);
-            console.log(type);
-            console.log(usable);
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
+  const getMovesetTypeUsabilityFromEffect = useCallback((object, currentObjects) => {
+    let usable = false;
+    let type = getTypeFromEffect(object.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase());
+    if(type){            
+      let objectsOfType = 0;
+      currentObjects.forEach(co => {
+        if(getTypeFromEffect(co.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase()) === type)                
+          objectsOfType += 1;              
+      });                      
+      usable = optionsData.movesetsPerType.find(mt => mt.name === type && objectsOfType < mt.movesets);
     }
     return usable;
-  }, [getTypeFromEffect, checkMovesetType])
+  }, [optionsData, getTypeFromEffect]);
 
   useEffect(() => {
     let cancel = false;
@@ -447,12 +428,49 @@ export default function App() {
     // Get a new item option.
     async function getNewItem(currentItems) {    
       let newItem = '';    
+      let usable = true; 
             
       do{        
         let item = itemList[Math.floor(Math.random()*itemList.length)];      
-        newItem = await axios.get(`${apiUrl}item/${item.name}`);            
-      } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) ||
-              !checkUsability('item', newItem.data))
+        newItem = await axios.get(`${apiUrl}item/${item.name}`);   
+        usable = true;    
+                       
+        //console.log(object.name + object.category.name);
+        switch(newItem.data.category.name){
+          case 'held-items':
+            switch(newItem.data.name){
+              case 'power-herb':
+                // check if there are 2 turn moves.
+                break;
+              case 'grip-claw':
+                // check if there are multi turn trapping moves.
+                break;
+              case 'binding-band':
+                // check if there are multi turn trapping moves that inflict dmg.
+                break;
+              case 'big-root':
+                // check if there are draining moves, ingrain ro aqua ring.
+                break;
+              case 'terrain-extender':
+                // check if there are moves or abilities that changes terrain.
+                break;
+              default:
+                break;
+            }
+            break;
+          case 'plates':
+            // check if there are moves of that type.
+            usable = getMovesetTypeUsabilityFromEffect(newItem.data, currentItems);
+            break;
+          case 'type-enhancement':
+            // check if there are moves of that type.    
+            usable = getMovesetTypeUsabilityFromEffect(newItem.data, currentItems);
+            break;
+          default:
+            break;
+        }            
+          
+      } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) || !usable)
       //console.log(newItem.data.name);
 
       return newItem.data;
@@ -462,7 +480,7 @@ export default function App() {
       getItemOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, checkUsability])
+  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, getMovesetTypeUsabilityFromEffect])
 
   useEffect(() => {
     let cancel = false;
