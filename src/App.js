@@ -10,6 +10,7 @@ import About from './containers/About';
 
 export default function App() {
   // ----- CONSTANTS -----
+  // API
   const apiUrl = 'https://pokeapi.co/api/v2/';
   const pokemonCount = 898;
   const moveCount = 826;
@@ -18,24 +19,52 @@ export default function App() {
   const itemOffset = 189;
   const typeCount = 18; 
 
-  // Filters
-  const pokemonFilter = [ // Exclude pokemons with this keywords.
+  // ----- STATE -----
+  // API
+  const [loading, setLoading] = useState(true);  
+  const [pokemonList, setPokemonList] = useState([]);
+  const [moveList, setMoveList] = useState([]);
+  const [abilityList, setAbilityList] = useState([]);  
+  const [itemList, setItemList] = useState([]);  
+  const [typeList, setTypeList] = useState([]);  
+
+  // Options.
+  const [generating, setGenerating] = useState(false);
+  const [generationStep, setGenerationStep] = useState(0);
+  const [randomRolls] = useState({
+    pokemons: 9,
+    movesets: 6,
+    moves: 6,
+    abilities: 9,
+    items: 9
+  });
+  const [pokemonOptions, setPokemonOptions] = useState([]);
+  const [movesetOptions, setMovesetOptions] = useState([]);
+  const [abilityOptions, setAbilityOptions] = useState([]);
+  const [itemOptions, setItemOptions] = useState([]);
+  const [optionsData, setOptionsData] = useState({
+    movesetsPerType: [],
+    usableTypes: [],
+  });    
+
+  // Filters.  
+  const [pokemonFilter] = useState([ // Exclude pokemons with this keywords.
     // Legendaries: forms above 720 total stats.
     'eternamax', 'primal', 'ultra',
     // General: forms as strong as legendaries, weaker than a fully evolved pokemon.
     'mega', 'gmax', 'eternal', 'ash', 'solo',
     // Others.
     'totem'
-  ];
-  const moveFilter = [ // Exclude moves with this keywords.
+  ]);
+  const [moveFilter] = useState ([ // Exclude moves with this keywords.
     // General: max and z moves.
     'max', 'physical', 'special',
     // Specific z moves.
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
-  ];
-  const moveStatusLimit = 3; // Max number of status moves in a moveset.
-  const abilityFilter = [ // Exclude abilities with this keywords.
+  ]);
+  const [moveStatusLimit] = useState(3); // Max number of status moves in a moveset.
+  const [abilityFilter] = useState([ // Exclude abilities with this keywords.
     // Unusable in format.
     'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
     'telepathy', 'star', 'cheek', 'dancer', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
@@ -50,11 +79,11 @@ export default function App() {
     'anticipation', 'forewarn', 'frisk', 
     // Would require branch logic, possibly not worth it.
     'multitype', 'rks', 'gulp', 
-  ];
-  const abilityAllow = [ // Include abilities with this keywords even when excluded by filter.
+  ]);
+  const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
     'parental', 
-  ];
-  const itemFilter = [ // Exclude items with this keywords.
+  ]);
+  const [itemFilter] = useState([ // Exclude items with this keywords.
     // Unusable in format.
     'power', 'scarf', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
     'pure', 
@@ -65,36 +94,12 @@ export default function App() {
     'full', 'lagging', 'sticky', 
     // Would require branch logic, possibly not worth it.
     'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp', 'orb'
-  ];
-  const itemAllow = [ // Include items with this keywords even when excluded by filter.    
+  ]);
+  const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
     'herb', 'choice', 'bright', 'silver', 'life'
-  ];
+  ]);
 
-  // ----- STATE -----
-  const [loading, setLoading] = useState(true);  
-  const [pokemonList, setPokemonList] = useState([]);
-  const [moveList, setMoveList] = useState([]);
-  const [abilityList, setAbilityList] = useState([]);  
-  const [itemList, setItemList] = useState([]);  
-  const [typeList, setTypeList] = useState([]);  
-  const [generating, setGenerating] = useState(false);
-  const [pokemonOptions, setPokemonOptions] = useState([]);
-  const [movesetOptions, setMovesetOptions] = useState([]);
-  const [abilityOptions, setAbilityOptions] = useState([]);
-  const [itemOptions, setItemOptions] = useState([]);
-  const [randomRolls] = useState({
-    pokemons: 9,
-    movesets: 6,
-    moves: 6,
-    abilities: 9,
-    items: 9
-  });
-  const [generationsCompleted, setGenerationsCompleted] = useState({
-    pokemons: false,
-    movesets: false,
-    abilities: false,
-    items: false
-  });
+  // Selections.
   const [selectionsNeeded] = useState({
     pokemons: 6,    
     movesets: 6,
@@ -115,10 +120,7 @@ export default function App() {
     moves: false,
     abilities: false,
     items: false
-  });
-  const [optionsData, setOptionsData] = useState({
-    typeData: [] 
-  });
+  });  
 
   // ----- GENERATION -----
   // Fetch lists from api on mount.
@@ -146,26 +148,24 @@ export default function App() {
     return () => cancel = true;
   }, []);
 
-  // Get a new set of options.
-  async function generateOptions() {
-    setGenerating(true);
+  function generateOptions() {        
     setPokemonOptions([]);
     setMovesetOptions([]); 
     setAbilityOptions([]);
     setItemOptions([]);
-
-    //await getPokemonOptions();
-    await getMovesetOptions();    
-    //await getAbilityOptions();
-    //await getItemOptions();
-
-    setGenerating(false);   
-    setToast('Controls', 'Options generated, build your team!', {success: true});    
+    setOptionsData({
+      movesetsPerType: [],
+      usableTypes: [],
+    });
+    setGenerationStep(0);
+    setGenerating(true);    
   }
 
-  // Get a set of pokemon options.  
-  async function getPokemonOptions() {    
-    if(pokemonList.length) { 
+  useEffect(() => {
+    let cancel = false;
+
+    // Get a new set of pokemon options.
+    async function getPokemonOptions() {
       let pokemons = [];                           
       let shinyIndex = Math.round((Math.random()*100 / 12.5));
 
@@ -183,181 +183,297 @@ export default function App() {
         pokemon.item = null;
 
         pokemons.push(pokemon);
-        setPokemonOptions([...pokemons]); 
-      }               
-    }   
-  }
+        if(!cancel)
+          setPokemonOptions([...pokemons]); 
+      }
+      if(!cancel)
+        setGenerationStep(1);
+    }
 
-  // Get a new pokemon option.
-  async function getNewPokemon(currentPokemons) {    
-    let newPokemon = '';
-    let finalPokemon = '';
-
-    do {                
-        let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-        //console.log('initial: '+pokemon.name);
-
-        const initialPokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
-        const species = await axios.get(initialPokemon.data.species.url);
-        const evolutions = await axios.get(species.data.evolution_chain.url);
-        
-        // Get an array of evolutions.
-        let evoChain = [];
-        let evoData = evolutions.data.chain;
-        do {                        
-            // Current.
-            evoChain.push(evoData.species.name);            
-            let numberOfEvolutions = evoData['evolves_to'].length;  
-                                  
-            // Branching evolutions.
-            if(numberOfEvolutions > 1) {
-              let nextSpecies = [];
-              let lastSpecies = [];
-              for (let i = 0; i < numberOfEvolutions; i++) {                  
-                nextSpecies.push(evoData.evolves_to[i].species.name);
+    // Get a new single pokemon option.
+    async function getNewPokemon(currentPokemons) {    
+      let newPokemon = '';
+      let finalPokemon = '';
+  
+      do {                
+          let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
+          //console.log('initial: '+pokemon.name);
+  
+          const initialPokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
+          const species = await axios.get(initialPokemon.data.species.url);
+          const evolutions = await axios.get(species.data.evolution_chain.url);
+          
+          // Get an array of evolutions.
+          let evoChain = [];
+          let evoData = evolutions.data.chain;
+          do {                        
+              // Current.
+              evoChain.push(evoData.species.name);            
+              let numberOfEvolutions = evoData['evolves_to'].length;  
+                                    
+              // Branching evolutions.
+              if(numberOfEvolutions > 1) {
+                let nextSpecies = [];
+                let lastSpecies = [];
+                for (let i = 0; i < numberOfEvolutions; i++) {                  
+                  nextSpecies.push(evoData.evolves_to[i].species.name);
+                  
+                  // Branch continuation.
+                  if(evoData.evolves_to[i].hasOwnProperty('evolves_to') && evoData.evolves_to[i].evolves_to.length > 0)
+                    lastSpecies.push(evoData.evolves_to[i].evolves_to[0].species.name);
+                }
+                evoChain.push(nextSpecies);
+  
+                if(lastSpecies.length > 0)
+                evoChain.push(lastSpecies);
                 
-                // Branch continuation.
-                if(evoData.evolves_to[i].hasOwnProperty('evolves_to') && evoData.evolves_to[i].evolves_to.length > 0)
-                  lastSpecies.push(evoData.evolves_to[i].evolves_to[0].species.name);
+                // Stop the chain, all branching evolutions are symmetrical.
+                evoData = null;
               }
-              evoChain.push(nextSpecies);
+              else {                
+                // Evolution.
+                evoData = evoData['evolves_to'][0];
+              }
+                        
+          } while (!!evoData && evoData.hasOwnProperty('evolves_to')); 
+          //console.log('evolutions: '+evoChain);       
+          
+          // Get the/a final evolution.
+          let finalEvolution = evoChain[evoChain.length - 1];
+          if(Array.isArray(finalEvolution)){
+            finalEvolution = finalEvolution[Math.floor(Math.random()*finalEvolution.length)];        
+          }
+          //console.log('final evolution: '+finalEvolution);
+  
+          // Get the varieties for the final evolution.
+          const finalSpecies = await axios.get(`${apiUrl}pokemon-species/${finalEvolution}`);
+          let varieties = [];
+          finalSpecies.data.varieties.forEach((v, i) => {
+            varieties.push(finalSpecies.data.varieties[i].pokemon.name)
+          });                
+          //console.log('final evolution varieties: '+varieties);
+  
+          // Filter varieties for more balance.
+          varieties = varieties.filter(v => {          
+            return !v.split('-').some(keyword => pokemonFilter.includes(keyword))
+          });
+          //console.log('filtered varieties: '+varieties);        
+  
+          // Get the final pokemon from the varieties.
+          finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
+          //console.log('final pokemon: '+finalPokemon);
+  
+      } while (checkDuplicatedName(currentPokemons, finalPokemon))    
+      newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
+      return newPokemon.data
+    };
 
-              if(lastSpecies.length > 0)
-              evoChain.push(lastSpecies);
-              
-              // Stop the chain, all branching evolutions are symmetrical.
-              evoData = null;
-            }
-            else {                
-              // Evolution.
-              evoData = evoData['evolves_to'][0];
-            }
-                      
-        } while (!!evoData && evoData.hasOwnProperty('evolves_to')); 
-        //console.log('evolutions: '+evoChain);       
-        
-        // Get the/a final evolution.
-        let finalEvolution = evoChain[evoChain.length - 1];
-        if(Array.isArray(finalEvolution)){
-          finalEvolution = finalEvolution[Math.floor(Math.random()*finalEvolution.length)];        
-        }
-        //console.log('final evolution: '+finalEvolution);
+    if(generating && generationStep === 0 && pokemonList.length > 0){      
+      getPokemonOptions();      
+    }
+    return () => cancel = true;
+  }, [generating, generationStep, pokemonList, randomRolls, pokemonFilter])
 
-        // Get the varieties for the final evolution.
-        const finalSpecies = await axios.get(`${apiUrl}pokemon-species/${finalEvolution}`);
-        let varieties = [];
-        finalSpecies.data.varieties.forEach((v, i) => {
-          varieties.push(finalSpecies.data.varieties[i].pokemon.name)
-        });                
-        //console.log('final evolution varieties: '+varieties);
+  useEffect(() => {
+    let cancel = false;
 
-        // Filter varieties for more balance.
-        varieties = varieties.filter(v => {          
-          return !v.split('-').some(keyword => pokemonFilter.includes(keyword))
-        });
-        //console.log('filtered varieties: '+varieties);        
-
-        // Get the final pokemon from the varieties.
-        finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
-        //console.log('final pokemon: '+finalPokemon);
-
-    } while (checkDuplicatedName(currentPokemons, finalPokemon))    
-    newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
-    return newPokemon.data
-  };      
-
-  // Get a set of moveset options.  
-  async function getMovesetOptions() {    
-    if(moveList.length) {           
+    // Get a set of moveset options.  
+    async function getMovesetOptions() {              
       let movesets = [];            
 
       for (let index = 0; index < randomRolls.movesets; index++) {
         const moveset = await getNewMoveset()
         movesets.push(moveset);
-        setMovesetOptions([...movesets]); 
-      }                 
-    }   
-  }
+        if(!cancel)
+          setMovesetOptions([...movesets]); 
+      }  
+      if(!cancel)
+        setGenerationStep(2);
+    }       
 
-  // Get a new moveset option.
-  async function getNewMoveset() {    
-    let newMoveset = [];
-    let move = '';
-    let status = false;
-    let statusMoves = 0;    
-    
-    for (let index = 0; index < randomRolls.moves; index++) {            
-      do{        
-        move = moveList[Math.floor(Math.random()*moveList.length)];
-        move = await axios.get(`${apiUrl}move/${move.name}`);
-        status = move.data.damage_class && move.data.damage_class.name === 'status';        
-      } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter) ||
-              (status && statusMoves >= moveStatusLimit))
-      move.data.selected = false;
-      newMoveset.push(move.data);      
-      if(status){
-        statusMoves = statusMoves + 1;
-        status = false;
+    // Get a new moveset option.
+    async function getNewMoveset() {    
+      let newMoveset = [];
+      let move = '';
+      let status = false;
+      let statusMoves = 0;    
+      
+      for (let index = 0; index < randomRolls.moves; index++) {            
+        do{        
+          move = moveList[Math.floor(Math.random()*moveList.length)];
+          move = await axios.get(`${apiUrl}move/${move.name}`);
+          status = move.data.damage_class && move.data.damage_class.name === 'status';        
+        } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter) ||
+                (status && statusMoves >= moveStatusLimit))
+        move.data.selected = false;
+        newMoveset.push(move.data);      
+        if(status){
+          statusMoves = statusMoves + 1;
+          status = false;
+        }
+        //console.log(move.data.name);
+        //console.log(statusMoves);
       }
-      //console.log(move.data.name);
-      //console.log(statusMoves);
+      //console.log('----- done -----');
+      return newMoveset;
     }
-    //console.log('----- done -----');
-    return newMoveset;
-  }
 
-  // Get a set of ability options.
-  async function getAbilityOptions() {
-    if(abilityList.length) {           
+    if(generating && generationStep === 1 && moveList.length > 0){      
+      getMovesetOptions();
+    }
+    return () => cancel = true;
+  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveStatusLimit])
+
+  // Respond to moveset options generated completely.
+  useEffect (() => {  
+    let cancel = false;
+
+    if(generating && generationStep === 2 && movesetOptions.length >= randomRolls.movesets){
+      let msPerType = [];
+
+      typeList.forEach(type => {
+        let msInType = {name: type.name, movesets: 0};
+        movesetOptions.forEach(ms => {      
+          if(ms.find(m => m.type.name === type.name && m.damage_class.name !== 'status')){
+            msInType.movesets += 1;          
+          }
+        });
+        msPerType.push(msInType);        
+      });       
+      let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
+      if(!cancel){
+        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });       
+        setGenerationStep(3);
+      }
+    }    
+    return () => cancel = true;
+  }, [generating, generationStep, movesetOptions, randomRolls, typeList]);
+  
+  const getTypeFromEffect = useCallback((effect) => {
+    return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
+  }, [optionsData]);
+
+  const checkMovesetType = useCallback((type) => {    
+    return optionsData.movesetsPerType.find(mt => mt.name === type && mt.movesets > 0);
+  }, [optionsData]);
+
+  const checkUsability = useCallback((category, object) => {  
+    let usable = true;
+    switch (category) {
+      case 'ability':
+        break;
+      case 'item':
+        //console.log(object.name + object.category.name);
+        switch(object.category.name){
+          case 'held-items':
+            // power herb, check if there are 2 turn moves.
+            // muscle band, check if there are physical moves.
+            // wise glasses, check if there are special moves.
+            // grip claw, check if there are multi turn trapping moves.
+            // big root, check if there are draining moves, ingrain ro aqua ring.
+            break;
+          case 'plates':
+            // check if there are moves of that type, judgement, arceus, or multitype.
+            break;
+          case 'type-enhancement':
+            // check if there are moves of that type.            
+            let type = getTypeFromEffect(object.effect_entries.find(e => e.language.name === 'en').short_effect.toLowerCase());
+            usable = checkMovesetType(type);
+            console.log(type);
+            console.log(usable);
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+    return usable;
+  }, [getTypeFromEffect, checkMovesetType])
+
+  useEffect(() => {
+    let cancel = false;
+
+    // Get a set of ability options.
+    async function getAbilityOptions() {      
       let abilities = [];            
 
       for (let index = 0; index < randomRolls.abilities; index++) {
         const ability = await getNewAbility(abilities);
         abilities.push(ability);
-        setAbilityOptions([...abilities]); 
+        if(!cancel)
+          setAbilityOptions([...abilities]); 
       }                 
+      if(!cancel)
+        setGenerationStep(4);
     }
-  }
 
-  // Get a new ability option.
-  async function getNewAbility(currentAbilities) {    
-    let newAbility = '';       
-   
-    do{        
-      let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
-      newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
-    } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow))
-    //console.log(newAbility.data.name);
+    // Get a new ability option.
+    async function getNewAbility(currentAbilities) {    
+      let newAbility = '';       
+    
+      do{        
+        let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
+        newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
+      } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow))
+      //console.log(newAbility.data.name);
 
-    return newAbility.data;
-  }
+      return newAbility.data;
+    }
 
-  // Get a set of item options.
-  async function getItemOptions() {
-    if(itemList.length) {           
+    if(generating && generationStep === 3 && abilityList.length > 0){      
+      getAbilityOptions();
+    }
+    return () => cancel = true;
+  }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow])
+
+  useEffect(() => {
+    let cancel = false;
+
+    // Get a set of item options.
+    async function getItemOptions() {          
       let items = [];            
-
       for (let index = 0; index < randomRolls.items; index++) {
         const item = await getNewItem(items);
         items.push(item);
-        setItemOptions([...items]); 
+        if(!cancel)
+          setItemOptions([...items]); 
       }                 
+      if(!cancel)
+        setGenerationStep(5); 
     }
-  }
 
-  // Get a new item option.
-  async function getNewItem(currentItems) {    
-    let newItem = '';    
-          
-    do{        
-      let item = itemList[Math.floor(Math.random()*itemList.length)];      
-      newItem = await axios.get(`${apiUrl}item/${item.name}`);            
-    } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) ||
-            !checkUsability('item', newItem.data))
-    //console.log(newItem.data.name);
+    // Get a new item option.
+    async function getNewItem(currentItems) {    
+      let newItem = '';    
+            
+      do{        
+        let item = itemList[Math.floor(Math.random()*itemList.length)];      
+        newItem = await axios.get(`${apiUrl}item/${item.name}`);            
+      } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) ||
+              !checkUsability('item', newItem.data))
+      //console.log(newItem.data.name);
 
-    return newItem.data;
-  }  
+      return newItem.data;
+    } 
+
+    if(generating && generationStep === 4 && itemList.length > 0){      
+      getItemOptions();
+    }
+    return () => cancel = true;
+  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, checkUsability])
+
+  useEffect(() => {
+    let cancel = false;
+
+    if(generating && generationStep === 5){
+      setToast('Controls', 'Options generated, build your team!', {success: true});
+      if(!cancel)
+        setGenerating(false);   
+    }
+    return () => cancel = true;
+  }, [generating, generationStep])  
 
   // ----- SELECTIONS & ASSIGNMENTS -----
   // Select a pokemon.
@@ -631,26 +747,6 @@ export default function App() {
     setSelectionsMade(s => {return {...s, moves: mSelected}});
   }, [movesetOptions, checkSectionCompleted]);    
 
-  // Respond to moveset options generated completely.
-  useEffect (() => {    
-    if(!generationsCompleted.movesets && movesetOptions.length >= randomRolls.movesets){
-      let typeData = [];
-      typeList.forEach(type => {
-        let tData = {name: type.name, movesets: 0};
-        movesetOptions.forEach(ms => {      
-          if(ms.find(m => m.type.name === type.name && m.damage_class.name !== 'status'))
-            tData.movesets = tData.movesets + 1;
-        });
-        typeData.push(tData);        
-      });            
-      setOptionsData(s => {return {...s, typeData: typeData} });
-      setGenerationsCompleted(s => { return {...s, movesets: true} });
-    }    
-    else if(generationsCompleted.movesets && movesetOptions.length < randomRolls.movesets){
-      setGenerationsCompleted(s => { return {...s, movesets: false} });
-    }
-  }, [generationsCompleted.movesets, movesetOptions, randomRolls.movesets, typeList]);
-
   // ----- HELPER FUNCTIONS -----  
   // Get total stats for a pokemon.
   const getTotalStats = (stats) => {
@@ -680,40 +776,7 @@ export default function App() {
 
   const upperCaseWords = (string) => {
     return string.replace(/\b\w/g, l => l.toUpperCase())
-  }
-
-  const checkUsability = (category, object) => {
-    let usable = true;
-    switch (category) {
-      case 'move':        
-        break;
-      case 'ability':
-        break;
-      case 'item':
-        console.log(object.name + object.category.name);
-        switch(object.category.name){
-          case 'held-items':
-            // power herb, check if there are 2 turn moves.
-            // muscle band, check if there are physical moves.
-            // wise glasses, check if there are special moves.
-            // grip claw, check if there are multi turn trapping moves.
-            // big root, check if there are draining moves, ingrain ro aqua ring.
-            break;
-          case 'plates':
-            // check if there are moves of that type, judgement, arceus, or multitype.
-            break;
-          case 'type-enhancement':
-            // check if there are moves of that type.
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
-    return usable;
-  }  
+  }      
 
   // ----- OTHERS -----
   // Show a toast notification.
