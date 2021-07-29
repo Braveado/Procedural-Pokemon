@@ -3,7 +3,7 @@ import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
 import ItemOptions from '../components/items/ItemOptions';
-import { BiLoaderAlt, BiExport } from 'react-icons/bi';
+import { BiLoaderAlt, /* BiExport */ } from 'react-icons/bi';
 
 export default function TeamBuilder({
     loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam

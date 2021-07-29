@@ -9,20 +9,14 @@ import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
 
 export default function App() {
-  // Constants.
+  // ----- CONSTANTS -----
   const apiUrl = 'https://pokeapi.co/api/v2/';
   const pokemonCount = 898;
   const moveCount = 826;
   const abilityCount = 267;
   const itemCount = 115;
   const itemOffset = 189;
-  const randomRolls = {
-    pokemons: 9,
-    movesets: 6,
-    moves: 6,
-    abilities: 9,
-    items: 9
-  };
+  const typeCount = 18; 
 
   // Filters
   const pokemonFilter = [ // Exclude pokemons with this keywords.
@@ -62,7 +56,7 @@ export default function App() {
   ];
   const itemFilter = [ // Exclude items with this keywords.
     // Unusable in format.
-    'power', 'scarf', 'orb', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
+    'power', 'scarf', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
     'pure', 
     // Evolution related or pokemon specific.    
     'deep', 'scale', 'powder', 'dew', 'everstone', 'grade', 'punch', 'thick', 'stick', 'protector',
@@ -70,23 +64,37 @@ export default function App() {
     // Harmful to user.
     'full', 'lagging', 'sticky', 
     // Would require branch logic, possibly not worth it.
-    'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp',
+    'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp', 'orb'
   ];
   const itemAllow = [ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'life', 
+    'herb', 'choice', 'bright', 'silver', 'life'
   ];
 
-  // State.
-  const [loading, setLoading] = useState(true);
+  // ----- STATE -----
+  const [loading, setLoading] = useState(true);  
   const [pokemonList, setPokemonList] = useState([]);
   const [moveList, setMoveList] = useState([]);
   const [abilityList, setAbilityList] = useState([]);  
   const [itemList, setItemList] = useState([]);  
+  const [typeList, setTypeList] = useState([]);  
   const [generating, setGenerating] = useState(false);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
   const [abilityOptions, setAbilityOptions] = useState([]);
   const [itemOptions, setItemOptions] = useState([]);
+  const [randomRolls] = useState({
+    pokemons: 9,
+    movesets: 6,
+    moves: 6,
+    abilities: 9,
+    items: 9
+  });
+  const [generationsCompleted, setGenerationsCompleted] = useState({
+    pokemons: false,
+    movesets: false,
+    abilities: false,
+    items: false
+  });
   const [selectionsNeeded] = useState({
     pokemons: 6,    
     movesets: 6,
@@ -108,7 +116,11 @@ export default function App() {
     abilities: false,
     items: false
   });
+  const [optionsData, setOptionsData] = useState({
+    typeData: [] 
+  });
 
+  // ----- GENERATION -----
   // Fetch lists from api on mount.
   useEffect (() => {
     let cancel = false;
@@ -119,11 +131,13 @@ export default function App() {
       const moveResults = await axios.get(`${apiUrl}move?limit=${moveCount}`);
       const abilityResults = await axios.get(`${apiUrl}ability?limit=${abilityCount}`);
       const itemResults = await axios.get(`${apiUrl}item?limit=${itemCount}&offset=${itemOffset}`);
+      const typeResults = await axios.get(`${apiUrl}type?limit=${typeCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
         setMoveList(moveResults.data.results);
         setAbilityList(abilityResults.data.results);
         setItemList(itemResults.data.results);
+        setTypeList(typeResults.data.results);
         setLoading(false);              
       }
     };
@@ -140,13 +154,13 @@ export default function App() {
     setAbilityOptions([]);
     setItemOptions([]);
 
-    await getPokemonOptions();
-    await getMovesetOptions();
-    await getAbilityOptions();
-    await getItemOptions();
+    //await getPokemonOptions();
+    await getMovesetOptions();    
+    //await getAbilityOptions();
+    //await getItemOptions();
 
     setGenerating(false);   
-    setToast('Controls', 'Options generated, build your team!', {success: true});
+    setToast('Controls', 'Options generated, build your team!', {success: true});    
   }
 
   // Get a set of pokemon options.  
@@ -170,7 +184,7 @@ export default function App() {
 
         pokemons.push(pokemon);
         setPokemonOptions([...pokemons]); 
-      }                 
+      }               
     }   
   }
 
@@ -250,16 +264,7 @@ export default function App() {
     } while (checkDuplicatedName(currentPokemons, finalPokemon))    
     newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
     return newPokemon.data
-  };    
-
-  // Get total stats for a pokemon.
-  const getTotalStats = (stats) => {
-    let total = 0;
-    stats.forEach(s => {
-        total = total + s.base_stat; 
-    });        
-    return total;
-  }   
+  };      
 
   // Get a set of moveset options.  
   async function getMovesetOptions() {    
@@ -340,33 +345,21 @@ export default function App() {
     }
   }
 
-  // Get a new ability option.
+  // Get a new item option.
   async function getNewItem(currentItems) {    
-    let newItem = '';       
-   
+    let newItem = '';    
+          
     do{        
       let item = itemList[Math.floor(Math.random()*itemList.length)];      
       newItem = await axios.get(`${apiUrl}item/${item.name}`);            
-    } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow))
+    } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) ||
+            !checkUsability('item', newItem.data))
     //console.log(newItem.data.name);
 
     return newItem.data;
-  }
+  }  
 
-  // Check for duplicate names in an array of objects.
-  const checkDuplicatedName = (currentObjects, newObjectName) => {
-    return currentObjects.find(co => co.name === newObjectName)
-  }
-
-  // Filter.
-  const FindKeywords = (string, separator, filter, allow) => {
-    let found = false;
-    found = string.split(separator).some(keyword => filter.includes(keyword))
-    if(found && allow)
-      found = !string.split(separator).some(keyword => allow.includes(keyword))
-    return found;
-  }
-
+  // ----- SELECTIONS & ASSIGNMENTS -----
   // Select a pokemon.
   const selectPokemon = (pokemon) => {
     let change = false;
@@ -482,11 +475,7 @@ export default function App() {
     if(change){   
       setPokemonOptions(pokemons);
     }
-  }  
-
-  const upperCaseWords = (string) => {
-    return string.replace(/\b\w/g, l => l.toUpperCase())
-  }
+  }    
 
   // Clear all selections and assignments.
   const clearChoices = () => {
@@ -518,7 +507,8 @@ export default function App() {
     }
   }
 
-  // Manage completed sections.
+  // ----- RESPONSES -----
+  // Respond to completed sections.
   const checkSectionCompleted = useCallback((string, val) => {
     let sCompleted = sectionsCompleted;
     let change = false;
@@ -639,7 +629,113 @@ export default function App() {
     checkSectionCompleted('moves', mSelectedAmount);
 
     setSelectionsMade(s => {return {...s, moves: mSelected}});
-  }, [movesetOptions, checkSectionCompleted]);  
+  }, [movesetOptions, checkSectionCompleted]);    
+
+  // Respond to moveset options generated completely.
+  useEffect (() => {    
+    if(!generationsCompleted.movesets && movesetOptions.length >= randomRolls.movesets){
+      let typeData = [];
+      typeList.forEach(type => {
+        let tData = {name: type.name, movesets: 0};
+        movesetOptions.forEach(ms => {      
+          if(ms.find(m => m.type.name === type.name && m.damage_class.name !== 'status'))
+            tData.movesets = tData.movesets + 1;
+        });
+        typeData.push(tData);        
+      });            
+      setOptionsData(s => {return {...s, typeData: typeData} });
+      setGenerationsCompleted(s => { return {...s, movesets: true} });
+    }    
+    else if(generationsCompleted.movesets && movesetOptions.length < randomRolls.movesets){
+      setGenerationsCompleted(s => { return {...s, movesets: false} });
+    }
+  }, [generationsCompleted.movesets, movesetOptions, randomRolls.movesets, typeList]);
+
+  // ----- HELPER FUNCTIONS -----  
+  // Get total stats for a pokemon.
+  const getTotalStats = (stats) => {
+    let total = 0;
+    stats.forEach(s => {
+        total = total + s.base_stat; 
+    });        
+    return total;
+  }   
+
+  const checkDuplicatedName = (currentObjects, newObjectName) => {
+    return currentObjects.find(co => co.name === newObjectName)
+  }
+
+  // Filter by keywords.
+  const FindKeywords = (string, separator, filter, allow) => {
+    let found = false;
+    found = string.split(separator).some(keyword => filter.includes(keyword))
+    if(found && allow)
+      found = !string.split(separator).some(keyword => allow.includes(keyword))
+    return found;
+  }
+
+  const capitalizeWords = (text, separator) => {
+    return text.split(separator).map((word) => {return word[0].toUpperCase() + word.substring(1)}).join(" ");
+  }
+
+  const upperCaseWords = (string) => {
+    return string.replace(/\b\w/g, l => l.toUpperCase())
+  }
+
+  const checkUsability = (category, object) => {
+    let usable = true;
+    switch (category) {
+      case 'move':        
+        break;
+      case 'ability':
+        break;
+      case 'item':
+        console.log(object.name + object.category.name);
+        switch(object.category.name){
+          case 'held-items':
+            // power herb, check if there are 2 turn moves.
+            // muscle band, check if there are physical moves.
+            // wise glasses, check if there are special moves.
+            // grip claw, check if there are multi turn trapping moves.
+            // big root, check if there are draining moves, ingrain ro aqua ring.
+            break;
+          case 'plates':
+            // check if there are moves of that type, judgement, arceus, or multitype.
+            break;
+          case 'type-enhancement':
+            // check if there are moves of that type.
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        break;
+    }
+    return usable;
+  }  
+
+  // ----- OTHERS -----
+  // Show a toast notification.
+  const setToast = (title, content, type) => {    
+    toast.custom((t) => (
+      <div onClick={() => toast.dismiss(t.id)}
+        className={`cursor-pointer max-w-md w-full flex flex-col gap-2 bg-white p-2 rounded-md pointer-events-auto flex border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out 
+        ${t.visible ? 'animate-enter' : 'animate-leave'}
+        ${type.success ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}
+        ${type.warning ? 'bg-yellow-100 border-yellow-200 ring ring-yellow-100' : ''}
+        ${type.error ? 'bg-red-200 border-red-300 ring ring-red-200' : ''}`}
+      >
+        <div className="flex justify-between items-center w-full">
+          <p className="text-base capitalize">{title}</p>
+          {/* <HiOutlineX className="cursor-pointer text-2xl hover:text-gray-600" onClick={() => toast.dismiss(t.id)}/> */}
+        </div>          
+        <div className="flex text-sm">
+          <p>{content}</p>
+        </div>
+      </div>
+    ));
+  }
 
   // Create an export of the team.
   const exportTeam = () => {
@@ -664,13 +760,9 @@ export default function App() {
     else {
       setToast('Controls', 'The team is not completely built!', {warning: true});      
     }
-  }
+  }  
 
-  const capitalizeWords = (text, separator) => {
-    return text.split(separator).map((word) => {return word[0].toUpperCase() + word.substring(1)}).join(" ");
-  }
-
-  // Copy the exported team t clipboard.
+  // Copy the exported team to clipboard.
   function fallbackCopyTextToClipboard(text) {
     var textArea = document.createElement("textarea");
     textArea.value = text;
@@ -701,27 +793,6 @@ export default function App() {
         setToast('Controls', 'Error copying the team to clipboard!', {error: true});
       }
     );
-  }
-
-  // Show a toast notification.
-  const setToast = (title, content, type) => {    
-    toast.custom((t) => (
-      <div onClick={() => toast.dismiss(t.id)}
-        className={`cursor-pointer max-w-md w-full flex flex-col gap-2 bg-white p-2 rounded-md pointer-events-auto flex border-2 border-gray-200 hover:bg-gray-200 transition duration-150 ease-in-out 
-        ${t.visible ? 'animate-enter' : 'animate-leave'}
-        ${type.success ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}
-        ${type.warning ? 'bg-yellow-100 border-yellow-200 ring ring-yellow-100' : ''}
-        ${type.error ? 'bg-red-200 border-red-300 ring ring-red-200' : ''}`}
-      >
-        <div className="flex justify-between items-center w-full">
-          <p className="text-base capitalize">{title}</p>
-          {/* <HiOutlineX className="cursor-pointer text-2xl hover:text-gray-600" onClick={() => toast.dismiss(t.id)}/> */}
-        </div>          
-        <div className="flex text-sm">
-          <p>{content}</p>
-        </div>
-      </div>
-    ));
   }
 
   // Render.

@@ -8,15 +8,10 @@ export default function Item({item, index}) {
 
     const getEffects = () => {
         const effect = item.effect_entries.find(e => e.language.name === 'en');
-        if(effect) {            
+        if(effect) {                
             return (
                 <p className="text-center">
-                    {effect.short_effect}
-                    {/* {effect.short_effect.split(".").filter(e => {
-                            return!e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by")
-                        }).map(e => {
-                            return e.replace(" Gen V: Also removes", ",").replace("Held: ", "");
-                        })} */}                    
+                    {formatEffect(effect.short_effect)}  
                 </p>
             )            
         }
@@ -31,6 +26,28 @@ export default function Item({item, index}) {
                 </p>
             )
         }
+    }
+
+    const formatEffect = (effect) => {
+        let formattedEffect = effect.split(".").filter(e => {
+            return !e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by")
+        }).map(e => {
+            return e.replace("Held: ", "")
+        }).join(".");        
+        switch(item.name){
+            case 'shell-bell':                                
+                formattedEffect = formattedEffect.replace("receives", "heals");
+                break;
+            case 'bright-powder':                                
+                formattedEffect = formattedEffect.replace("(11 1/9%)", "(11%)");
+                break;
+            case 'mental-herb':
+                formattedEffect = formattedEffect.replace("infatuation. Gen V: Also removes", "Infatuation,");
+                break;
+            default:
+                break;
+        }        
+        return formattedEffect;
     }
 
     return (
