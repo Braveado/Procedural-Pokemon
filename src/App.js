@@ -49,37 +49,54 @@ export default function App() {
 
   // Filters.  
   const [pokemonFilter] = useState([ // Exclude pokemons with this keywords.
-    // Legendaries: forms above 720 total stats.
+    // Legendary forms above 720 total stats.
     'eternamax', 'primal', 'ultra',
-    // General: forms as strong as legendaries, weaker than a fully evolved pokemon.
-    'mega', 'gmax', 'eternal', 'ash', 'solo',
+    // General forms as strong as legendaries.
+    'mega', 'gmax', 'eternal', 'ash',
+    // Pokemons and forms below 360 total stats.
+    'solo', 'shedninja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
     // Others.
     'totem'
   ]);
   const [moveFilter] = useState ([ // Exclude moves with this keywords.
-    // General: max and z moves.
+    // General max and z moves.
     'max', 'physical', 'special',
     // Specific z moves.
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
-    'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing'
+    'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
+    // Unusable in format.
+    'natural', 'stuff', 'teatime', 
+    // No effect.
+    'splash', 'celebrate', 'hands',
+    // Would require branch logic.
+    // Possibly not worth it.
+    'stockpile', 'swallow', 'spit',
+    // Lost or consumed held items.
+    'recycle',
   ]);
   const [moveStatusLimit] = useState(3); // Max number of status moves in a moveset.
   const [abilityFilter] = useState([ // Exclude abilities with this keywords.
     // Unusable in format.
     'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
-    'telepathy', 'star', 'cheek', 'dancer', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
-    'medicine', 'one',
+    'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
+    'medicine', 'one', 'symbiosis',
     // Pokemon forms specific.
-    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger', 
-    // Item related, very few use cases.
-    'pickup', 'sticky', 'unburden', 'pickpocket', 'magician', 'symbiosis', 'compound',
+    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger',     
     // Harmful to owner.
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk', 
-    // Would require branch logic, possibly not worth it.
-    'multitype', 'rks', 'gulp', 
+    // Would require branch logic.
+    // Possibly not worth it.
+    'multitype', 'rks', 
+    // Lost or consumed held items.
+    'pickup', 'unburden', 'pickpocket', 'magician',
+    // Move mechanic.
+    'gulp', 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'iron-fist', 'skill-link', 'scrappy', 'reckless', 'prankster', 
+    'sand-force', 'strong-jaw', 'gale-wings', 'mega-launcher', 'tough-claws', 'dark-aura', 'fairy-aura', 'steelworker', 'liquid-voice',
+    'triage', 'galvanize', 'punk-rock', 'unseen-fist', 'transistor', 'dragons-maw',
   ]);
+  // Check normalize, refrigerate, pixilate, aerilate, for type enhancement items.
   const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
     'parental', 
   ]);
@@ -122,7 +139,7 @@ export default function App() {
     'light-screen', 'reflect', 'aurora-veil'
   ]);  
   const [orbMoves] = useState([ // Toxic and flame orb.
-    'facade', 'psycho-shift', 'switcheroo', 'trick'
+    'facade', 'psycho-shift', 'switcheroo', 'trick', 'fling'
   ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
