@@ -36,7 +36,7 @@ export default function App() {
     movesets: 6,
     moves: 6,
     abilities: 9,
-    items: 40
+    items: 9
   });
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
@@ -92,7 +92,7 @@ export default function App() {
     'disc', 'magmarizer', 'electirizer', 'reaper', 'whipped', 'sachet', 
     // Harmful to user.
     'full', 'lagging', 'sticky', 'target',
-    // Would require branch logic, possibly not worth it.
+    // Would require branch logic. All accounted for.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb' 
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
@@ -121,12 +121,18 @@ export default function App() {
   const [barrierMoves] = useState([ // Light clay.
     'light-screen', 'reflect', 'aurora-veil'
   ]);  
+  const [orbMoves] = useState([ // Toxic and flame orb.
+    'facade', 'psycho-shift', 'switcheroo', 'trick'
+  ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
     'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
   ]);
   const [weatherAbilities] = useState([ // Heat, smooth, icy and damp rock.
     'drought', 'drizzle', 'sand-stream', 'sand-spit', 'snow-warning'
+  ]);
+  const [orbAbilities] = useState([ // Toxic and flame orb.
+    'guts', 'magic-guard', 'quick-feet', 'marvel-scale'
   ]);
 
   // Selections.
@@ -429,11 +435,13 @@ export default function App() {
           return moveNames.find(name => weatherMoves.includes(name));
         case 'barrier':        
           return moveNames.find(name => barrierMoves.includes(name));
+        case 'orb':        
+          return moveNames.find(name => orbMoves.includes(name));
         default:
           return false;
       }    
     }
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves])
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves, orbMoves])
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
@@ -447,11 +455,13 @@ export default function App() {
           return abilityNames.find(name => terrainAbilities.includes(name));      
         case 'weather':
           return abilityNames.find(name => weatherAbilities.includes(name));
+        case 'orb':
+          return abilityNames.find(name => orbAbilities.includes(name));
         default:
           return false;
       }    
     }
-  }, [abilityOptions, terrainAbilities, weatherAbilities])
+  }, [abilityOptions, terrainAbilities, weatherAbilities, orbAbilities])
 
   useEffect(() => {
     let cancel = false;
@@ -561,10 +571,20 @@ export default function App() {
               case 'light-clay':                
                 // Check for barrier moves.
                 usable = getMoveMechanicUsability('barrier');                
+                break;              
+              default:
                 break;
-              case 'toxic-orb':                                
+            }
+            break;
+          case 'bad-held-items':
+            switch(newItem.data.name){
+              case 'toxic-orb':                   
+                // Check for orb moves or abilities.
+                usable = (getMoveMechanicUsability('orb') || getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['poison-heal', 'toxic-boost']));                                          
                 break;
-              case 'flame-orb':                                
+              case 'flame-orb':                                               
+                // Check for orb moves or abilities.
+                usable = (getMoveMechanicUsability('orb') || getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['flare-boost']));                
                 break;
               default:
                 break;
