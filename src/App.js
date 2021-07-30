@@ -54,7 +54,7 @@ export default function App() {
     // General forms as strong as legendaries.
     'mega', 'gmax', 'eternal', 'ash',
     // Pokemons and forms below 360 total stats.
-    'solo', 'shedninja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
+    'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
     // Others.
     'totem'
   ]);
@@ -81,7 +81,7 @@ export default function App() {
     'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
     'medicine', 'one', 'symbiosis',
     // Pokemon forms specific.
-    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger',     
+    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger', 'gulp',
     // Harmful to owner.
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
@@ -89,12 +89,15 @@ export default function App() {
     // Would require branch logic.
     // Possibly not worth it.
     'multitype', 'rks', 
+    // Possibly not required.
+    // 'tough-claws', 'unseen-fist'
     // Lost or consumed held items.
     'pickup', 'unburden', 'pickpocket', 'magician',
     // Move mechanic.
-    'gulp', 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'iron-fist', 'skill-link', 'scrappy', 'reckless', 'prankster', 
-    'sand-force', 'strong-jaw', 'gale-wings', 'mega-launcher', 'tough-claws', 'dark-aura', 'fairy-aura', 'steelworker', 'liquid-voice',
-    'triage', 'galvanize', 'punk-rock', 'unseen-fist', 'transistor', 'dragons-maw',
+    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',     
+    // Move type/category.
+    /* 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'prankster', 'sand-force', 'gale-wings', 
+    'dark-aura', 'fairy-aura', 'steelworker', 'galvanize', 'transistor', 'dragons-maw', */    
   ]);
   // Check normalize, refrigerate, pixilate, aerilate, for type enhancement items.
   const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
@@ -110,6 +113,7 @@ export default function App() {
     // Harmful to user.
     'full', 'lagging', 'sticky', 'target',
     // Would require branch logic. All accounted for.
+    // Move or ability mechanic.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb' 
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
@@ -126,8 +130,8 @@ export default function App() {
     'bind', 'clamp', 'fire-spin', 'infestation', 'magma-storm', 'sand-tomb', 'snap-trap', 'thunder-cage', 'whirlpool', 'wrap'
   ]);
   const [drainMoves] = useState([ // Big root.
-    'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed', 'mega-drain',
-    'oblivion-wing', 'parabolic-charge', 'strength-sap', 'ingrain', 'aqua-ring'
+    'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed',
+    'mega-drain', 'oblivion-wing', 'parabolic-charge', 'strength-sap', 'ingrain', 'aqua-ring'
   ]);
   const [terrainMoves] = useState([ // Terrain extender.
     'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
@@ -140,6 +144,35 @@ export default function App() {
   ]);  
   const [orbMoves] = useState([ // Toxic and flame orb.
     'facade', 'psycho-shift', 'switcheroo', 'trick', 'fling'
+  ]);
+  const [punchMoves] = useState([ // Iron fist.
+    'bullet-punch', 'comet-punch', 'dizzy-punch', 'double-iron-bash', 'drain-punch', 'dynamic-punch', 'fire-punch', 'focus-punch',
+    'hammer-arm', 'ice-hammer', 'ice-punch', 'mach-punch', 'mega-punch', 'meteor-mash', 'plasma-fists', 'power-up-punch',
+    'shadow-punch', 'sky-uppercut', 'thunder-punch'
+  ]);
+  const [multistrikeMoves] = useState([ // Skill link.
+    'arm-thrust', 'barrage', 'bone-rush', 'bullet-seed', 'comet-punch', 'double-slap', 'fury-attack', 'fury-swipes', 'icicle-spear',
+    'pin-missile', 'rock-blast', 'scale-shot', 'spike-cannon', 'tail-slap', 'triple-axel', 'triple-kick', 'water-shuriken'
+  ]);
+  const [recoilMoves] = useState([ // Reckless.
+    'brave-bird', 'double-edge', 'flare-blitz', 'head-charge', 'head-smash', 'high-jump-kick', 'jump-kick', 'submission', 'take-down',
+    'wild-charge', 'light-of-ruin', 'volt-tackle', 'wood-hammer'
+  ]);
+  const [biteMoves] = useState([ // Strong jaw.
+    'bite', 'crunch', 'fire-fang', 'fishious-rend', 'hyper-fang', 'ice-fang', 'jaw-lock', 'poison-fang', 'psychic-fangs', 'thunder-fang'
+  ]);
+  const [pulseMoves] = useState([ // Mega launcher.
+    'aura-sphere', 'dark-pulse', 'dragon-pulse', 'heal-pulse', 'origin-pulse', 'terrain-pulse', 'water-pulse'
+  ]);
+  const [soundMoves] = useState([ // Liquid voice.
+    'boomburst', 'bug-buzz', 'chatter', 'clanging-scales', 'disarming-voice', 'echoed-voice', 'eerie-spell', 'hyper-voice',
+    'overdrive', 'relic-song', 'round', 'snarl', 'snore', 'uproar'
+  ]);
+  const [healMoves] = useState([ // Triage.
+    'draining-kiss', 'floral-healing', 'giga-drain', 'rest', 'synthesis', 'absorb', 'drain-punch', 'dream-eater', 'heal-order',
+    'heal-pulse', 'healing-wish', 'horn-leech', 'leech-life', 'lunar-dance', 'mega-drain', 'milk-drink', 'moonlight', 'morning-sun',
+    'oblivion-wing', 'parabolic-charge', 'purify', 'recover', 'roost', 'shore-up', 'slack-off', 'soft-boiled', 'strength-sap',
+    'swallow', 'wish'
   ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
@@ -413,20 +446,38 @@ export default function App() {
     return pokemonOptions.find(p => p.types.find(t => t.type.name === type));
   }, [pokemonOptions])
 
+  /* const getMovesetTypeUsabilityForAbilities = useCallback((type, currentAbilities) => {
+    let usable = false;
+
+    let abilitiesOfType = 0;
+    currentAbilities.forEach(ca => {
+      switch(type){
+        case 'fire':
+          abilitiesOfType += 1;
+          break;
+        default:
+          break;
+      }                      
+    });                      
+    usable = optionsData.movesetsPerType.find(mt => mt.name === type && abilitiesOfType < mt.movesets);
+
+    return usable;
+  }, [optionsData]); */
+
   const getTypeFromEffect = useCallback((effect) => {
     return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
   }, [optionsData]);
 
-  const getMovesetTypeUsability = useCallback((object, currentObjects) => {
+  const getMovesetTypeUsabilityForItems = useCallback((item, currentItems) => {
     let usable = false;
-    let type = getTypeFromEffect(object.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase());
+    let type = getTypeFromEffect(item.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase());
     if(type){            
-      let objectsOfType = 0;
-      currentObjects.forEach(co => {
-        if(getTypeFromEffect(co.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase()) === type)                
-          objectsOfType += 1;              
+      let itemsOfType = 0;
+      currentItems.forEach(ci => {
+        if(getTypeFromEffect(ci.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase()) === type)                
+        itemsOfType += 1;              
       });                      
-      usable = optionsData.movesetsPerType.find(mt => mt.name === type && objectsOfType < mt.movesets);
+      usable = optionsData.movesetsPerType.find(mt => mt.name === type && itemsOfType < mt.movesets);
     }
     return usable;
   }, [optionsData, getTypeFromEffect]);
@@ -454,11 +505,26 @@ export default function App() {
           return moveNames.find(name => barrierMoves.includes(name));
         case 'orb':        
           return moveNames.find(name => orbMoves.includes(name));
+        case 'punch':        
+          return moveNames.find(name => punchMoves.includes(name));
+        case 'multistrike':        
+          return moveNames.find(name => multistrikeMoves.includes(name));
+        case 'recoil':        
+          return moveNames.find(name => recoilMoves.includes(name));
+        case 'bite':        
+          return moveNames.find(name => biteMoves.includes(name));
+        case 'pulse':        
+          return moveNames.find(name => pulseMoves.includes(name));
+        case 'sound':        
+          return moveNames.find(name => soundMoves.includes(name));
+        case 'heal':        
+          return moveNames.find(name => healMoves.includes(name));
         default:
           return false;
       }    
     }
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves, orbMoves])
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves, orbMoves, punchMoves, 
+      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves]);
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
@@ -499,12 +565,51 @@ export default function App() {
 
     // Get a new ability option.
     async function getNewAbility(currentAbilities) {    
-      let newAbility = '';       
+      let newAbility = ''; 
+      let usable = true;      
     
       do{        
         let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
-        newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);            
-      } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow))
+        newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);     
+        usable = true;    
+                               
+        switch(newAbility.data.name){
+          case 'iron-fist':
+            // Check for punch moves.
+            usable = getMoveMechanicUsability('punch');            
+            break;                       
+          case 'skill-link':
+            // Check for multistrike moves.
+            usable = getMoveMechanicUsability('multistrike');            
+            break;
+          case 'reckless':
+            // Check for recoil/crash moves.
+            usable = getMoveMechanicUsability('recoil');            
+            break;
+          case 'strong-jaw':
+            // Check for bite moves.
+            usable = getMoveMechanicUsability('bite');            
+            break;
+          case 'mega-launcher':
+            // Check for pulse/aura moves.
+            usable = getMoveMechanicUsability('pulse');            
+            break;
+          case 'liquid-voice':
+            // Check for sound moves.
+            usable = getMoveMechanicUsability('sound');
+            break;
+          case 'punk-rock':
+            // Check for sound moves.
+            usable = (getMoveMechanicUsability('sound') || getMoveMechanicUsability('', ['sparkling-aria']));
+            break;
+          case 'triage':
+            // Check for heal moves.
+            usable = getMoveMechanicUsability('heal');
+            break;
+          default:
+            break;
+        }                  
+      } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow) || !usable)
       //console.log(newAbility.data.name);
 
       return newAbility.data;
@@ -514,7 +619,8 @@ export default function App() {
       getAbilityOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow])
+  }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow, 
+      getMoveMechanicUsability])
 
   useEffect(() => {
     let cancel = false;
@@ -609,16 +715,15 @@ export default function App() {
             break;
           case 'plates':
             // Check for movesets with that type.
-            usable = getMovesetTypeUsability(newItem.data, currentItems);
+            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);
             break;
           case 'type-enhancement':
             // Check for movesets with that type.
-            usable = getMovesetTypeUsability(newItem.data, currentItems);
+            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);
             break;
           default:
             break;
-        }            
-          
+        }                      
       } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) || !usable)
       //console.log(newItem.data.name);
 
@@ -630,7 +735,7 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow,
-      getMovesetTypeUsability, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability])
+      getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability])
 
   useEffect(() => {
     let cancel = false;
