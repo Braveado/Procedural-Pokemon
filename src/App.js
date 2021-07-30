@@ -629,119 +629,131 @@ export default function App() {
   // ----- SELECTIONS & ASSIGNMENTS -----
   // Select a pokemon.
   const selectPokemon = (pokemon) => {
-    let change = false;
-    let options = pokemonOptions;
-    options = options.map(p => {
-      if(p.name === pokemon.name){
-        if(p.selected) {      
-          p.selected = false;
-          p.moveset = null;
-          p.ability = null;
-          p.item = null;          
-          change = true;
+    if(!generating){
+      let change = false;
+      let options = pokemonOptions;
+      options = options.map(p => {
+        if(p.name === pokemon.name){
+          if(p.selected) {      
+            p.selected = false;
+            p.moveset = null;
+            p.ability = null;
+            p.item = null;          
+            change = true;
+          }
+          else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
+            p.selected = true;
+            change = true;
+          }
+          else {
+            setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
+          }
         }
-        else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
-          p.selected = true;
-          change = true;
-        }
-        else {
-          setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
-        }
+        return p;
+      })
+      if(change){
+        setPokemonOptions(options); 
       }
-      return p;
-    })
-    if(change){
-      setPokemonOptions(options); 
     }
+    else
+      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
   }   
 
   // Select a move.
   const selectMove = (move, moveset) => {  
-    let change = false;  
-    let msOptions = movesetOptions;    
-    msOptions[moveset] = msOptions[moveset].map(m => {
-      if(m.name === move.name){
-        if(m.selected){      
-          m.selected = false;
-          change = true;
+    if(!generating){
+      let change = false;  
+      let msOptions = movesetOptions;    
+      msOptions[moveset] = msOptions[moveset].map(m => {
+        if(m.name === move.name){
+          if(m.selected){      
+            m.selected = false;
+            change = true;
+          }
+          else if(!m.selected && selectionsMade.moves[moveset] < selectionsNeeded.moves){
+            m.selected = true;
+            change = true;
+          }
+          else {
+            setToast('Moveset Options', `Only ${selectionsNeeded.moves} moves can be selected in a moveset.`, {warning: true});
+          }
         }
-        else if(!m.selected && selectionsMade.moves[moveset] < selectionsNeeded.moves){
-          m.selected = true;
-          change = true;
-        }
-        else {
-          setToast('Moveset Options', `Only ${selectionsNeeded.moves} moves can be selected in a moveset.`, {warning: true});
-        }
+        return m;
+      });
+      if(change){
+        setMovesetOptions([...msOptions]);
       }
-      return m;
-    });
-    if(change){
-      setMovesetOptions([...msOptions]);
     }
+    else
+      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
   }
 
   // Assign a pokemon to a moveset, ability or item.
   const assignPokemon = (pokemon, assignable) => {
-    let change = false;
-    let pokemons = pokemonOptions;
-    pokemons = pokemons.map(p => {
-      if(p.name === pokemon.name){
-        if(assignable.moveset != null){
-          if(p.moveset !== assignable.moveset)
-            p.moveset = assignable.moveset;
-          else
-            p.moveset = null;
-          change = true;
+    if(!generating){
+      let change = false;
+      let pokemons = pokemonOptions;
+      pokemons = pokemons.map(p => {
+        if(p.name === pokemon.name){
+          if(assignable.moveset != null){
+            if(p.moveset !== assignable.moveset)
+              p.moveset = assignable.moveset;
+            else
+              p.moveset = null;
+            change = true;
+          }
+          else if(assignable.ability != null){
+            if(p.ability !== assignable.ability)
+              p.ability = assignable.ability;
+            else
+              p.ability = null;
+            change = true;
+          }
+          else if(assignable.item != null){
+            if(p.item !== assignable.item)
+              p.item = assignable.item;
+            else
+              p.item = null;
+            change = true;
+          }
         }
-        else if(assignable.ability != null){
-          if(p.ability !== assignable.ability)
-            p.ability = assignable.ability;
-          else
-            p.ability = null;
-          change = true;
+        else{
+          if(assignable.moveset != null){
+            if(p.moveset === assignable.moveset) {
+              p.moveset = null;
+              change = true;
+              setToast('Moveset Options',
+              `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to moveset ${assignable.moveset+1}.`,
+              {warning: true});
+            }
+          }
+          if(assignable.ability != null){
+            if(p.ability === assignable.ability) {
+              p.ability = null;
+              change = true;
+              setToast('Ability Options',
+              `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to ability ${upperCaseWords(abilityOptions[assignable.ability].name)}.`,
+              {warning: true});
+            }
+          }
+          if(assignable.item != null){
+            if(p.item === assignable.item) {
+              p.item = null;
+              change = true;
+              setToast('Item Options',
+              `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to item ${upperCaseWords(itemOptions[assignable.item].name)}.`,
+              {warning: true});
+            }
+          }
         }
-        else if(assignable.item != null){
-          if(p.item !== assignable.item)
-            p.item = assignable.item;
-          else
-            p.item = null;
-          change = true;
-        }
+        return p;
+      })
+      if(change){   
+        setPokemonOptions(pokemons);
       }
-      else{
-        if(assignable.moveset != null){
-          if(p.moveset === assignable.moveset) {
-            p.moveset = null;
-            change = true;
-            setToast('Moveset Options',
-            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to moveset ${assignable.moveset+1}.`,
-            {warning: true});
-          }
-        }
-        if(assignable.ability != null){
-          if(p.ability === assignable.ability) {
-            p.ability = null;
-            change = true;
-            setToast('Ability Options',
-            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to ability ${upperCaseWords(abilityOptions[assignable.ability].name)}.`,
-            {warning: true});
-          }
-        }
-        if(assignable.item != null){
-          if(p.item === assignable.item) {
-            p.item = null;
-            change = true;
-            setToast('Item Options',
-            `Assigned ${upperCaseWords(pokemon.name)} instead of ${upperCaseWords(p.name)} to item ${upperCaseWords(itemOptions[assignable.item].name)}.`,
-            {warning: true});
-          }
-        }
-      }
-      return p;
-    })
-    if(change){   
-      setPokemonOptions(pokemons);
     }
+    else
+      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
   }    
 
   // Clear all selections and assignments.
