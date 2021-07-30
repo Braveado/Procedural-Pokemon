@@ -36,7 +36,7 @@ export default function App() {
     movesets: 6,
     moves: 6,
     abilities: 9,
-    items: 9
+    items: 40
   });
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
@@ -99,6 +99,27 @@ export default function App() {
     'herb', 'choice', 'bright', 'silver', 'life', 'silk'
   ]);
 
+  // Usability.  
+  // Moves.
+  const [chargeMoves] = useState([ // Power herb.
+    'bounce', 'dig', 'dive', 'fly', 'freeze-shock', 'geomancy', 'ice-burn', 'meteor-beam', 'phantom-force', 'razor-wind',
+    'shadow-force', 'skull-bash', 'sky-attack', 'solar-beam', 'solar-blade'
+  ]);
+  const [bindMoves] = useState([ // Grip claw, binding band.
+    'bind', 'clamp', 'fire-spin', 'infestation', 'magma-storm', 'sand-tomb', 'snap-trap', 'thunder-cage', 'whirlpool', 'wrap'
+  ]);
+  const [drainMoves] = useState([ // Big root.
+    'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed', 'mega-drain',
+    'oblivion-wing', 'parabolic-charge', 'strength-sap', 'ingrain', 'aqua-ring'
+  ]);
+  const [terrainMoves] = useState([ // Terrain extender.
+    'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
+  ]);  
+  // Abilities.
+  const [terrainAbilities] = useState([ // Terrain extender.
+    'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
+  ]);
+
   // Selections.
   const [selectionsNeeded] = useState({
     pokemons: 6,    
@@ -136,7 +157,7 @@ export default function App() {
       for(let i = 0; i < itemCount.length; i++){
         itemResults.push(await (await axios.get(`${apiUrl}item?limit=${itemCount[i]}&offset=${itemOffset[i]}`)).data.results);
       };      
-      itemResults = itemResults[0].concat(itemResults[1], itemResults[2], itemResults[3]);
+      itemResults = [].concat.apply([], itemResults);
       const typeResults = await axios.get(`${apiUrl}type?limit=${typeCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
@@ -355,11 +376,12 @@ export default function App() {
     return () => cancel = true;
   }, [generating, generationStep, movesetOptions, randomRolls, typeList]);
 
+  // Helper functions for usability checks.
   const getTypeFromEffect = useCallback((effect) => {
     return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
   }, [optionsData]);
 
-  const getMovesetTypeUsabilityFromEffect = useCallback((object, currentObjects) => {
+  const getMovesetTypeUsability = useCallback((object, currentObjects) => {
     let usable = false;
     let type = getTypeFromEffect(object.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase());
     if(type){            
@@ -372,6 +394,33 @@ export default function App() {
     }
     return usable;
   }, [optionsData, getTypeFromEffect]);
+
+  const getMoveMechanicUsability = useCallback((mechanic) => {
+    let moveNames = movesetOptions.map(ms => { return ms.map(m => { return m.name } ) });
+    moveNames = [].concat.apply([], moveNames);
+    switch(mechanic){
+      case 'charge':
+        return moveNames.find(name => chargeMoves.includes(name));
+      case 'bind':
+        return moveNames.find(name => bindMoves.includes(name));
+      case 'drain':
+        return moveNames.find(name => drainMoves.includes(name));
+      case 'terrain':
+        return moveNames.find(name => terrainMoves.includes(name));
+      default:
+        return false;
+    }    
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves])
+
+  const getAbilityMechanicUsability = useCallback((mechanic) => {
+    let abilityNames = abilityOptions.map(a => { return a.name } );
+    switch(mechanic){
+      case 'terrain':
+        return abilityNames.find(name => terrainAbilities.includes(name));      
+      default:
+        return false;
+    }    
+  }, [abilityOptions, terrainAbilities])
 
   useEffect(() => {
     let cancel = false;
@@ -434,37 +483,42 @@ export default function App() {
         let item = itemList[Math.floor(Math.random()*itemList.length)];      
         newItem = await axios.get(`${apiUrl}item/${item.name}`);   
         usable = true;    
-                       
-        //console.log(object.name + object.category.name);
+                               
         switch(newItem.data.category.name){
           case 'held-items':
             switch(newItem.data.name){
-              case 'power-herb':
-                // check if there are 2 turn moves.
+              case 'power-herb': 
+                // Check for charge moves.               
+                usable = getMoveMechanicUsability('charge');                
                 break;
               case 'grip-claw':
-                // check if there are multi turn trapping moves.
+                // Check for bind moves.
+                usable = getMoveMechanicUsability('bind');               
                 break;
               case 'binding-band':
-                // check if there are multi turn trapping moves that inflict dmg.
+                // Check for bind moves.
+                usable = getMoveMechanicUsability('bind');
                 break;
               case 'big-root':
-                // check if there are draining moves, ingrain ro aqua ring.
+                // Check for drain moves.
+                usable = getMoveMechanicUsability('drain');                
                 break;
               case 'terrain-extender':
-                // check if there are moves or abilities that changes terrain.
+                // Check for terrain moves or abilities.
+                usable = (getMoveMechanicUsability('terrain') || getAbilityMechanicUsability('terrain'));
+                console.log(usable);
                 break;
               default:
                 break;
             }
             break;
           case 'plates':
-            // check if there are moves of that type.
-            usable = getMovesetTypeUsabilityFromEffect(newItem.data, currentItems);
+            // Check for movesets with that type.
+            usable = getMovesetTypeUsability(newItem.data, currentItems);
             break;
           case 'type-enhancement':
-            // check if there are moves of that type.    
-            usable = getMovesetTypeUsabilityFromEffect(newItem.data, currentItems);
+            // Check for movesets with that type.
+            usable = getMovesetTypeUsability(newItem.data, currentItems);
             break;
           default:
             break;
@@ -480,7 +534,8 @@ export default function App() {
       getItemOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, getMovesetTypeUsabilityFromEffect])
+  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow,
+      getMovesetTypeUsability, getMoveMechanicUsability, getAbilityMechanicUsability])
 
   useEffect(() => {
     let cancel = false;

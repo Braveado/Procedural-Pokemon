@@ -11,7 +11,7 @@ export default function Move({move, moveset}) {
             return move.effect_entries.map((e, i) => {
                 return (
                     <p key={i} className="text-center">
-                        {e.short_effect.replace('$effect_chance', move.effect_chance)} {move.priority !== 0 ? 'Priority '+move.priority : ''}
+                        {e.short_effect.replace(/\$effect_chance/g, move.effect_chance)} {move.priority !== 0 ? 'Priority '+move.priority : ''}
                     </p>
                 )
             })
