@@ -93,10 +93,10 @@ export default function App() {
     // Harmful to user.
     'full', 'lagging', 'sticky', 'target',
     // Would require branch logic, possibly not worth it.
-    'clay', 'sludge', 'heat', 'smooth', 'icy', 'damp', 'orb'
+    //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb' 
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'life', 'silk'
+    'herb', 'choice', 'bright', 'silver', 'silk'
   ]);
 
   // Usability.  
@@ -114,10 +114,19 @@ export default function App() {
   ]);
   const [terrainMoves] = useState([ // Terrain extender.
     'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
+  ]);
+  const [weatherMoves] = useState([ // Heat, smooth, icy and damp rock.
+    'sunny-day', 'rain-dance', 'sandstorm', 'hail'
+  ]);
+  const [barrierMoves] = useState([ // Light clay.
+    'light-screen', 'reflect', 'aurora-veil'
   ]);  
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
     'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
+  ]);
+  const [weatherAbilities] = useState([ // Heat, smooth, icy and damp rock.
+    'drought', 'drizzle', 'sand-stream', 'sand-spit', 'snow-warning'
   ]);
 
   // Selections.
@@ -377,6 +386,10 @@ export default function App() {
   }, [generating, generationStep, movesetOptions, randomRolls, typeList]);
 
   // Helper functions for usability checks.
+  const getPokemonTypeUsability = useCallback((type) => {
+    return pokemonOptions.find(p => p.types.find(t => t.type.name === type));
+  }, [pokemonOptions])
+
   const getTypeFromEffect = useCallback((effect) => {
     return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
   }, [optionsData]);
@@ -395,32 +408,50 @@ export default function App() {
     return usable;
   }, [optionsData, getTypeFromEffect]);
 
-  const getMoveMechanicUsability = useCallback((mechanic) => {
+  const getMoveMechanicUsability = useCallback((mechanic, exactMoves) => {
     let moveNames = movesetOptions.map(ms => { return ms.map(m => { return m.name } ) });
     moveNames = [].concat.apply([], moveNames);
-    switch(mechanic){
-      case 'charge':
-        return moveNames.find(name => chargeMoves.includes(name));
-      case 'bind':
-        return moveNames.find(name => bindMoves.includes(name));
-      case 'drain':
-        return moveNames.find(name => drainMoves.includes(name));
-      case 'terrain':
-        return moveNames.find(name => terrainMoves.includes(name));
-      default:
-        return false;
-    }    
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves])
+    
+    if(exactMoves && exactMoves.length > 0){      
+      return moveNames.find(name => exactMoves.includes(name));
+    }
+    else {
+      switch(mechanic){
+        case 'charge':
+          return moveNames.find(name => chargeMoves.includes(name));
+        case 'bind':
+          return moveNames.find(name => bindMoves.includes(name));
+        case 'drain':
+          return moveNames.find(name => drainMoves.includes(name));
+        case 'terrain':
+          return moveNames.find(name => terrainMoves.includes(name));
+        case 'weather':        
+          return moveNames.find(name => weatherMoves.includes(name));
+        case 'barrier':        
+          return moveNames.find(name => barrierMoves.includes(name));
+        default:
+          return false;
+      }    
+    }
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves])
 
-  const getAbilityMechanicUsability = useCallback((mechanic) => {
+  const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
-    switch(mechanic){
-      case 'terrain':
-        return abilityNames.find(name => terrainAbilities.includes(name));      
-      default:
-        return false;
-    }    
-  }, [abilityOptions, terrainAbilities])
+
+    if(exactAbilities && exactAbilities.length > 0){     
+      return abilityNames.find(name => exactAbilities.includes(name));
+    }
+    else {
+      switch(mechanic){
+        case 'terrain':
+          return abilityNames.find(name => terrainAbilities.includes(name));      
+        case 'weather':
+          return abilityNames.find(name => weatherAbilities.includes(name));
+        default:
+          return false;
+      }    
+    }
+  }, [abilityOptions, terrainAbilities, weatherAbilities])
 
   useEffect(() => {
     let cancel = false;
@@ -506,7 +537,34 @@ export default function App() {
               case 'terrain-extender':
                 // Check for terrain moves or abilities.
                 usable = (getMoveMechanicUsability('terrain') || getAbilityMechanicUsability('terrain'));
-                console.log(usable);
+                break;
+              case 'heat-rock':                
+                // Check for harsh sunlight weather moves or abilities.
+                usable = (getMoveMechanicUsability('', ['sunny-day']) || getAbilityMechanicUsability('', ['drought']));
+                break;
+              case 'damp-rock':                
+                // Check for rain weather moves or abilities.
+                usable = (getMoveMechanicUsability('', ['rain-dance']) || getAbilityMechanicUsability('', ['drizzle']));
+                break;
+              case 'icy-rock':                
+                // Check for hail weather moves or abilities.
+                usable = (getMoveMechanicUsability('', ['hail']) || getAbilityMechanicUsability('', ['snow-warning']));
+                break;
+              case 'smooth-rock':                
+                // Check for sandstorm weather moves or abilities.
+                usable = (getMoveMechanicUsability('', ['sandstorm']) || getAbilityMechanicUsability('', ['sand-stream', 'sand-spit']));
+                break;
+              case 'black-sludge':                
+                // Check for poison pokemons.
+                usable = getPokemonTypeUsability('poison');                
+                break;
+              case 'light-clay':                
+                // Check for barrier moves.
+                usable = getMoveMechanicUsability('barrier');                
+                break;
+              case 'toxic-orb':                                
+                break;
+              case 'flame-orb':                                
                 break;
               default:
                 break;
@@ -535,7 +593,7 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow,
-      getMovesetTypeUsability, getMoveMechanicUsability, getAbilityMechanicUsability])
+      getMovesetTypeUsability, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability])
 
   useEffect(() => {
     let cancel = false;

@@ -44,6 +44,9 @@ export default function Item({item, index}) {
             case 'mental-herb':
                 formattedEffect = formattedEffect.replace("infatuation. Gen V: Also removes", "Infatuation,");
                 break;
+            case 'light-clay':
+                formattedEffect = formattedEffect.replace(" and Reflect", ", Reflect and Aurora Veil");
+                break;
             default:
                 break;
         }        
