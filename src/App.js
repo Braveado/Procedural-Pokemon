@@ -68,10 +68,10 @@ export default function App() {
     'natural', 'stuff', 'teatime', 
     // No effect.
     'splash', 'celebrate', 'hands',
-    // Would require branch logic.
+    // BRANCH LOGIC.
     // Possibly not worth it.
     'stockpile', 'swallow', 'spit',
-    // Would require reverse branch logic.
+    // REVERSE BRANCH LOGIC.
     // Lost or consumed held items.
     'recycle',
   ]);
@@ -87,21 +87,22 @@ export default function App() {
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk', 
-    // Would require branch logic.    
+    // BRANCH LOGIC.    
     // Possibly not required.
     // 'tough-claws', 'unseen-fist'    
     // Move mechanic. All accounted for.
     // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',     
     // Move type. All accounted for.
-    /* 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'sand-force', 'gale-wings', 
-    'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw', */
-    // Would require reverse branch logic.
+    // 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'sand-force', 'gale-wings', 
+    // 'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw',
+    // Move type changes. All accounted for.
+    // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
+    // REVERSE BRANCH LOGIC.
     // Possibly not worth it.
     'multitype', 'rks', 
     // Lost or consumed held items.
     'pickup', 'unburden', 'pickpocket', 'magician',
-  ]);
-  // Check normalize, refrigerate, pixilate, 'galvanize', aerilate, for type enhancement items.
+  ]);  
   const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
     'parental', 
   ]);
@@ -114,7 +115,7 @@ export default function App() {
     'disc', 'magmarizer', 'electirizer', 'reaper', 'whipped', 'sachet', 
     // Harmful to user.
     'full', 'lagging', 'sticky', 'target',
-    // Would require branch logic. All accounted for.
+    // BRANCH LOGIC. All accounted for.
     // Move or ability mechanic.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb' 
   ]);
@@ -431,19 +432,19 @@ export default function App() {
       });       
       let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
       if(!cancel){
-        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });       
+        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });      
         setGenerationStep(3);
       }
     }    
     return () => cancel = true;
-  }, [generating, generationStep, movesetOptions, randomRolls, typeList]);
+  }, [generating, generationStep, movesetOptions, randomRolls, typeList]);  
 
   // Helper functions for usability checks.
   const getPokemonTypeUsability = useCallback((type) => {
     return pokemonOptions.find(p => p.types.find(t => t.type.name === type));
   }, [pokemonOptions])
 
-  const getMovesetTypeUsabilityForAbilities = useCallback((types) => {
+  const getMovesetTypeUsability = useCallback((types) => {
     //console.log(types);
     let usable = types.find(t => optionsData.usableTypes.includes(t));
     //console.log(usable);
@@ -457,12 +458,14 @@ export default function App() {
   const getMovesetTypeUsabilityForItems = useCallback((item, currentItems) => {
     let usable = false;
     let type = getTypeFromEffect(item.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase());
-    if(type){            
+    if(type){  
+      // Check current items.          
       let itemsOfType = 0;
       currentItems.forEach(ci => {
-        if(getTypeFromEffect(ci.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase()) === type)                
+        if((ci.category.name === 'type-enhancement' || ci.category.name === 'plates') && 
+          getTypeFromEffect(ci.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase()) === type)                
         itemsOfType += 1;              
-      });                      
+      });    
       usable = optionsData.movesetsPerType.find(mt => mt.name === type && itemsOfType < mt.movesets);
     }
     return usable;
@@ -589,56 +592,60 @@ export default function App() {
             usable = getMoveMechanicUsability('heal');
             break;          
           case 'flash-fire':
-            // Check for fire moves.
-            usable = getMovesetTypeUsabilityForAbilities(['fire']);
-            break;
           case 'blaze':
             // Check for fire moves.
-            usable = getMovesetTypeUsabilityForAbilities(['fire']);
+            usable = getMovesetTypeUsability(['fire']);
             break;
           case 'overgrow':
             // Check for grass moves.
-            usable = getMovesetTypeUsabilityForAbilities(['grass']);
+            usable = getMovesetTypeUsability(['grass']);
             break;
           case 'torrent':
             // Check for water moves.
-            usable = getMovesetTypeUsabilityForAbilities(['water']);
+            usable = getMovesetTypeUsability(['water']);
             break;
           case 'swarm':
             // Check for bug moves.
-            usable = getMovesetTypeUsabilityForAbilities(['bug']);
+            usable = getMovesetTypeUsability(['bug']);
             break;
           case 'scrappy':
             // Check for normal or fighting moves.
-            usable = getMovesetTypeUsabilityForAbilities(['normal', 'fighting']);
+            usable = getMovesetTypeUsability(['normal', 'fighting']);
             break;
           case 'sand-force':
             // Check for rock, ground and steel moves.
-            usable = getMovesetTypeUsabilityForAbilities(['rock', 'ground', 'steel']);
+            usable = getMovesetTypeUsability(['rock', 'ground', 'steel']);
             break;
           case 'gale-wings':
             // Check for flying moves.
-            usable = getMovesetTypeUsabilityForAbilities(['flying']);
+            usable = getMovesetTypeUsability(['flying']);
             break;
           case 'dark-aura':
             // Check for dark moves.
-            usable = getMovesetTypeUsabilityForAbilities(['dark']);
+            usable = getMovesetTypeUsability(['dark']);
             break;
           case 'fairy-aura':
             // Check for fairy moves.
-            usable = getMovesetTypeUsabilityForAbilities(['fairy']);
+            usable = getMovesetTypeUsability(['fairy']);
             break;
           case 'steelworker':
             // Check for steel moves.
-            usable = getMovesetTypeUsabilityForAbilities(['steel']);
+            usable = getMovesetTypeUsability(['steel']);
             break;
           case 'transistor':
             // Check for electric moves.
-            usable = getMovesetTypeUsabilityForAbilities(['electric']);
+            usable = getMovesetTypeUsability(['electric']);
             break;
           case 'dragons-maw':
             // Check for dragon moves.
-            usable = getMovesetTypeUsabilityForAbilities(['dragon']);
+            usable = getMovesetTypeUsability(['dragon']);
+            break;            
+          case 'refrigerate':
+          case 'pixilate':
+          case 'galvanize':
+          case 'aerilate': 
+            // Check for normal moves.
+            usable = getMovesetTypeUsability(['normal']);
             break;
           default:
             break;
@@ -654,7 +661,51 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow, 
-      getMoveMechanicUsability, getMovesetTypeUsabilityForAbilities])
+      getMoveMechanicUsability, getMovesetTypeUsability]);
+
+  // Respond to ability options generated completely.
+  useEffect (() => {  
+    let cancel = false;
+
+    if(generating && generationStep === 4 && abilityOptions.length >= randomRolls.abilities){
+      let msPerType = optionsData.movesetsPerType;
+      
+      // Check abilities that change move types.
+      msPerType.forEach(ms => {
+        switch(ms.name){
+          case 'normal':
+            if (abilityOptions.find(a => a.name === 'normalize'))
+              ms.movesets += 1;
+            break;
+          case 'ice':
+            if (abilityOptions.find(a => a.name === 'refrigerate'))
+              ms.movesets += 1;              
+            break;
+          case 'fairy':
+            if (abilityOptions.find(a => a.name === 'pixilate'))
+              ms.movesets += 1;              
+            break;
+          case 'electric':
+            if (abilityOptions.find(a => a.name === 'galvanize'))
+              ms.movesets += 1;              
+            break;
+          case 'flying':
+            if (abilityOptions.find(a => a.name === 'aerilate'))
+              ms.movesets += 1;              
+            break;
+          default:          
+            break;
+        }
+      })                             
+      
+      let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
+      if(!cancel){
+        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });     
+        setGenerationStep(5);
+      }
+    }    
+    return () => cancel = true;
+  }, [generating, generationStep, abilityOptions, randomRolls, optionsData]);
 
   useEffect(() => {
     let cancel = false;
@@ -669,7 +720,7 @@ export default function App() {
           setItemOptions([...items]); 
       }                 
       if(!cancel)
-        setGenerationStep(5); 
+        setGenerationStep(6); 
     }
 
     // Get a new item option.
@@ -764,7 +815,7 @@ export default function App() {
       return newItem.data;
     } 
 
-    if(generating && generationStep === 4 && itemList.length > 0){      
+    if(generating && generationStep === 5 && itemList.length > 0){      
       getItemOptions();
     }
     return () => cancel = true;
@@ -774,7 +825,7 @@ export default function App() {
   useEffect(() => {
     let cancel = false;
 
-    if(generating && generationStep === 5){
+    if(generating && generationStep === 6){
       setToast('Controls', 'Options generated, build your team!', {success: true});
       if(!cancel)
         setGenerating(false);   
