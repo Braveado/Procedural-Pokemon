@@ -87,15 +87,14 @@ export default function App() {
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk', 
-    // BRANCH LOGIC.    
-    // Possibly not required.
-    // 'tough-claws', 'unseen-fist'    
-    // Move mechanic. All accounted for.
-    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',     
-    // Move type. All accounted for.
+    // BRANCH LOGIC. All accounted for.
+    // Move mechanic. 
+    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',
+    // 'tough-claws', 'unseen-fist',    
+    // Move type.
     // 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'sand-force', 'gale-wings', 
     // 'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw',
-    // Move type changes. All accounted for.
+    // Move type changes.
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
     // REVERSE BRANCH LOGIC.
     // Possibly not worth it.
@@ -173,6 +172,34 @@ export default function App() {
     'heal-pulse', 'healing-wish', 'horn-leech', 'leech-life', 'lunar-dance', 'mega-drain', 'milk-drink', 'moonlight', 'morning-sun',
     'oblivion-wing', 'parabolic-charge', 'purify', 'recover', 'roost', 'shore-up', 'slack-off', 'soft-boiled', 'strength-sap',
     'swallow', 'wish'
+  ]);
+  const [contactMoves] = useState([ // Tough claws, unseen fist.
+    'accelerock', 'acrobatics', 'aerial-ace', 'anchor-shot', 'aqua-jet', 'aqua-tail', 'arm-thrust', 'assurance', 'astonish', 'avalanche', 
+    'behemoth-bash', 'behemoth-blade', 'bide', 'bind', 'bite', 'blaze-kick', 'body-press', 'body-slam', 'bolt-beak', 'bolt-strike', 'bounce', 'branch-poke', 'brave-bird', 'breaking-swipe', 'brick-break', 'brutal-swing', 'bug-bite', 'bullet-punch',
+    'chip-away', 'circle-throw', 'clamp', 'close-combat', 'comet-punch', 'constrict', 'counter', 'covet', 'crabhammer', 'cross-chop', 'cross-poison', 'crunch', 'crush-claw', 'crush-grip', 'cut',
+    'darkest-lariat', 'dig', 'dive', 'dizzy-punch', 'double-edge', 'double-hit', 'double-iron-bash', 'double-kick', 'double-slap', 'dragon-ascent', 'dragon-claw', 'dragon-hammer', 'dragon-rush', 'dragon-tail', 'draining-kiss', 'drain-punch', 'drill-peck', 'drill-run', 'dual-chop', 'dual-wingbeat', 'dynamic-punch',
+    'endeavor', 'extreme-speed',
+    'facade', 'fake-out', 'false-surrender', 'false-swipe', 'feint-attack', 'fell-stinger', 'fire-fang', 'fire-lash', 'fire-punch', 'first-impression', 'fishious-rend', 'flail', 'flame-charge', 'flame-wheel', 'flare-blitz', 'flip-turn', 'floaty-fall', 'fly', 'flying-press', 'focus-punch', 'force-palm', 'foul-play', 'frustration', 'fury-attack', 'fury-cutter', 'fury-swipes',
+    'gear-grind', 'giga-impact', 'grass-knot', 'grassy-glide', 'guillotine', 'gyro-ball',
+    'hammer-arm', 'headbutt', 'head-charge', 'head-smash', 'heart-stamp', 'heat-crash', 'heavy-slam', 'high-horsepower', 'high-jump-kick', 'hold-back', 'horn-attack', 'horn-drill', 'horn-leech', 'hyper-fang',
+    'ice-ball', 'ice-fang', 'ice-hammer', 'ice-punch', 'infestation', 'iron-head', 'iron-tail',
+    'jaw-lock', 'jump-kick', 
+    'karate-chop', 'knock-off', 
+    'lash-out', 'last-resort', 'leaf-blade', 'leech-life', 'lick', 'liquidation', 'low-kick', 'low-sweep', 'lunge',
+    'mach-punch', 'megahorn', 'mega-kick', 'mega-punch', 'metal-claw', 'meteor-mash', 'multi-attack', 
+    'needle-arm', 'night-slash', 'nuzzle', 
+    'outrage', 
+    'payback', 'peck', 'petal-dance', 'phantom-force', 'plasma-fists', 'play-rough', 'pluck', 'poison-fang', 'poison-jab', 'poison-tail', 'pound', 'power-trip', 'power-up-punch', 'power-whip', 'psychic-fangs', 'punishment', 'pursuit', 
+    'quick-attack', 
+    'rage', 'rapid-spin', 'razor-shell', 'retaliate', 'return', 'revenge', 'reversal', 'rock-climb', 'rock-smash', 'rolling-kick', 'rollout', 
+    'sacred-sword', 'scratch', 'seismic-toss', 'shadow-claw', 'shadow-force', 'shadow-punch', 'shadow-sneak', 'shadow-strike', 'sizzly-slide', 'skitter-smack', 'skull-bash', 'sky-drop', 'sky-uppercut', 'slam', 'slash', 'smart-strike', 'smelling-salts', 'snap-trap', 'solar-blade', 'spark', 'spectral-thief', 'spirit-break', 'steamroller', 'steel-roller', 'steel-wing', 'stomp', 'stomping-tantrum', 'storm-throw', 'strength', 'struggle', 'submission', 'sucker-punch', 'sunsteel-strike', 'super-fang', 'superpower', 'surging-strikes', 
+    'tackle', 'tail-slap', 'take-down', 'thief', 'thrash', 'throat-chop', 'thunder-fang', 'thunderous-kick', 'thunder-punch', 'triple-axel', 'triple-kick', 'trop-kick', 'trump-card', 
+    'u-turn', 
+    'v-create',
+    'veevee-volley', 'vine-whip', 'vise-grip', 'vital-throw', 'volt-tackle',
+    'wake-up-slap', 'waterfall', 'wicked-blow', 'wild-charge', 'wing-attack', 'wood-hammer', 'wrap', 'wring-out', 
+    'x-scissor',
+    'zen-headbutt', 'zing-zap', 'zippy-zap'
   ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
@@ -506,12 +533,14 @@ export default function App() {
           return moveNames.find(name => soundMoves.includes(name));
         case 'heal':        
           return moveNames.find(name => healMoves.includes(name));
+        case 'contact':        
+          return moveNames.find(name => contactMoves.includes(name));
         default:
           return false;
       }    
     }
   }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, barrierMoves, orbMoves, punchMoves, 
-      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves]);
+      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves, contactMoves]);
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
@@ -647,6 +676,11 @@ export default function App() {
             // Check for normal moves.
             usable = getMovesetTypeUsability(['normal']);
             break;
+          case 'tough-claws':
+          case 'unseen-fist':
+            // Check for contact moves.
+            usable = getMoveMechanicUsability('contact');
+            break; 
           default:
             break;
         }                  
