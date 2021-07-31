@@ -27,26 +27,26 @@ export default function PokemonStats({stats}) {
         }
     }
 
-    const getStatWidth = (stat, total = false) => {        
-        if(stat <= 24 || (total && stat <= 240))
+    const getStatWidth = (stat, total = false) => { 
+        if(stat <= 33 || (total && stat <= 300))
             return 'w-2/12';
-        else if(stat <= 36 || (total && stat <= 280))
+        else if(stat <= 46 || (total && stat <= 340))
             return 'w-3/12';
-        else if(stat <= 48 || (total && stat <= 320))
+        else if(stat <= 59 || (total && stat <= 380))
             return 'w-4/12';
-        else if(stat <= 60 || (total && stat <= 360))
+        else if(stat <= 72 || (total && stat <= 420))
             return 'w-5/12';
-        else if(stat <= 72 || (total && stat <= 400))
+        else if(stat <= 85 || (total && stat <= 460))
             return 'w-6/12';
-        else if(stat <= 84 || (total && stat <= 440))
+        else if(stat <= 98 || (total && stat <= 500))
             return 'w-7/12';
-        else if(stat <= 96 || (total && stat <= 480))
+        else if(stat <= 111 || (total && stat <= 540))
             return 'w-8/12';
-        else if(stat <= 108 || (total && stat <= 520))
+        else if(stat <= 124 || (total && stat <= 580))
             return 'w-9/12';
-        else if(stat <= 120 || (total && stat <= 560))
+        else if(stat <= 137 || (total && stat <= 620))
             return 'w-10/12';
-        else if(stat <= 132 || (total && stat <= 600))
+        else if(stat <= 150 || (total && stat <= 660))
             return 'w-11/12';
         else
             return 'w-full';            

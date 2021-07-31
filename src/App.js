@@ -71,6 +71,7 @@ export default function App() {
     // Would require branch logic.
     // Possibly not worth it.
     'stockpile', 'swallow', 'spit',
+    // Would require reverse branch logic.
     // Lost or consumed held items.
     'recycle',
   ]);
@@ -86,20 +87,21 @@ export default function App() {
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk', 
-    // Would require branch logic.
+    // Would require branch logic.    
+    // Possibly not required.
+    // 'tough-claws', 'unseen-fist'    
+    // Move mechanic. All accounted for.
+    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',     
+    // Move type. All accounted for.
+    /* 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'sand-force', 'gale-wings', 
+    'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw', */
+    // Would require reverse branch logic.
     // Possibly not worth it.
     'multitype', 'rks', 
-    // Possibly not required.
-    // 'tough-claws', 'unseen-fist'
     // Lost or consumed held items.
     'pickup', 'unburden', 'pickpocket', 'magician',
-    // Move mechanic.
-    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',     
-    // Move type/category.
-    /* 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'prankster', 'sand-force', 'gale-wings', 
-    'dark-aura', 'fairy-aura', 'steelworker', 'galvanize', 'transistor', 'dragons-maw', */    
   ]);
-  // Check normalize, refrigerate, pixilate, aerilate, for type enhancement items.
+  // Check normalize, refrigerate, pixilate, 'galvanize', aerilate, for type enhancement items.
   const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
     'parental', 
   ]);
@@ -135,9 +137,6 @@ export default function App() {
   ]);
   const [terrainMoves] = useState([ // Terrain extender.
     'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
-  ]);
-  const [weatherMoves] = useState([ // Heat, smooth, icy and damp rock.
-    'sunny-day', 'rain-dance', 'sandstorm', 'hail'
   ]);
   const [barrierMoves] = useState([ // Light clay.
     'light-screen', 'reflect', 'aurora-veil'
@@ -177,9 +176,6 @@ export default function App() {
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
     'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
-  ]);
-  const [weatherAbilities] = useState([ // Heat, smooth, icy and damp rock.
-    'drought', 'drizzle', 'sand-stream', 'sand-spit', 'snow-warning'
   ]);
   const [orbAbilities] = useState([ // Toxic and flame orb.
     'guts', 'magic-guard', 'quick-feet', 'marvel-scale'
@@ -355,7 +351,8 @@ export default function App() {
           finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
           //console.log('final pokemon: '+finalPokemon);
   
-      } while (checkDuplicatedName(currentPokemons, finalPokemon))    
+      } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon))   
+      //console.log(finalPokemon); 
       newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
       return newPokemon.data
     };
@@ -446,23 +443,12 @@ export default function App() {
     return pokemonOptions.find(p => p.types.find(t => t.type.name === type));
   }, [pokemonOptions])
 
-  /* const getMovesetTypeUsabilityForAbilities = useCallback((type, currentAbilities) => {
-    let usable = false;
-
-    let abilitiesOfType = 0;
-    currentAbilities.forEach(ca => {
-      switch(type){
-        case 'fire':
-          abilitiesOfType += 1;
-          break;
-        default:
-          break;
-      }                      
-    });                      
-    usable = optionsData.movesetsPerType.find(mt => mt.name === type && abilitiesOfType < mt.movesets);
-
+  const getMovesetTypeUsabilityForAbilities = useCallback((types) => {
+    //console.log(types);
+    let usable = types.find(t => optionsData.usableTypes.includes(t));
+    //console.log(usable);
     return usable;
-  }, [optionsData]); */
+  }, [optionsData]);
 
   const getTypeFromEffect = useCallback((effect) => {
     return effect.replace(/-/g, " ").split(" ").find(keyword => optionsData.usableTypes.includes(keyword));
@@ -499,8 +485,6 @@ export default function App() {
           return moveNames.find(name => drainMoves.includes(name));
         case 'terrain':
           return moveNames.find(name => terrainMoves.includes(name));
-        case 'weather':        
-          return moveNames.find(name => weatherMoves.includes(name));
         case 'barrier':        
           return moveNames.find(name => barrierMoves.includes(name));
         case 'orb':        
@@ -523,7 +507,7 @@ export default function App() {
           return false;
       }    
     }
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, weatherMoves, barrierMoves, orbMoves, punchMoves, 
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, barrierMoves, orbMoves, punchMoves, 
       multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves]);
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
@@ -536,15 +520,13 @@ export default function App() {
       switch(mechanic){
         case 'terrain':
           return abilityNames.find(name => terrainAbilities.includes(name));      
-        case 'weather':
-          return abilityNames.find(name => weatherAbilities.includes(name));
         case 'orb':
           return abilityNames.find(name => orbAbilities.includes(name));
         default:
           return false;
       }    
     }
-  }, [abilityOptions, terrainAbilities, weatherAbilities, orbAbilities])
+  }, [abilityOptions, terrainAbilities, orbAbilities])
 
   useEffect(() => {
     let cancel = false;
@@ -605,6 +587,58 @@ export default function App() {
           case 'triage':
             // Check for heal moves.
             usable = getMoveMechanicUsability('heal');
+            break;          
+          case 'flash-fire':
+            // Check for fire moves.
+            usable = getMovesetTypeUsabilityForAbilities(['fire']);
+            break;
+          case 'blaze':
+            // Check for fire moves.
+            usable = getMovesetTypeUsabilityForAbilities(['fire']);
+            break;
+          case 'overgrow':
+            // Check for grass moves.
+            usable = getMovesetTypeUsabilityForAbilities(['grass']);
+            break;
+          case 'torrent':
+            // Check for water moves.
+            usable = getMovesetTypeUsabilityForAbilities(['water']);
+            break;
+          case 'swarm':
+            // Check for bug moves.
+            usable = getMovesetTypeUsabilityForAbilities(['bug']);
+            break;
+          case 'scrappy':
+            // Check for normal or fighting moves.
+            usable = getMovesetTypeUsabilityForAbilities(['normal', 'fighting']);
+            break;
+          case 'sand-force':
+            // Check for rock, ground and steel moves.
+            usable = getMovesetTypeUsabilityForAbilities(['rock', 'ground', 'steel']);
+            break;
+          case 'gale-wings':
+            // Check for flying moves.
+            usable = getMovesetTypeUsabilityForAbilities(['flying']);
+            break;
+          case 'dark-aura':
+            // Check for dark moves.
+            usable = getMovesetTypeUsabilityForAbilities(['dark']);
+            break;
+          case 'fairy-aura':
+            // Check for fairy moves.
+            usable = getMovesetTypeUsabilityForAbilities(['fairy']);
+            break;
+          case 'steelworker':
+            // Check for steel moves.
+            usable = getMovesetTypeUsabilityForAbilities(['steel']);
+            break;
+          case 'transistor':
+            // Check for electric moves.
+            usable = getMovesetTypeUsabilityForAbilities(['electric']);
+            break;
+          case 'dragons-maw':
+            // Check for dragon moves.
+            usable = getMovesetTypeUsabilityForAbilities(['dragon']);
             break;
           default:
             break;
@@ -620,7 +654,7 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow, 
-      getMoveMechanicUsability])
+      getMoveMechanicUsability, getMovesetTypeUsabilityForAbilities])
 
   useEffect(() => {
     let cancel = false;
@@ -715,7 +749,7 @@ export default function App() {
             break;
           case 'plates':
             // Check for movesets with that type.
-            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);
+            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);            
             break;
           case 'type-enhancement':
             // Check for movesets with that type.
