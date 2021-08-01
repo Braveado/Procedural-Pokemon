@@ -67,13 +67,18 @@ export default function App() {
     // Unusable in format.
     'natural', 'stuff', 'teatime', 
     // No effect.
-    'splash', 'celebrate', 'hands',
-    // BRANCH LOGIC.
-    // Possibly not worth it.
-    'stockpile', 'swallow', 'spit',
+    'splash', 'celebrate', 'hands', 'struggle',
+    // BRANCH LOGIC. All accounted for.
+    // Combo moves.
+    //'stockpile', 'swallow', 'spit',     
     // REVERSE BRANCH LOGIC.
+    // Held items.
+    'techno',
     // Lost or consumed held items.
-    'recycle',
+    'recycle',    
+  ]);
+  const [moveAllow] = useState([ // Include moves with this keywords even when excluded by filter.
+    'bug', 
   ]);
   const [moveStatusLimit] = useState(3); // Max number of status moves in a moveset.
   const [abilityFilter] = useState([ // Exclude abilities with this keywords.
@@ -97,7 +102,7 @@ export default function App() {
     // Move type changes.
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
     // REVERSE BRANCH LOGIC.
-    // Possibly not worth it.
+    // Held items.
     'multitype', 'rks', 
     // Lost or consumed held items.
     'pickup', 'unburden', 'pickpocket', 'magician',
@@ -116,7 +121,10 @@ export default function App() {
     'full', 'lagging', 'sticky', 'target',
     // BRANCH LOGIC. All accounted for.
     // Move or ability mechanic.
-    //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb' 
+    //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb', 
+    // REVERSE BRANCH LOGIC.
+    // Held items.
+    // 'memory', 'drive', 
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
     'herb', 'choice', 'bright', 'silver', 'silk'
@@ -413,15 +421,59 @@ export default function App() {
       let newMoveset = [];
       let move = '';
       let status = false;
-      let statusMoves = 0;    
+      let statusMoves = 0;  
+      let usable = true;  
+      let combo = '';
       
       for (let index = 0; index < randomRolls.moves; index++) {            
         do{        
-          move = moveList[Math.floor(Math.random()*moveList.length)];
+          if(combo){
+            move = {name: combo};
+            combo = '';
+          }
+          else
+            move = moveList[Math.floor(Math.random()*moveList.length)];
           move = await axios.get(`${apiUrl}move/${move.name}`);
-          status = move.data.damage_class && move.data.damage_class.name === 'status';        
-        } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter) ||
-                (status && statusMoves >= moveStatusLimit))
+          status = move.data.damage_class && move.data.damage_class.name === 'status'; 
+          usable = true;       
+
+          switch(move.data.name){            
+            case 'swallow':
+            case 'spit-up':
+              // Check space for combo moves.
+              if(!newMoveset.find(m => m.name === 'stockpile')){
+                usable = (randomRolls.moves - newMoveset.length) >= 2;
+                if(usable){
+                  if(move.data.name === 'swallow' && (moveStatusLimit - statusMoves) >= 2)
+                    combo = 'stockpile';
+                  else if(move.data.name === 'spit-up' && (moveStatusLimit - statusMoves) >= 1)
+                    combo = 'stockpile';
+                  else if((moveStatusLimit - statusMoves) <= 0)
+                    usable = false;
+                }                                  
+              }                          
+              //console.log(move.data.name+": "+usable);
+              break;              
+            case 'stockpile':
+              // Check space for combo moves.
+              if(!newMoveset.find(m => m.name === 'swallow') && !newMoveset.find(m => m.name === 'spit-up')){
+                usable = (randomRolls.moves - newMoveset.length) >= 2;
+                if(usable){
+                  if((moveStatusLimit - statusMoves) >= 2)
+                    combo = Math.random() < 0.5 ? 'swallow' : 'spit-up';
+                  else if((moveStatusLimit - statusMoves) >= 1)
+                    combo = 'spit-up';
+                  else if((moveStatusLimit - statusMoves) <= 0)
+                    usable = false;
+                }
+              }
+              //console.log(move.data.name+": "+usable);
+              break;
+            default:
+              break;
+          }
+        } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter, moveAllow) ||
+                (status && statusMoves >= moveStatusLimit) || !usable)
         move.data.selected = false;
         newMoveset.push(move.data);      
         if(status){
@@ -439,7 +491,7 @@ export default function App() {
       getMovesetOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveStatusLimit])
+  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveAllow, moveStatusLimit]);
 
   // Respond to moveset options generated completely.
   useEffect (() => {  
