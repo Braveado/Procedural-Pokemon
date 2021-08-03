@@ -76,7 +76,7 @@ export default function App() {
     //'stockpile', 'swallow', 'spit',     
     // Held items.
     //'techno', 'judgement',
-    // REVERSE BRANCH LOGIC.    
+    // REVERSE BRANCH LOGIC. All accounted for.
     // Need lost or consumed held items to work.
     //'recycle',  
   ]);
@@ -106,7 +106,7 @@ export default function App() {
     // 'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw',
     // Move type changes.
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
-    // REVERSE BRANCH LOGIC.
+    // REVERSE BRANCH LOGIC. All accounted for.
     // Need lost or consumed held items to work.
     // 'pickup', 'unburden', 'pickpocket', 'magician',
   ]);  
@@ -209,12 +209,23 @@ export default function App() {
     'x-scissor',
     'zen-headbutt', 'zing-zap', 'zippy-zap'
   ]);
+  const [consumableItemMoves] = useState([ // Consumable items.
+    'recycle'
+  ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
     'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
   ]);
   const [orbAbilities] = useState([ // Toxic and flame orb.
     'guts', 'magic-guard', 'quick-feet', 'marvel-scale'
+  ]);
+  const [consumableItemAbilities] = useState([ // Consumable items.
+    'pickup', 'unburden', 'pickpocket', 'magician'
+  ]);
+  // Items.
+  const [consumableItems] = useState([ // Consumable items.
+    'absorb-bulb', 'air-ballon', 'blunder-policy', 'cell-battery', 'eject-button' ,'electric-seed', 'focus-sash', 'grassy-seed',
+    'luminous-moss', 'mental-herb', 'misty-seed', 'power-herb', 'psychic-seed', 'red-card', 'white-herb', 'snowball', 'weakness-policy',
   ]);
 
   // Selections.
@@ -614,6 +625,13 @@ export default function App() {
     }
   }, [abilityOptions, terrainAbilities, orbAbilities])
 
+  const getReverseOption = useCallback((index) => {
+    if(optionsData.reverseOptions[index])
+      return optionsData.reverseOptions[index]
+    else
+      return null;      
+  }, [optionsData])
+
   useEffect(() => {
     let cancel = false;
 
@@ -792,12 +810,8 @@ export default function App() {
       let options =  movesetOptions.map(ms => ms.map(m => {return m.name}));
       options.push(abilityOptions.map(a => {return a.name}));
       options = [].concat.apply([], options);
-      if(options.find(opt => opt === 'techno-blast'))
-        rOptions.push('drive');
-      if(options.find(opt => opt === 'judgement'))
-        rOptions.push('plate');
-      if(options.some(opt => ['recycle', 'pickup', 'unburden', 'pickpocket', 'magician'].includes(opt)))
-        rOptions.push('no-item');
+      if(options.some(opt => [...consumableItemMoves, ...consumableItemAbilities].includes(opt)))
+        rOptions.push('consumable-item');
 
       if(!cancel){
         setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes, reverseOptions: rOptions} });     
@@ -805,16 +819,22 @@ export default function App() {
       }
     }    
     return () => cancel = true;
-  }, [generating, generationStep, movesetOptions, abilityOptions, randomRolls, optionsData]);
+  }, [generating, generationStep, movesetOptions, abilityOptions, randomRolls, optionsData, 
+      consumableItemMoves, consumableItemAbilities]);
 
   useEffect(() => {
     let cancel = false;
 
     // Get a set of item options.
     async function getItemOptions() {          
-      let items = [];            
+      let items = [];                  
       for (let index = 0; index < randomRolls.items; index++) {
-        const item = await getNewItem(items);
+        let itemType = getReverseOption(index);
+        let item = "";
+        if(itemType)
+          item = await getNewItem(items, itemType);
+        else
+          item = await getNewItem(items);
         items.push(item);
         if(!cancel)
           setItemOptions([...items]); 
@@ -824,12 +844,20 @@ export default function App() {
     }
 
     // Get a new item option.
-    async function getNewItem(currentItems) {    
+    async function getNewItem(currentItems, itemType) {    
       let newItem = '';    
       let usable = true; 
             
       do{        
-        let item = itemList[Math.floor(Math.random()*itemList.length)];      
+        let item = "";
+        switch(itemType){
+          case 'consumable-item':
+            item = {name: consumableItems[Math.floor(Math.random()*consumableItems.length)]};
+            break;
+          default:
+            item = itemList[Math.floor(Math.random()*itemList.length)];      
+            break;
+        }        
         newItem = await axios.get(`${apiUrl}item/${item.name}`);   
         usable = true;    
                                
@@ -903,8 +931,7 @@ export default function App() {
             usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems); 
             if(!usable){
               // Check for a specific move.
-              usable = getMoveMechanicUsability('', ['judgment']);    
-              console.log(usable);            
+              usable = getMoveMechanicUsability('', ['judgment']);              
             }            
             break;
           case 'type-enhancement':
@@ -937,8 +964,8 @@ export default function App() {
       getItemOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow,
-      getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability])
+  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, consumableItems,
+      getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability, getReverseOption])
 
   useEffect(() => {
     let cancel = false;

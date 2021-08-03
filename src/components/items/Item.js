@@ -30,7 +30,7 @@ export default function Item({item, index}) {
 
     const formatEffect = (effect) => {
         let formattedEffect = effect.split(".").filter(e => {
-            return !e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by")
+            return !e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by") && !e.includes("begets") && !e.includes("Egg")
         }).map(e => {
             return e.replace("Held: ", "")
         }).join(".");  
@@ -47,6 +47,12 @@ export default function Item({item, index}) {
                 break;
             case 'light-clay':
                 formattedEffect = formattedEffect.replace(" and Reflect", ", Reflect and Aurora Veil");
+                break;
+            case 'cell-battery':
+            case 'absorb-bulb':
+            case 'snowball':
+            case 'eject-button':
+                formattedEffect = formattedEffect.concat(" Consumed after use.");
                 break;
             default:
                 break;
