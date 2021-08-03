@@ -15,8 +15,8 @@ export default function App() {
   const pokemonCount = 898;
   const moveCount = 826;
   const abilityCount = 267;
-  const itemCount = [115, 9, 9, 6];
-  const itemOffset = [189, 581, 678, 844];
+  const itemCount = [115, 4, 9, 9, 6];
+  const itemOffset = [189, 562, 581, 678, 844];
   const typeCount = 18; 
 
   // ----- STATE -----
@@ -45,6 +45,7 @@ export default function App() {
   const [optionsData, setOptionsData] = useState({
     movesetsPerType: [],
     usableTypes: [],
+    reverseOptions: []
   });    
 
   // Filters.  
@@ -68,14 +69,16 @@ export default function App() {
     'natural', 'stuff', 'teatime', 
     // No effect.
     'splash', 'celebrate', 'hands', 'struggle',
+    // Specific pokemons.
+    'hyperspace'
     // BRANCH LOGIC. All accounted for.
     // Combo moves.
     //'stockpile', 'swallow', 'spit',     
-    // REVERSE BRANCH LOGIC.
     // Held items.
-    'techno',
-    // Lost or consumed held items.
-    'recycle',    
+    //'techno', 'judgement',
+    // REVERSE BRANCH LOGIC.    
+    // Need lost or consumed held items to work.
+    //'recycle',  
   ]);
   const [moveAllow] = useState([ // Include moves with this keywords even when excluded by filter.
     'bug', 
@@ -87,11 +90,13 @@ export default function App() {
     'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
     'medicine', 'one', 'symbiosis',
     // Pokemon forms specific.
-    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger', 'gulp',
+    'zen', 'stance', 'shields', 'schooling', 'bond', 'construct', 'face', 'hunger', 'gulp', 
     // Harmful to owner.
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk', 
+    // Specific pokemons.
+    'multitype', 'rks',
     // BRANCH LOGIC. All accounted for.
     // Move mechanic. 
     // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',
@@ -102,10 +107,8 @@ export default function App() {
     // Move type changes.
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
     // REVERSE BRANCH LOGIC.
-    // Held items.
-    'multitype', 'rks', 
-    // Lost or consumed held items.
-    'pickup', 'unburden', 'pickpocket', 'magician',
+    // Need lost or consumed held items to work.
+    // 'pickup', 'unburden', 'pickpocket', 'magician',
   ]);  
   const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
     'parental', 
@@ -122,9 +125,6 @@ export default function App() {
     // BRANCH LOGIC. All accounted for.
     // Move or ability mechanic.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb', 
-    // REVERSE BRANCH LOGIC.
-    // Held items.
-    // 'memory', 'drive', 
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
     'herb', 'choice', 'bright', 'silver', 'silk'
@@ -150,7 +150,7 @@ export default function App() {
     'light-screen', 'reflect', 'aurora-veil'
   ]);  
   const [orbMoves] = useState([ // Toxic and flame orb.
-    'facade', 'psycho-shift', 'switcheroo', 'trick', 'fling'
+    'facade', 'psycho-shift', 'switcheroo', 'trick', 'fling', 'bestow'
   ]);
   const [punchMoves] = useState([ // Iron fist.
     'bullet-punch', 'comet-punch', 'dizzy-punch', 'double-iron-bash', 'drain-punch', 'dynamic-punch', 'fire-punch', 'focus-punch',
@@ -280,6 +280,7 @@ export default function App() {
     setOptionsData({
       movesetsPerType: [],
       usableTypes: [],
+      reverseOptions: []
     });
     setGenerationStep(0);
     setGenerating(true);    
@@ -509,7 +510,8 @@ export default function App() {
         });
         msPerType.push(msInType);        
       });       
-      let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
+      let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});   
+
       if(!cancel){
         setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });      
         setGenerationStep(3);
@@ -754,9 +756,9 @@ export default function App() {
     let cancel = false;
 
     if(generating && generationStep === 4 && abilityOptions.length >= randomRolls.abilities){
-      let msPerType = optionsData.movesetsPerType;
-      
+
       // Check abilities that change move types.
+      let msPerType = optionsData.movesetsPerType;            
       msPerType.forEach(ms => {
         switch(ms.name){
           case 'normal':
@@ -782,16 +784,28 @@ export default function App() {
           default:          
             break;
         }
-      })                             
-      
+      })                                   
       let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
+
+      // Check for reverse branch logic options.    
+      let rOptions = []; 
+      let options =  movesetOptions.map(ms => ms.map(m => {return m.name}));
+      options.push(abilityOptions.map(a => {return a.name}));
+      options = [].concat.apply([], options);
+      if(options.find(opt => opt === 'techno-blast'))
+        rOptions.push('drive');
+      if(options.find(opt => opt === 'judgement'))
+        rOptions.push('plate');
+      if(options.some(opt => ['recycle', 'pickup', 'unburden', 'pickpocket', 'magician'].includes(opt)))
+        rOptions.push('no-item');
+
       if(!cancel){
-        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes} });     
+        setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes, reverseOptions: rOptions} });     
         setGenerationStep(5);
       }
     }    
     return () => cancel = true;
-  }, [generating, generationStep, abilityOptions, randomRolls, optionsData]);
+  }, [generating, generationStep, movesetOptions, abilityOptions, randomRolls, optionsData]);
 
   useEffect(() => {
     let cancel = false;
@@ -886,11 +900,29 @@ export default function App() {
             break;
           case 'plates':
             // Check for movesets with that type.
-            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);            
+            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems); 
+            if(!usable){
+              // Check for a specific move.
+              usable = getMoveMechanicUsability('', ['judgment']);    
+              console.log(usable);            
+            }            
             break;
           case 'type-enhancement':
             // Check for movesets with that type.
             usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);
+            break;
+          case 'species-specific':
+              switch(newItem.data.name){
+                case 'douse-drive':                                     
+                case 'shock-drive':
+                case 'burn-drive':
+                case 'chill-drive':                                               
+                  // Check for a specific move.
+                  usable = getMoveMechanicUsability('', ['techno-blast']);              
+                  break;
+                default:
+                  break;
+              }
             break;
           default:
             break;

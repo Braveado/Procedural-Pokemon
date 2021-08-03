@@ -11,7 +11,7 @@ export default function Move({move, moveset}) {
             return move.effect_entries.map((e, i) => {
                 return (
                     <p key={i} className="text-center">
-                        {e.short_effect.replace(/\$effect_chance/g, move.effect_chance)} {move.priority !== 0 ? 'Priority '+move.priority : ''}
+                        {formatEffect(e.short_effect)}                        
                     </p>
                 )
             })
@@ -27,6 +27,26 @@ export default function Move({move, moveset}) {
                 </p>
             )
         }
+    }
+
+    const formatEffect = (effect) => {
+        let formattedEffect = effect;
+        // Adjust specific items.      
+        switch(move.name){
+            case 'techno-blast':
+                formattedEffect = formattedEffect.replace('plate or ', '');
+                break;
+            case 'judgment':
+                formattedEffect = formattedEffect.replace(' or drive', '');
+                break;
+            default:
+                break;
+        }           
+        // Adjust general moves.
+        formattedEffect = formattedEffect.replace(/\$effect_chance/g, move.effect_chance);
+        if(move.priority !== 0)
+            formattedEffect = formattedEffect.concat(' Priority '+move.priority);
+        return formattedEffect;
     }
 
     return (

@@ -33,7 +33,8 @@ export default function Item({item, index}) {
             return !e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by")
         }).map(e => {
             return e.replace("Held: ", "")
-        }).join(".");        
+        }).join(".");  
+        // Adjust specific items.      
         switch(item.name){
             case 'shell-bell':                                
                 formattedEffect = formattedEffect.replace("receives", "heals");
@@ -50,6 +51,11 @@ export default function Item({item, index}) {
             default:
                 break;
         }        
+        // Adjust group items.
+        if(item.name.split("-").includes('plate'))
+            formattedEffect = formattedEffect.replace("Arceus's and ", "");
+        if(item.name.split("-").includes('drive'))
+            formattedEffect = formattedEffect.replace(" Techno Blast", "").replace("Grants Genesect", "Changes the holder's Techno Blast").replace("a yellow,", "to");
         return formattedEffect;
     }
 
