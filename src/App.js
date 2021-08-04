@@ -15,7 +15,7 @@ export default function App() {
   const pokemonCount = 898;
   const moveCount = 826;
   const abilityCount = 267;
-  const itemCount = [115, 4, 9, 9, 6];
+  const itemCount = [115, 4, 9, 9, 23];
   const itemOffset = [189, 562, 581, 678, 844];
   const typeCount = 18; 
 
@@ -57,7 +57,7 @@ export default function App() {
     // Pokemons and forms below 360 total stats.
     'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
     // Others.
-    'totem'
+    'totem', 'bond'
   ]);
   const [moveFilter] = useState ([ // Exclude moves with this keywords.
     // General max and z moves.
@@ -68,14 +68,14 @@ export default function App() {
     // Unusable in format.
     'natural', 'stuff', 'teatime', 
     // No effect.
-    'splash', 'celebrate', 'hands', 'struggle',
-    // Specific pokemons.
-    'hyperspace'
+    'splash', 'celebrate', 'hands', 'struggle',    
     // BRANCH LOGIC. All accounted for.
     // Combo moves.
     //'stockpile', 'swallow', 'spit',     
     // Held items.
     //'techno', 'judgement',
+    // Specific pokemons.
+    //'hyperspace'
     // REVERSE BRANCH LOGIC. All accounted for.
     // Need lost or consumed held items to work.
     //'recycle',  
@@ -94,9 +94,7 @@ export default function App() {
     // Harmful to owner.
     'truant', 'stall', 'klutz', 'slow', 'defeatist', 
     // Unusable in tournaments.
-    'anticipation', 'forewarn', 'frisk', 
-    // Specific pokemons.
-    'multitype', 'rks',
+    'anticipation', 'forewarn', 'frisk',     
     // BRANCH LOGIC. All accounted for.
     // Move mechanic. 
     // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',
@@ -106,6 +104,8 @@ export default function App() {
     // 'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw',
     // Move type changes.
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
+    // Specific pokemons.
+    //'multitype', 'rks',
     // REVERSE BRANCH LOGIC. All accounted for.
     // Need lost or consumed held items to work.
     // 'pickup', 'unburden', 'pickpocket', 'magician',
@@ -117,12 +117,14 @@ export default function App() {
     // Unusable in format.
     'power', 'scarf', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
     'pure', 'ability', 
-    // Evolution related or pokemon specific.    
-    'deep', 'scale', 'powder', 'dew', 'everstone', 'grade', 'punch', 'thick', 'stick', 'protector',
-    'disc', 'magmarizer', 'electirizer', 'reaper', 'whipped', 'sachet', 
+    // Evolution related or filtered pokemon specific.    
+    'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
+    'reaper', 'whipped', 'sachet', 
     // Harmful to user.
     'full', 'lagging', 'sticky', 'target',
     // BRANCH LOGIC. All accounted for.
+    // Pokemon specific.
+    // 'dew', 'thick', 'stick'
     // Move or ability mechanic.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb', 
   ]);
@@ -209,7 +211,7 @@ export default function App() {
     'x-scissor',
     'zen-headbutt', 'zing-zap', 'zippy-zap'
   ]);
-  const [consumableItemMoves] = useState([ // Consumable items.
+  const [consumableItemMoves] = useState([ // Consumable items. Reverse branch logic trigger.
     'recycle'
   ]);
   // Abilities.
@@ -219,13 +221,21 @@ export default function App() {
   const [orbAbilities] = useState([ // Toxic and flame orb.
     'guts', 'magic-guard', 'quick-feet', 'marvel-scale'
   ]);
-  const [consumableItemAbilities] = useState([ // Consumable items.
+  const [consumableItemAbilities] = useState([ // Consumable items. Reverse branch logic trigger.
     'pickup', 'unburden', 'pickpocket', 'magician'
   ]);
   // Items.
-  const [consumableItems] = useState([ // Consumable items.
-    'absorb-bulb', 'air-ballon', 'blunder-policy', 'cell-battery', 'eject-button' ,'electric-seed', 'focus-sash', 'grassy-seed',
+  const [consumableItems] = useState([ // Consumable items. Reverse branch logic.
+    'absorb-bulb', 'air-balloon', 'cell-battery', 'eject-button' ,'electric-seed', 'focus-sash', 'grassy-seed',
     'luminous-moss', 'mental-herb', 'misty-seed', 'power-herb', 'psychic-seed', 'red-card', 'white-herb', 'snowball', 'weakness-policy',
+  ]);  
+  const [plateItems] = useState([ // Plate items. Reverse branch logic.
+    'draco-plate', 'dread-plate', 'earth-plate', 'fist-plate', 'flame-plate', 'icicle-plate', 'insect-plate', 'iron-plate',
+    'meadow-plate', 'mind-plate', 'pixie-plate', 'sky-plate', 'splash-plate', 'spooky-plate', 'stone-plate', 'toxic-plate', 'zap-plate'
+  ]);  
+  const [memoryItems] = useState([ // Memory items. Reverse branch logic.
+    'bug-memory', 'dark-memory', 'dragon-memory', 'electric-memory', 'fairy-memory', 'fighting-memory', 'fire-memory', 'flying-memory',
+    'ghost-memory', 'grass-memory', 'ground-memory', 'ice-memory', 'poison-memory', 'psychic-memory', 'rock-memory', 'steel-memory', 'water-memory'
   ]);
 
   // Selections.
@@ -306,7 +316,7 @@ export default function App() {
       let shinyIndex = Math.round((Math.random()*100 / 12.5));
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
-        const pokemon = await getNewPokemon(pokemons)
+        const pokemon = await getNewPokemon(pokemons, index);
         const species = await axios.get(pokemon.species.url);
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
@@ -331,10 +341,10 @@ export default function App() {
       let newPokemon = '';
       let finalPokemon = '';
   
-      do {                
+      do {          
           let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
           //console.log('initial: '+pokemon.name);
-  
+
           const initialPokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
           const species = await axios.get(initialPokemon.data.species.url);
           const evolutions = await axios.get(species.data.evolution_chain.url);
@@ -411,6 +421,11 @@ export default function App() {
     return () => cancel = true;
   }, [generating, generationStep, pokemonList, randomRolls, pokemonFilter])
 
+  // Helper function for usability checks.
+  const getPokemonUsability = useCallback((pokemons) => {    
+    return pokemonOptions.find(p => pokemons.includes(p.name));
+  }, [pokemonOptions])
+
   useEffect(() => {
     let cancel = false;
 
@@ -480,6 +495,10 @@ export default function App() {
                 }
               }
               //console.log(move.data.name+": "+usable);
+              break;            
+            case 'hyperspace-fury':
+              // Check for specific pokemon.
+              usable = getPokemonUsability(['hoopa-unbound']);
               break;
             default:
               break;
@@ -503,7 +522,8 @@ export default function App() {
       getMovesetOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveAllow, moveStatusLimit]);
+  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveAllow, moveStatusLimit,
+      getPokemonUsability]);
 
   // Respond to moveset options generated completely.
   useEffect (() => {  
@@ -534,12 +554,11 @@ export default function App() {
   // Helper functions for usability checks.
   const getPokemonTypeUsability = useCallback((type) => {
     return pokemonOptions.find(p => p.types.find(t => t.type.name === type));
-  }, [pokemonOptions])
+  }, [pokemonOptions])  
 
   const getMovesetTypeUsability = useCallback((types) => {
     //console.log(types);
     let usable = types.find(t => optionsData.usableTypes.includes(t));
-    //console.log(usable);
     return usable;
   }, [optionsData]);
 
@@ -562,6 +581,44 @@ export default function App() {
     }
     return usable;
   }, [optionsData, getTypeFromEffect]);
+
+  const getSpecificOptionsUsabilityForItems = useCallback((moves, abilities, items, currentItems) => {
+    let usable = false;            
+    let maxOptions = 0;
+    let itemsOfType = 0;
+
+    // Get max options.
+    if(moves){      
+      movesetOptions.forEach(mo => {
+        if(mo.find(m => moves.includes(m.name)))
+          maxOptions += 1
+      });
+    }    
+    if(abilities){      
+      if(abilityOptions.find(a => abilities.includes(a.name)))
+        maxOptions += 1;
+    }                    
+    // Get current items.  
+    if(items){    
+      currentItems.forEach(ci => {                
+        if(ci.name.split('-').find(keyword => items.includes(keyword)))
+          itemsOfType += 1;
+      });    
+      usable = (itemsOfType < maxOptions);
+    }    
+    else{
+      // Specific case for plates.
+      // Get current items.
+      currentItems.forEach(ci => {        
+        if(ci.category.name === 'plates' &&
+          !optionsData.usableTypes.includes(getTypeFromEffect(ci.effect_entries.find(e => e.language.name === 'en').effect.toLowerCase())))
+          itemsOfType += 1;        
+      });
+      usable = (itemsOfType < maxOptions);
+    }
+
+    return usable;
+  }, [optionsData, movesetOptions, abilityOptions, getTypeFromEffect]);
 
   const getMoveMechanicUsability = useCallback((mechanic, exactMoves) => {
     let moveNames = movesetOptions.map(ms => { return ms.map(m => { return m.name } ) });
@@ -625,6 +682,7 @@ export default function App() {
     }
   }, [abilityOptions, terrainAbilities, orbAbilities])
 
+  // Helper funciton for usability checks.
   const getReverseOption = useCallback((index) => {
     if(optionsData.reverseOptions[index])
       return optionsData.reverseOptions[index]
@@ -753,6 +811,14 @@ export default function App() {
             // Check for contact moves.
             usable = getMoveMechanicUsability('contact');
             break; 
+          case 'multitype':
+            // Check for specific pokemon.
+            usable = getPokemonUsability(['arceus']);
+            break;
+          case 'rks-system':
+            // Check for specific pokemon.
+            usable = getPokemonUsability(['silvally']);
+            break;
           default:
             break;
         }                  
@@ -767,7 +833,7 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow, 
-      getMoveMechanicUsability, getMovesetTypeUsability]);
+      getMoveMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
 
   // Respond to ability options generated completely.
   useEffect (() => {  
@@ -805,13 +871,21 @@ export default function App() {
       })                                   
       let uTypes = msPerType.filter(t => t.movesets !== 0).map(t => {return t.name});     
 
-      // Check for reverse branch logic options.    
+      // Prepare options for possible reverse branch logic.
       let rOptions = []; 
       let options =  movesetOptions.map(ms => ms.map(m => {return m.name}));
       options.push(abilityOptions.map(a => {return a.name}));
-      options = [].concat.apply([], options);
-      if(options.some(opt => [...consumableItemMoves, ...consumableItemAbilities].includes(opt)))
-        rOptions.push('consumable-item');
+      options = [].concat.apply([], options);   
+
+      // Check for reverse branch logic options. 
+      options.forEach(opt => {
+        if(!rOptions.includes('consumable') && [...consumableItemMoves, ...consumableItemAbilities].includes(opt))
+          rOptions.push('consumable');
+        else if(!rOptions.includes('plate') && opt === 'multitype')
+          rOptions.push('plate');
+        else if(!rOptions.includes('memory') && opt === 'rks-system')
+          rOptions.push('memory');
+      });          
 
       if(!cancel){
         setOptionsData(s => {return {...s, movesetsPerType: msPerType, usableTypes: uTypes, reverseOptions: rOptions} });     
@@ -851,8 +925,14 @@ export default function App() {
       do{        
         let item = "";
         switch(itemType){
-          case 'consumable-item':
+          case 'consumable':
             item = {name: consumableItems[Math.floor(Math.random()*consumableItems.length)]};
+            break;
+          case 'plate':
+            item = {name: plateItems[Math.floor(Math.random()*plateItems.length)]};
+            break;
+          case 'memory':
+            item = {name: memoryItems[Math.floor(Math.random()*memoryItems.length)]};
             break;
           default:
             item = itemList[Math.floor(Math.random()*itemList.length)];      
@@ -927,17 +1007,18 @@ export default function App() {
             }
             break;
           case 'plates':
-            // Check for movesets with that type.
-            usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems); 
-            if(!usable){
-              // Check for a specific move.
-              usable = getMoveMechanicUsability('', ['judgment']);              
-            }            
+            // Check for movesets with that type, a specific move or a specific ability.
+            usable = (getMovesetTypeUsabilityForItems(newItem.data, currentItems) ||
+                      getSpecificOptionsUsabilityForItems(['judgment'], ['multitype'], '', currentItems));
+            break;
+          case 'memories':                        
+            // Check for a specific move or a specific ability.            
+            usable = getSpecificOptionsUsabilityForItems(['multi-attack'], ['rks-system'], ['memory'], currentItems);
             break;
           case 'type-enhancement':
             // Check for movesets with that type.
             usable = getMovesetTypeUsabilityForItems(newItem.data, currentItems);
-            break;
+            break;            
           case 'species-specific':
               switch(newItem.data.name){
                 case 'douse-drive':                                     
@@ -945,7 +1026,19 @@ export default function App() {
                 case 'burn-drive':
                 case 'chill-drive':                                               
                   // Check for a specific move.
-                  usable = getMoveMechanicUsability('', ['techno-blast']);              
+                  usable = getSpecificOptionsUsabilityForItems(['techno-blast'], '', ['drive'], currentItems);
+                  break;
+                case 'stick':
+                  // Check for a specific pokemon.
+                  usable = getPokemonUsability(['sirfetchd']);
+                  break;
+                case 'thick-club':
+                  // Check for a specific pokemon.
+                  usable = getPokemonUsability(['marowak', 'marowak-alola']);
+                  break;
+                case 'soul-dew':
+                  // Check for a specific pokemon.
+                  usable = getPokemonUsability(['latios', 'latias']);
                   break;
                 default:
                   break;
@@ -964,8 +1057,9 @@ export default function App() {
       getItemOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, consumableItems,
-      getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability, getReverseOption])
+  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, consumableItems, plateItems, memoryItems,
+      getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability,
+      getReverseOption, getSpecificOptionsUsabilityForItems, getPokemonUsability])
 
   useEffect(() => {
     let cancel = false;

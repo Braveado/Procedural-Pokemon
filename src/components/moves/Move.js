@@ -39,6 +39,9 @@ export default function Move({move, moveset}) {
             case 'judgment':
                 formattedEffect = formattedEffect.replace(' or drive', '');
                 break;
+            case 'multi-attack':
+                formattedEffect = formattedEffect.replace('plate or drive', 'memory');
+                break;
             default:
                 break;
         }           

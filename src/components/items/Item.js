@@ -59,7 +59,9 @@ export default function Item({item, index}) {
         }        
         // Adjust group items.
         if(item.name.split("-").includes('plate'))
-            formattedEffect = formattedEffect.replace("Arceus's and ", "");
+            formattedEffect = formattedEffect.replace("Arceus's and", "Arceus with multitype and");
+        if(item.name.split("-").includes('memory'))
+            formattedEffect = formattedEffect.replace("Silvally to", "Silvally with RKS System to");
         if(item.name.split("-").includes('drive'))
             formattedEffect = formattedEffect.replace(" Techno Blast", "").replace("Grants Genesect", "Changes the holder's Techno Blast").replace("a yellow,", "to");
         return formattedEffect;

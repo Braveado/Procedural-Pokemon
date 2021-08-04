@@ -11,7 +11,7 @@ export default function Ability({ability, index}) {
         if(effect) {            
             return (
                 <p className="text-center">
-                    {effect.short_effect}
+                    {formatEffect(effect.short_effect)} 
                 </p>
             )            
         }
@@ -26,6 +26,24 @@ export default function Ability({ability, index}) {
                 </p>
             )
         }
+    }
+
+    const formatEffect = (effect) => {
+        let formattedEffect = effect;
+        // Adjust specific items.      
+        switch(ability.name){
+            case 'sand-stream':
+            case 'drizzle':
+            case 'snow-warning':
+            case 'drought':
+                formattedEffect = formattedEffect.replace('indefinitely', '5 turns');
+                break;            
+            default:
+                break;
+        }           
+        // Adjust general abilities.
+        
+        return formattedEffect;
     }
 
     return (
