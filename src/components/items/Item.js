@@ -64,6 +64,8 @@ export default function Item({item, index}) {
             formattedEffect = formattedEffect.replace("Silvally to", "Silvally with RKS System to");
         if(item.name.split("-").includes('drive'))
             formattedEffect = formattedEffect.replace(" Techno Blast", "").replace("Grants Genesect", "Changes the holder's Techno Blast").replace("a yellow,", "to");
+        if(item.name.split("-").includes('gem'))
+            formattedEffect = formattedEffect.replace("5", "3");
         return formattedEffect;
     }
 

@@ -42,6 +42,9 @@ export default function Move({move, moveset}) {
             case 'multi-attack':
                 formattedEffect = formattedEffect.replace('plate or drive', 'memory');
                 break;
+            case 'hidden-power':
+                formattedEffect = "Inflicts regular damage with no additional effect.";
+                break;
             default:
                 break;
         }           
