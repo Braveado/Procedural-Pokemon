@@ -34,7 +34,7 @@ export default function App() {
   const [randomRolls] = useState({
     pokemons: 9,
     movesets: 6,
-    moves: 50,
+    moves: 6,
     abilities: 9,
     items: 9
   });
@@ -69,7 +69,7 @@ export default function App() {
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
     // Unusable in format.
-    'natural', 'stuff', 'teatime', 
+    'natural', 'stuff', 'teatime', 'happy',
     // No effect.
     'splash', 'celebrate', 'hands', 'struggle',    
     // BRANCH LOGIC. All accounted for.
@@ -92,10 +92,8 @@ export default function App() {
     'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
     'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
     'medicine', 'one', 'symbiosis',
-    // Pokemon forms specific.
-    'schooling', 
-    // Harmful to owner.
-    'truant', 'stall', 'klutz', 'slow', 'defeatist', 
+    // Filtered pokemon forms specific.
+    'schooling',      
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk',     
     // BRANCH LOGIC. All accounted for.
@@ -111,6 +109,8 @@ export default function App() {
     // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
     // Specific pokemons.
     //'multitype', 'rks',
+    // Harmful to owner.
+    //'truant', 'stall', 'klutz', 'slow', 'defeatist',
     // REVERSE BRANCH LOGIC. All accounted for.
     // Need lost or consumed held items to work.
     // 'pickup', 'unburden', 'pickpocket', 'magician',
@@ -120,21 +120,21 @@ export default function App() {
   ]);
   const [itemFilter] = useState([ // Exclude items with this keywords.
     // Unusable in format.
-    'power', 'scarf', 'ball', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
+    'power', 'scarf', 'smoke', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
     'pure', 'ability', 
     // Evolution related or filtered pokemon specific.    
     'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
-    'reaper', 'whipped', 'sachet', 
-    // Harmful to user.
-    'full', 'lagging', 'sticky', 'target',
+    'reaper', 'whipped', 'sachet', 'light',    
     // BRANCH LOGIC. All accounted for.
     // Pokemon specific.
     // 'dew', 'thick', 'stick'
     // Move or ability mechanic.
     //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb', 
+    // Harmful to user.
+    //'full', 'lagging', 'sticky', 'target', 'iron'
   ]);
   const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'silk'
+    'herb', 'choice', 'bright', 'silver', 'silk', 'clay'
   ]);
 
   // Usability.  
@@ -157,7 +157,7 @@ export default function App() {
     'light-screen', 'reflect', 'aurora-veil'
   ]);  
   const [orbMoves] = useState([ // Toxic and flame orb.
-    'facade', 'psycho-shift', 'switcheroo', 'trick', 'fling', 'bestow'
+    'facade', 'psycho-shift'
   ]);
   const [punchMoves] = useState([ // Iron fist.
     'bullet-punch', 'comet-punch', 'dizzy-punch', 'double-iron-bash', 'drain-punch', 'dynamic-punch', 'fire-punch', 'focus-punch',
@@ -219,6 +219,12 @@ export default function App() {
   const [consumableItemMoves] = useState([ // Consumable items. Reverse branch logic trigger.
     'recycle'
   ]);
+  const [badItemMoves] = useState([ // Bad items.
+    'bestow', 'fling', 'switcheroo', 'trick'
+  ]);
+  const [badAbilityMoves] = useState([ // Bad abilities.
+    'entrainment', 'skill-swap'
+  ]);
   // Abilities.
   const [terrainAbilities] = useState([ // Terrain extender.
     'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
@@ -228,7 +234,7 @@ export default function App() {
   ]);
   const [consumableItemAbilities] = useState([ // Consumable items. Reverse branch logic trigger.
     'pickup', 'unburden', 'pickpocket', 'magician'
-  ]);
+  ]);  
   // Items.
   const [consumableItems] = useState([ // Consumable items. Reverse branch logic.
     'absorb-bulb', 'air-balloon', 'cell-battery', 'eject-button' ,'electric-seed', 'focus-sash', 'grassy-seed',
@@ -681,12 +687,16 @@ export default function App() {
           return moveNames.find(name => healMoves.includes(name));
         case 'contact':        
           return moveNames.find(name => contactMoves.includes(name));
+        case 'bad-item':        
+          return moveNames.find(name => badItemMoves.includes(name));
+        case 'bad-ability':        
+          return moveNames.find(name => badAbilityMoves.includes(name));
         default:
           return false;
       }    
     }
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, barrierMoves, orbMoves, punchMoves, 
-      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves, contactMoves]);
+  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, barrierMoves, orbMoves, punchMoves, badItemMoves,
+      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves, contactMoves, badAbilityMoves]);
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
@@ -887,6 +897,14 @@ export default function App() {
             // Check for specific pokemon.
             usable = (getPokemonUsability(['cramorant']) && getMoveMechanicUsability('', ['surf', 'dive']));
             break;
+          case 'truant':
+          case 'stall':
+          case 'klutz':
+          case 'slow-start':
+          case 'defeatist': 
+            // Check for bad abilities.
+            usable = getMoveMechanicUsability('bad-ability');
+            break;
           default:
             break;
         }                  
@@ -1055,7 +1073,11 @@ export default function App() {
               case 'light-clay':                
                 // Check for barrier moves.
                 usable = getMoveMechanicUsability('barrier');                
-                break;              
+                break;    
+              case 'ring-target':                
+                // Check for bad item moves.
+                usable = getMoveMechanicUsability('bad-item');
+                break;            
               default:
                 break;
             }
@@ -1064,12 +1086,21 @@ export default function App() {
             switch(newItem.data.name){
               case 'toxic-orb':                   
                 // Check for orb moves or abilities.
-                usable = (getMoveMechanicUsability('orb') || getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['poison-heal', 'toxic-boost']));                                          
+                usable = (getMoveMechanicUsability('orb') || getMoveMechanicUsability('bad-item') || 
+                          getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['poison-heal', 'toxic-boost']));                                          
                 break;
               case 'flame-orb':                                               
                 // Check for orb moves or abilities.
-                usable = (getMoveMechanicUsability('orb') || getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['flare-boost']));                
+                usable = (getMoveMechanicUsability('orb') || getMoveMechanicUsability('bad-item') || 
+                          getAbilityMechanicUsability('orb') || getAbilityMechanicUsability('', ['flare-boost']));                
                 break;
+              case 'iron-ball':
+              case 'lagging-tail':
+              case 'sticky-barb':
+              case 'full-incense': 
+                // Check for bad item moves.
+                usable = getMoveMechanicUsability('bad-item');
+                break; 
               default:
                 break;
             }
