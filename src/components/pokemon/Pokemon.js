@@ -37,9 +37,9 @@ export default function Pokemon({pokemon}) {
             </div>
             <PokemonStats stats={pokemon.stats}/> 
             <div className="flex w-full justify-between items-center text-xs">
-                <p>{pokemon.height/10}m</p>
-                <p>{pokemon.weight/10}kg</p>
-                <p className="text-base">{getGenders()}</p>
+                <p className="" data-tip data-for={'height'}>{pokemon.height/10}m</p>
+                <p className="" data-tip data-for={'weight'}>{pokemon.weight/10}kg</p>
+                <p className="text-base" data-tip data-for={'gender'}>{getGenders()}</p>
             </div>                       
         </div>
     )

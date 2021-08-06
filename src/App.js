@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Home from './containers/Home';
 import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
+import Tooltips from './components/Tooltips';
 
 export default function App() {
   // ----- CONSTANTS -----
@@ -69,7 +70,7 @@ export default function App() {
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
     // Unusable in format.
-    'natural', 'stuff', 'teatime', 'happy',
+    'natural', 'stuff', 'teatime', 'happy', 'belch',
     // No effect.
     'splash', 'celebrate', 'hands', 'struggle',    
     // BRANCH LOGIC. All accounted for.
@@ -1595,7 +1596,7 @@ export default function App() {
       <div className="bg-gray-100 min-h-screen">
         <Router basename="/React-Procedural-Pokemon">           
           <div className="flex flex-col">
-            <Navbar />             
+            <Navbar />                         
             <Switch>          
               <Route path="/about">
                 <About />
@@ -1612,7 +1613,7 @@ export default function App() {
                   generateOptions={generateOptions}                
                   clearChoices={clearChoices}
                   exportTeam={exportTeam}
-                />
+                />                
               </Route>
               <Route path="/">
                 <Home />
@@ -1625,7 +1626,8 @@ export default function App() {
         position="bottom-right"
         reverseOrder={false}
         gutter={8}
-      />
+      />    
+      <Tooltips />  
     </TeamBuilderContext.Provider>
   );
 }

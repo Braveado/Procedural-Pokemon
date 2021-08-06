@@ -34,7 +34,7 @@ export default function PokemonOptions({ options }) {
             <div className={`flex flex-wrap justify-center items-start gap-4 p-4 w-full border-2 rounded-md border-gray-200 transition duration-150 ease-in-out
                 ${context.selectionsMade.pokemons >= context.selectionsNeeded.pokemons ? 'border-green-200 ring ring-green-100' : ''}`}>
                 {setOptions()}
-            </div>
+            </div>            
         </div>
     );    
 }

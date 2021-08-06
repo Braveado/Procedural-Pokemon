@@ -56,17 +56,17 @@ export default function PokemonStats({stats}) {
         <div className="flex flex-col justify-center items-start w-full text-sm">
             {stats.map((s, i) => {
                 return (
-                    <div key={i} className="flex w-full">
+                    <div key={i} className="flex w-full" data-tip data-for={'stat-'+i.toString()}>
                         <div className="flex w-1/2">
-                            <p className="w-10">{getStatName(i)}:</p>
-                            <p>{s.base_stat}</p>                                        
+                            <p className="w-1/2">{getStatName(i)}:</p>
+                            <p className="w-1/2">{s.base_stat}</p>                                        
                         </div>
                         <div className="flex w-1/2">
                             <div className={`flex ${getStatColor(i)} rounded-md my-1 ${getStatWidth(s.base_stat, (i === stats.length - 1))}`}/>
                         </div>
                     </div>
                 )
-            })}                            
+            })}                                        
         </div>
     )
 }
