@@ -4,30 +4,7 @@ import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
 
 export default function Move({move, moveset}) {
-    const context = React.useContext(TeamBuilderContext);
-
-    const getEffects = () => {
-        if(move.effect_entries.length > 0) {
-            return move.effect_entries.map((e, i) => {
-                return (
-                    <p key={i} className="text-center">
-                        {formatEffect(e.short_effect)}                        
-                    </p>
-                )
-            })
-        }
-        else {
-            return (
-                <p className="text-center flex flex-col">
-                    No available effect entries from PokeAPI.
-                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank" rel="noreferrer"
-                        className="text-blue-400 hover:text-blue-500">
-                        Check the move in Bulbapedia.
-                    </a>
-                </p>
-            )
-        }
-    }
+    const context = React.useContext(TeamBuilderContext);            
 
     const formatEffect = (effect) => {
         let formattedEffect = effect;
@@ -53,6 +30,29 @@ export default function Move({move, moveset}) {
         if(move.priority !== 0)
             formattedEffect = formattedEffect.concat(' Priority '+move.priority);
         return formattedEffect;
+    }    
+
+    const formattedEffect = move.effect_entries.length > 0 ? formatEffect(move.effect_entries.find(e => e.language.name === "en").short_effect) : null;
+
+    const getEffect = () => {
+        if(formattedEffect) {
+            return(
+                <p className="text-center">
+                    {formattedEffect}
+                </p>
+            )
+        }
+        else {
+            return (
+                <p className="text-center flex flex-col">
+                    No available effect entries from PokeAPI.
+                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank" rel="noreferrer"
+                        className="text-blue-400 hover:text-blue-500">
+                        Check the move in Bulbapedia.
+                    </a>
+                </p>
+            )
+        }
     }
 
     return (
@@ -71,13 +71,9 @@ export default function Move({move, moveset}) {
                 <p data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
                 <p data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
-            <div className="flex flex-col justify-start items-center text-sm w-full">
-                {getEffects()}
+            <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+                {getEffect()}
             </div>
-            {/* <div className="flex justify-center items-center text-xs w-full gap-2">
-                {move.priority !== 0 ? 'Priority: '+move.priority : ''}
-                {move.meta && move.meta.crit_rate !== 0 ? 'CR: '+move.meta.crit_rate : ''}
-            </div> */}
         </div>
     )
 }

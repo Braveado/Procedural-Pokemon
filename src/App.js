@@ -70,7 +70,8 @@ export default function App() {
     'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
     'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
     // Unusable in format.
-    'natural', 'stuff', 'teatime', 'happy', 'belch',
+    'natural', 'stuff', 'teatime', 'happy', 'belch', 'return', 'frustration', 'gear', 'spotlight', 'helping', 'aromatic',
+    'coaching',
     // No effect.
     'splash', 'celebrate', 'hands', 'struggle',    
     // BRANCH LOGIC. All accounted for.
@@ -85,7 +86,7 @@ export default function App() {
     //'recycle',  
   ]);
   const [moveAllow] = useState([ // Include moves with this keywords even when excluded by filter.
-    'bug', 
+    'bug', 'grind', 'shift'
   ]);
   const [moveStatusLimit] = useState(3); // Max number of status moves in a moveset.
   const [abilityFilter] = useState([ // Exclude abilities with this keywords.
@@ -1525,6 +1526,64 @@ export default function App() {
     ));
   }
 
+  // Get data to show on tooltip from an effect.
+  const getTooltipData = (effect) => {
+    if(!effect)
+      return null;
+
+    let formattedEffect = effect.toLowerCase().replace(/\./g, "").replace(/,/g, "");
+    let tooltipData=[];    
+    // General.
+    formattedEffect.split(" ").forEach(e => {
+      switch(e){
+        case 'priority':
+          tooltipData.push("Priority|Higher priority moves are performed first.");
+          break;
+        case 'critical':
+          tooltipData.push("Critical Hit|Deals 1.5x the damage. The attacker's negative stat stages and the defender's positive stat stages and screen-creating moves are ignored.");
+          break;
+        case 'stage':
+        case 'stages':
+          tooltipData.push("Stages|Modifies a stat by 50% each. Max 6 or -6 stages per stat.");
+          break;
+        case 'flinch':
+          tooltipData.push("Flinch|Unable to attack for that turn.");
+          break;
+        case 'confuse':
+        case 'confuses':
+          tooltipData.push("Confusion|33% chance of attacking itself instead of executing a move for 2-5 turns. Volatile status condition.");
+          break;
+        case 'paralyzes':
+        case 'paralyze':
+        case 'paralyzed':
+          tooltipData.push("Paralysis|50% speed reduction and 25% chance of losing each turn. Non-volatile status condition.");
+          break;
+        case 'freeze':
+          tooltipData.push("Freeze|Unable to make a move and 20% chance of being thawed out each turn. Non-volatile status condition.");
+          break;
+        case 'burn':
+        case 'burns':
+        case 'burned':
+          tooltipData.push("Burn|Takes 1/16 max HP as damage every turn and halves damage dealt with physical moves. Non-volatile status condition.");
+          break;
+        case 'poisoned':
+          tooltipData.push("Poison|Takes 1/8 max HP as damage every turn. Non-volatile status condition.");
+          tooltipData.push("Badly Poison|Takes increaseing max HP damage every turn, increased by 1/16 each turn. Non-volatile status condition.");
+          break;
+        default:
+          break;
+      }
+    });
+    // Specific.
+    if(formattedEffect.includes("scatters spikes"))
+      tooltipData.push("Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6 or 1/4 max HP).");
+    else if(formattedEffect.includes("causes damage when opposing pokémon switch in"))
+      tooltipData.push("Stealth Rock|Damages foes when they switch in based on the effectivenes of Rock type against them (from 1/32 to 1/2 max HP).");
+
+    return tooltipData.join('+');
+    //return "header|content+anotherHeader|anotherContent";
+  }
+
   // Create an export of the team.
   const exportTeam = () => {
     if(Object.values(sectionsCompleted).every(val => val)) {
@@ -1591,7 +1650,8 @@ export default function App() {
       selectionsMade: selectionsMade,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
-      assignPokemon: assignPokemon
+      assignPokemon: assignPokemon,
+      getTooltipData: getTooltipData
     }}>
       <div className="bg-gray-100 min-h-screen">
         <Router basename="/React-Procedural-Pokemon">           
@@ -1612,7 +1672,7 @@ export default function App() {
                   generating={generating}
                   generateOptions={generateOptions}                
                   clearChoices={clearChoices}
-                  exportTeam={exportTeam}
+                  exportTeam={exportTeam}                  
                 />                
               </Route>
               <Route path="/">

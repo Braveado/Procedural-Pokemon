@@ -22,15 +22,15 @@ export default function TeamBuilder({
             return (
                 <>
                     <button type="button" onClick={() => clearChoices()}
-                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className="flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Clear Choices
                     </button>
                     <button type="button" onClick={() => generateOptions()}
-                        className="animate-enter flex items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
+                        className="flex items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
                         Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="animate-enter relative flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className="relative flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
                         Export Team
                         {/* <div className="absolute right-2 rounded-full bg-green-100 p-1 text-2xl"><BiExport className="text-green-300" /></div> */}
                     </button>

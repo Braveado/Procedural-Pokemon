@@ -6,12 +6,34 @@ export default function Ability({ability, index}) {
     const context = React.useContext(TeamBuilderContext);
     const selected = context.pokemonOptions.find(p => p.ability === index);
 
-    const getEffects = () => {
-        const effect = ability.effect_entries.find(e => e.language.name === 'en');
-        if(effect) {            
+    const formatEffect = (effect) => {
+        let formattedEffect = effect;
+        // Adjust specific items.      
+        switch(ability.name){
+            case 'sand-stream':
+            case 'drizzle':
+            case 'snow-warning':
+            case 'drought':
+                formattedEffect = formattedEffect.replace('indefinitely', '5 turns');
+                break;
+            case 'aroma-veil':
+                formattedEffect = formattedEffect.replace('allies', 'user and allies');
+                break;
+            default:
+                break;
+        }           
+        // Adjust general abilities.
+        
+        return formattedEffect;
+    }
+
+    const formattedEffect = ability.effect_entries.length > 0 ? formatEffect(ability.effect_entries.find(e => e.language.name === 'en').short_effect) : null;
+
+    const getEffect = () => {        
+        if(formattedEffect) {            
             return (
                 <p className="text-center">
-                    {formatEffect(effect.short_effect)} 
+                    {formattedEffect} 
                 </p>
             )            
         }
@@ -26,25 +48,7 @@ export default function Ability({ability, index}) {
                 </p>
             )
         }
-    }
-
-    const formatEffect = (effect) => {
-        let formattedEffect = effect;
-        // Adjust specific items.      
-        switch(ability.name){
-            case 'sand-stream':
-            case 'drizzle':
-            case 'snow-warning':
-            case 'drought':
-                formattedEffect = formattedEffect.replace('indefinitely', '5 turns');
-                break;            
-            default:
-                break;
-        }           
-        // Adjust general abilities.
-        
-        return formattedEffect;
-    }
+    }    
 
     return (
         <div className="animate-enter flex flex-col justify-start items-end">
@@ -59,8 +63,8 @@ export default function Ability({ability, index}) {
                     <div className="flex justify-center items-center w-full gap-2">
                         <p className="capitalize">{ability.name.replace(/-/g, " ")}</p>                
                     </div>            
-                    <div className="flex flex-col justify-start items-center text-sm w-full">
-                        {getEffects()}
+                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+                        {getEffect()}
                     </div>            
                 </div>
             </div>

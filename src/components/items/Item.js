@@ -5,29 +5,7 @@ import SelectedPokemon from '../pokemon/SelectedPokemon';
 export default function Item({item, index}) {
     const context = React.useContext(TeamBuilderContext);
     const selected = context.pokemonOptions.find(p => p.item === index);
-
-    const getEffects = () => {
-        const effect = item.effect_entries.find(e => e.language.name === 'en');
-        if(effect) {                
-            return (
-                <p className="text-center">
-                    {formatEffect(effect.short_effect)}  
-                </p>
-            )            
-        }
-        else {
-            return (
-                <p className="text-center flex flex-col">
-                    No available effect entries from PokeAPI.
-                    {/* <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${ability.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(Ability)`} target="_blank" rel="noreferrer"
-                        className="text-blue-400 hover:text-blue-500">
-                        Check the item in Bulbapedia.
-                    </a> */}
-                </p>
-            )
-        }
-    }
-
+    
     const formatEffect = (effect) => {
         let formattedEffect = effect.split(".").filter(e => {
             return !e.includes("Breeding:") && !e.includes("Traded on") && !e.includes("Held by") && !e.includes("begets") && !e.includes("Egg")
@@ -69,6 +47,29 @@ export default function Item({item, index}) {
         return formattedEffect;
     }
 
+    const formattedEffect = item.effect_entries.length > 0 ? formatEffect(item.effect_entries.find(e => e.language.name === 'en').short_effect) : null;
+
+    const getEffect = () => {        
+        if(formattedEffect) {                
+            return (
+                <p className="text-center">
+                    {formattedEffect}  
+                </p>
+            )            
+        }
+        else {
+            return (
+                <p className="text-center flex flex-col">
+                    No available effect entries from PokeAPI.
+                    {/* <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${ability.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(Ability)`} target="_blank" rel="noreferrer"
+                        className="text-blue-400 hover:text-blue-500">
+                        Check the item in Bulbapedia.
+                    </a> */}
+                </p>
+            )
+        }
+    }
+
     return (
         <div className="animate-enter flex flex-col justify-start items-end">
             {/* <div className="flex w-full justify-start items-center">
@@ -83,8 +84,8 @@ export default function Item({item, index}) {
                         <img src={item.sprites.default} alt="" width="30px" height="30px"/>
                         <p className="capitalize">{item.name.replace(/-/g, " ")}</p>                
                     </div>            
-                    <div className="flex flex-col justify-start items-center text-sm w-full">
-                        {getEffects()}
+                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+                        {getEffect()}
                     </div>            
                 </div>
             </div>
