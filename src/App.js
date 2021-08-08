@@ -3,8 +3,10 @@ import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { TeamBuilderContext } from './context/TeamBuilderContext';
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Footer from './components/Footer';
 import Home from './containers/Home';
+import Format from './containers/Format';
 import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
 import Tooltips from './components/Tooltips';
@@ -1594,33 +1596,41 @@ export default function App() {
       selectMove: selectMove,
       assignPokemon: assignPokemon
     }}>
-      <div className="bg-gray-100 min-h-screen">
-        <Router basename="/React-Procedural-Pokemon">           
-          <div className="flex flex-col">
-            <Navbar />                         
-            <Switch>          
-              <Route path="/about">
-                <About />
-              </Route>
-              <Route path="/builder">        
-                <TeamBuilder
-                  loading={loading}
-                  randomRolls={randomRolls}
-                  pokemonOptions={pokemonOptions}
-                  movesetOptions={movesetOptions}
-                  abilityOptions={abilityOptions}
-                  itemOptions={itemOptions}
-                  generating={generating}
-                  generateOptions={generateOptions}                
-                  clearChoices={clearChoices}
-                  exportTeam={exportTeam}                  
-                />                
-              </Route>
-              <Route path="/">
-                <Home />
-              </Route>          
-            </Switch>
-          </div> 
+      <div className="bg-gray-100 bg-unown-pattern min-h-screen">
+        <Router basename="/React-Procedural-Pokemon">
+          <div className="flex w-full">
+            <div className="h-screen sticky top-0">
+              <Sidebar />
+            </div>
+            <div className="w-full flex flex-col">
+              <Switch>          
+                <Route path="/format">
+                  <Format />
+                </Route>
+                <Route path="/builder">        
+                  <TeamBuilder
+                    loading={loading}
+                    randomRolls={randomRolls}
+                    pokemonOptions={pokemonOptions}
+                    movesetOptions={movesetOptions}
+                    abilityOptions={abilityOptions}
+                    itemOptions={itemOptions}
+                    generating={generating}
+                    generateOptions={generateOptions}                
+                    clearChoices={clearChoices}
+                    exportTeam={exportTeam}                  
+                  />                                  
+                </Route>
+                <Route path="/about">
+                  <About />
+                </Route>
+                <Route path="/">
+                  <Home />
+                </Route>          
+              </Switch>
+              <Footer />
+            </div>
+          </div>           
         </Router>      
       </div>
       <Toaster

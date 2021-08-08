@@ -42,7 +42,10 @@ module.exports = {
         wiggle: 'wiggle 5s ease-in-out infinite',
         enter: 'enter 200ms ease-in-out',
         leave: 'leave 4s ease-in-out',
-      }
+      },
+      backgroundImage: theme => ({
+        'unown-pattern': "url('/src/assets/unown-pattern3.png')"
+      })
     }
   },
   variants: {
