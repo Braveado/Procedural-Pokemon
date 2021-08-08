@@ -26,6 +26,9 @@ export default function Item({item, index}) {
             case 'light-clay':
                 formattedEffect = formattedEffect.replace(" and Reflect", ", Reflect and Aurora Veil");
                 break;
+            case 'toxic-orb':
+                formattedEffect = formattedEffect.replace("Inflicts Toxic on", "Badly poisons");
+                break;
             case 'cell-battery':
             case 'absorb-bulb':
             case 'snowball':
@@ -84,7 +87,7 @@ export default function Item({item, index}) {
                         <img src={item.sprites.default} alt="" width="30px" height="30px"/>
                         <p className="capitalize">{item.name.replace(/-/g, " ")}</p>                
                     </div>            
-                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                         {getEffect()}
                     </div>            
                 </div>

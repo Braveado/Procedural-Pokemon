@@ -19,6 +19,9 @@ export default function Ability({ability, index}) {
             case 'aroma-veil':
                 formattedEffect = formattedEffect.replace('allies', 'user and allies');
                 break;
+            case 'fur-coat':
+                formattedEffect = formattedEffect.replace('damage', 'damage received');
+                break;
             default:
                 break;
         }           
@@ -63,7 +66,7 @@ export default function Ability({ability, index}) {
                     <div className="flex justify-center items-center w-full gap-2">
                         <p className="capitalize">{ability.name.replace(/-/g, " ")}</p>                
                     </div>            
-                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                         {getEffect()}
                     </div>            
                 </div>

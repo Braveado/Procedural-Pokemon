@@ -22,11 +22,30 @@ export default function Move({move, moveset}) {
             case 'hidden-power':
                 formattedEffect = "Inflicts regular damage with no additional effect.";
                 break;
+            case 'uproar':
+                formattedEffect = formattedEffect.replace('several', '3');
+                break;
+            case 'sand-tomb':
+            case 'magma-storm':
+                formattedEffect = formattedEffect.replace('Prevents the target from fleeing', 'Traps the target');
+                break;
+            case 'thousand-waves':
+            case 'mean-look':
+                formattedEffect = "Traps the target.";
+                break;
+            case 'aurora-veil':
+                formattedEffect = formattedEffect.replace('damage', 'damage received for');
+                break;    
+            case 'attract':
+                formattedEffect = "Infatuates target if it has the opposite gender.";
+                break;          
             default:
                 break;
         }           
         // Adjust general moves.
         formattedEffect = formattedEffect.replace(/\$effect_chance/g, move.effect_chance);
+        if(move.meta && move.meta.crit_rate > 0)
+            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage."));
         if(move.priority !== 0)
             formattedEffect = formattedEffect.concat(' Priority '+move.priority);
         return formattedEffect;
@@ -71,7 +90,7 @@ export default function Move({move, moveset}) {
                 <p data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
                 <p data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
-            <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={context.getTooltipData(formattedEffect)} data-for={'dynamic'}>
+            <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                 {getEffect()}
             </div>
         </div>
