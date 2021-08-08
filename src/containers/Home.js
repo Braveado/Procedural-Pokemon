@@ -1,9 +1,15 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Link } from "react-router-dom";
 import logo from '../assets/logo.png';
 
 export default function Home() {
+    // Change title.
+    useEffect (() => {
+        document.title = 'Procedural Pokemon';
+    }, []);
+  
     var showdown = <a href="https://pokemonshowdown.com/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">Pokémon Showdown</a>
+    
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
             <div className="flex flex-col gap-4 items-center">
@@ -22,7 +28,7 @@ export default function Home() {
                                 How does it works?
                             </Link>   
                             <p className="text-center">                                
-                                Check how the options are generated and the philosophy behind the format.
+                                Check how the options are generated and the rules behind the format.
                             </p>                          
                         </div>
                         <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-md bg-white border-2 border-gray-200 w-96">

@@ -1,13 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
 import ItemOptions from '../components/items/ItemOptions';
-import { BiLoaderAlt, /* BiExport */ } from 'react-icons/bi';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function TeamBuilder({
     loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
     }) {   
+
+    // Change title.
+    useEffect (() => {
+        document.title = 'Team Builder - Procedural Pokemon';
+    }, []);
 
     const getControls = () => {
         if(loading || generating){
@@ -30,9 +35,8 @@ export default function TeamBuilder({
                         Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="relative flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
-                        Export Team
-                        {/* <div className="absolute right-2 rounded-full bg-green-100 p-1 text-2xl"><BiExport className="text-green-300" /></div> */}
+                        className="flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        Export Team                        
                     </button>
                 </>
             )
