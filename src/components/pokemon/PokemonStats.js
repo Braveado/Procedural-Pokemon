@@ -19,8 +19,8 @@ export default function PokemonStats({stats}) {
             case 0: return 'bg-red-400';
             case 1: return 'bg-yellow-500';
             case 2: return 'bg-yellow-300';
-            case 3: return 'bg-blue-400';
-            case 4: return 'bg-green-400';
+            case 3: return 'bg-green-400';
+            case 4: return 'bg-blue-400';
             case 5: return 'bg-purple-400';
             case 6: return 'bg-gray-300';
             default: break;
