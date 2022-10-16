@@ -156,7 +156,7 @@ export default function Tooltips() {
             <ReactTooltip id="stat-2" delayShow={200}>
                 <div className="text-center">
                     <p>Defense</p>
-                    <p>Determines damage received when hit by a physical move.</p>               
+                    <p>Mitigates damage received when hit by a physical move.</p>               
                 </div>
             </ReactTooltip>   
             <ReactTooltip id="stat-3" delayShow={200}>
@@ -168,7 +168,7 @@ export default function Tooltips() {
             <ReactTooltip id="stat-4" delayShow={200}>
                 <div className="text-center">
                     <p>Special Defense</p>
-                    <p>Determines damage received when hit by a special move.</p>               
+                    <p>Mitigated damage received when hit by a special move.</p>               
                 </div>
             </ReactTooltip> 
             <ReactTooltip id="stat-5" delayShow={200}>
@@ -177,7 +177,13 @@ export default function Tooltips() {
                     <p>Determines the turn order in battle.</p>               
                 </div>
             </ReactTooltip>
-            <ReactTooltip id="height" delayShow={200}>
+            <ReactTooltip id="nature" delayShow={200}>
+                <div className="text-center">
+                    <p>Nature</p>
+                    <p>Usually affects two stats excluding HP, increasing one by 10% and decreasing another by 10%.</p>
+                </div>
+            </ReactTooltip>
+            {/* <ReactTooltip id="height" delayShow={200}>
                 <div className="text-center">
                     <p>Height</p>
                     <p>How tall the pokemon is.</p>
@@ -188,11 +194,21 @@ export default function Tooltips() {
                     <p>Weight</p>
                     <p>How heavy the pokemon is.</p>               
                 </div>
-            </ReactTooltip>
+            </ReactTooltip> */}
             <ReactTooltip id="gender" delayShow={200}>
                 <div className="text-center">
                     <p>Genders</p>
                     <p>Possible genders for the pokemon.</p>              
+                </div>
+            </ReactTooltip>
+            <ReactTooltip id="height_weight" delayShow={200}>
+                <div className="text-center text-center border-b">
+                    <p>Height</p>
+                    <p>How tall the pokemon is.</p>
+                </div>
+                <div className="text-center">
+                    <p>Weight</p>
+                    <p>How heavy the pokemon is.</p>               
                 </div>
             </ReactTooltip>
             <ReactTooltip id="pp" delayShow={200}>

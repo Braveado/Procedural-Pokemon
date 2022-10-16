@@ -20,7 +20,8 @@ export default function App() {
   const abilityCount = 267;
   const itemCount = [2, 115, 1, 4, 24, 2, 9, 1, 1, 23];
   const itemOffset = [111, 189, 441, 562, 581, 666, 678, 727, 831, 844];
-  const typeCount = 18; 
+  const typeCount = 18;
+  const natureCount = 25; 
 
   // ----- STATE -----
   // API
@@ -29,7 +30,8 @@ export default function App() {
   const [moveList, setMoveList] = useState([]);
   const [abilityList, setAbilityList] = useState([]);  
   const [itemList, setItemList] = useState([]);  
-  const [typeList, setTypeList] = useState([]);  
+  const [typeList, setTypeList] = useState([]);
+  const [natureList, setNatureList] = useState([]);   
 
   // Options.
   const [generating, setGenerating] = useState(false);
@@ -294,12 +296,14 @@ export default function App() {
       };      
       itemResults = [].concat.apply([], itemResults);
       const typeResults = await axios.get(`${apiUrl}type?limit=${typeCount}`);
+      const natureResults = await axios.get(`${apiUrl}nature?nature=${natureCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
         setMoveList(moveResults.data.results);
         setAbilityList(abilityResults.data.results);
         setItemList(itemResults);
         setTypeList(typeResults.data.results);
+        setNatureList(natureResults.data.results);
         setLoading(false);              
       }
     };
@@ -329,21 +333,83 @@ export default function App() {
 
     // Get a new set of pokemon options.
     async function getPokemonOptions() {
-      let pokemons = [];                           
-      let shinyIndex = Math.round((Math.random()*100 / 12.5));
+      let pokemons = [];
+      let shinyIndex = Math.round((Math.random()*100 / 12.5));      
 
       for (let index = 0; index < randomRolls.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons, index);
         const species = await axios.get(pokemon.species.url);
+        // visuals
         pokemon.gender_rate = species.data.gender_rate;
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;        
-        pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
         pokemon.shiny = (index === shinyIndex);
+        pokemon.level = pokemon.shiny ? 60 : 50;
+        // stats        
+        pokemon.stats.map(s => {          
+          s.ev = 0;
+          s.iv = -1;
+          return s;
+        });                       
+        let stat = null;
+        for(let i = 0; i < 3; i++){
+          do{
+            stat = pokemon.stats[Math.floor(Math.random()*pokemon.stats.length)];
+          } while (stat.ev > 0)
+          switch(i){
+            case 0:
+            case 1:
+                stat.ev = 252;
+              break;
+            case 2:
+                stat.ev = 4;
+              break;
+            default:
+              break;
+          }
+        }        
+        for(let i = 0; i < 6; i++){
+          do{
+            stat = pokemon.stats[Math.floor(Math.random()*pokemon.stats.length)];
+          } while (stat.iv >= 0)
+          switch(i){
+            case 0:
+            case 1:
+            case 2:
+                stat.iv = 31;
+              break;
+            case 3:
+            case 4:
+            case 5:
+                stat.iv = Math.floor(Math.random() * 32);
+              break;
+            default:
+              break;
+          }          
+        }
+        pokemon.nature = natureList[Math.floor(Math.random()*natureList.length)];
+        const nature = await axios.get(pokemon.nature.url);
+        pokemon.nature.increased = nature.data.increased_stat;
+        pokemon.nature.decreased = nature.data.decreased_stat;
+        pokemon.stats.map((s, i) => {
+          if(i === 0)
+            s.calculated_stat = Math.floor((s.base_stat * 2 + s.iv + (s.ev/4)) * pokemon.level / 100 + 10 + pokemon.level);
+          else{
+            s.calculated_stat = (s.base_stat * 2 + s.iv + (s.ev/4)) * pokemon.level / 100 + 5;
+            if(pokemon.nature.increased && pokemon.nature.increased.name === s.stat.name)
+              s.calculated_stat *= 1 + 0.1;
+            else if(pokemon.nature.decreased && pokemon.nature.decreased.name === s.stat.name)
+              s.calculated_stat *= 1 - 0.1;
+            s.calculated_stat = Math.floor(s.calculated_stat);
+          }
+          return s;
+        });
+        pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
+        // builder
         pokemon.selected = false;
         pokemon.moveset = null;
         pokemon.ability = null;
-        pokemon.item = null;
+        pokemon.item = null;                        
 
         pokemons.push(pokemon);
         if(!cancel)
@@ -436,7 +502,7 @@ export default function App() {
       getPokemonOptions();      
     }
     return () => cancel = true;
-  }, [generating, generationStep, pokemonList, randomRolls, pokemonFilter, pokemonAllow])
+  }, [generating, generationStep, pokemonList, randomRolls, pokemonFilter, pokemonAllow, natureList])
 
   // Helper functions for usability checks.
   const getPokemonUsability = useCallback((pokemons) => {    
