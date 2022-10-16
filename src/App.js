@@ -1549,7 +1549,26 @@ export default function App() {
         total = total + s.base_stat; 
     });        
     return total;
-  }   
+  }  
+    
+  const getStatDisplay = (name) => {
+    switch(name){
+      case "hp":
+        return "HP";
+      case "attack":
+        return "Atk";
+        case "defense":
+          return "Def";
+          case "special-attack":
+          return "SpA";
+          case "special-defense":
+          return "SpD";
+          case "speed":
+          return "Spe";
+      default:
+        return "";
+    }
+  }
 
   const checkDuplicatedName = (currentObjects, newObjectName) => {
     return currentObjects.find(co => co.name === newObjectName)
@@ -1604,7 +1623,22 @@ export default function App() {
           exportText += capitalizeWords(p.name, "-");
           exportText += " @ " + capitalizeWords(itemOptions[p.item].name, "-");
           exportText += "\r\nAbility: " + capitalizeWords(abilityOptions[p.ability].name, "-");
-          exportText += "\r\n" + (p.shiny ? "Level: 60\r\nShiny: Yes" : "Level: 50");
+          exportText += "\r\nLevel: " + p.level;
+          if(p.shiny)
+            exportText += "\r\nShiny: Yes";
+          exportText += "\r\nEVs:";
+          p.stats.forEach(s => {
+            if(s.ev != null && s.ev > 0)
+              exportText += " " + s.ev + " " + getStatDisplay(s.stat.name) + " /";
+          });
+          exportText = exportText.slice(0, -1);
+          exportText += "\r\n" + capitalizeWords(p.nature.name, "-") + " Nature";
+          exportText += "\r\nIVs:";
+          p.stats.forEach(s => {
+            if(s.iv != null && s.iv < 31)
+              exportText += " " + s.iv + " " + getStatDisplay(s.stat.name) + " /";
+          });
+          exportText = exportText.slice(0, -1);
           exportText += "\r\n- " + capitalizeWords(moveset[0], "-");
           exportText += "\r\n- " + capitalizeWords(moveset[1], "-");
           exportText += "\r\n- " + capitalizeWords(moveset[2], "-");
