@@ -1619,7 +1619,8 @@ export default function App() {
                     generateOptions={generateOptions}                
                     clearChoices={clearChoices}
                     exportTeam={exportTeam}                  
-                  />                                  
+                  /> 
+                  <Tooltips />                                  
                 </Route>
                 <Route path="/about">
                   <About />
@@ -1637,8 +1638,7 @@ export default function App() {
         position="bottom-right"
         reverseOrder={false}
         gutter={8}
-      />    
-      <Tooltips />  
+      />           
     </TeamBuilderContext.Provider>
   );
 }
