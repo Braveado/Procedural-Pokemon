@@ -1600,7 +1600,9 @@ export default function App() {
         <Router basename="/React-Procedural-Pokemon">
           <div className="flex w-full">
             <div className="h-screen sticky top-0">
-              <Sidebar />
+              <Sidebar
+                sectionsCompleted={sectionsCompleted}
+              />
             </div>
             <div className="w-full flex flex-col">
               <Switch>          

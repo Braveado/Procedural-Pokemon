@@ -2,9 +2,11 @@ import React from 'react'
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { HashLink } from 'react-router-hash-link';
 import logo from '../assets/logo.png';
+import { FaCheck, FaCopy } from "react-icons/fa";
 
-export default function Sidebar() {
+export default function Sidebar({ sectionsCompleted }) {
     const location = useLocation();
+
     return (
         <div className="min-w-max h-screen sticky top-0 bg-white">
             <div className="w-48 flex justify-center items-center py-8">
@@ -55,24 +57,29 @@ export default function Sidebar() {
                     </NavLink>
                     {location.pathname === "/builder" ? <div className="flex flex-col">
                         <HashLink smooth to="/builder#controls"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Controls</p>
+                            {Object.values(sectionsCompleted).every(val => val) ? <FaCopy className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                         <HashLink smooth to="/builder#pokemon"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Pokemon</p>
+                            {sectionsCompleted.pokemons ? <FaCheck className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                         <HashLink smooth to="/builder#movesets"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Movesets</p>
+                            {sectionsCompleted.movesets && sectionsCompleted.moves ? <FaCheck className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                         <HashLink smooth to="/builder#abilities"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Abilities</p>
+                            {sectionsCompleted.abilities ? <FaCheck className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                         <HashLink smooth to="/builder#items"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Items</p>
+                            {sectionsCompleted.items ? <FaCheck className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                     </div> : null}
                 </div>                
