@@ -4,6 +4,7 @@ import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
 import ItemOptions from '../components/items/ItemOptions';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { FaEraser, FaCopy, FaPencilAlt } from 'react-icons/fa';
 
 export default function TeamBuilder({
     loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
@@ -27,16 +28,16 @@ export default function TeamBuilder({
             return (
                 <>
                     <button type="button" onClick={() => clearChoices()}
-                        className="flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
-                        Clear Choices
+                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        <FaEraser /> Clear Choices
                     </button>
                     <button type="button" onClick={() => generateOptions()}
-                        className="flex items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
-                        Generate Options
+                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
+                        <FaPencilAlt /> Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="flex items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
-                        Export Team                        
+                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        <FaCopy /> Export Team
                     </button>
                 </>
             )
