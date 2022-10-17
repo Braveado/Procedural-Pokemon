@@ -1631,8 +1631,8 @@ export default function App() {
         if(p.selected){
           let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
           exportText += capitalizeWords(p.name, "-");
-          if(p.gender != "genderless"){
-            exportText += " (" + (p.gender == "male" ? "M" : "F") + ")";
+          if(p.gender !== "genderless"){
+            exportText += " (" + (p.gender === "male" ? "M" : "F") + ")";
           }
           exportText += " @ " + capitalizeWords(itemOptions[p.item].name, "-");
           exportText += "\r\nAbility: " + capitalizeWords(abilityOptions[p.ability].name, "-");
