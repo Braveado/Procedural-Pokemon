@@ -2,6 +2,7 @@ import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
+import {BiSearchAlt} from 'react-icons/bi';
 
 export default function Move({move, moveset}) {
     const context = React.useContext(TeamBuilderContext);            
@@ -63,11 +64,10 @@ export default function Move({move, moveset}) {
         }
         else {
             return (
-                <p className="text-center flex flex-col">
-                    No available effect entries from PokeAPI.
+                <p className="text-sm">                    
                     <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${move.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(move)`} target="_blank" rel="noreferrer"
-                        className="text-blue-400 hover:text-blue-500">
-                        Check the move in Bulbapedia.
+                        className="flex items-center gap-1 text-blue-400 hover:text-blue-500">
+                        <BiSearchAlt /> Bulbapedia
                     </a>
                 </p>
             )

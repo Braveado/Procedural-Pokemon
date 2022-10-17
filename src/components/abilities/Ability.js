@@ -1,6 +1,7 @@
 import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import SelectedPokemon from '../pokemon/SelectedPokemon';
+import {BiSearchAlt} from 'react-icons/bi';
 
 export default function Ability({ability, index}) {
     const context = React.useContext(TeamBuilderContext);
@@ -42,11 +43,10 @@ export default function Ability({ability, index}) {
         }
         else {
             return (
-                <p className="text-center flex flex-col">
-                    No available effect entries from PokeAPI.
+                <p className="text-sm">                    
                     <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${ability.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(Ability)`} target="_blank" rel="noreferrer"
-                        className="text-blue-400 hover:text-blue-500">
-                        Check the ability in Bulbapedia.
+                        className="flex items-center gap-1 text-blue-400 hover:text-blue-500">
+                        <BiSearchAlt /> Bulbapedia
                     </a>
                 </p>
             )
