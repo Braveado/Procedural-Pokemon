@@ -59,12 +59,14 @@ export default function PokemonStats({stats, nature}) {
         <div className="flex flex-col justify-center items-start w-full text-sm">
             {stats.map((s, i) => {
                 return (
-                    <div key={i} className="flex w-full gap-2" data-tip data-for={'stat-'+i.toString()}>
+                    <div key={i} className="flex w-full gap-2">
                         <div className="flex w-1/3 justify-between items-center">                            
                             <div className={`flex items-center 
                                 ${s.stat && nature.increased && s.stat.name === nature.increased.name ? 'text-blue-600' : ''}
                                 ${s.stat && nature.decreased && s.stat.name === nature.decreased.name ? 'text-red-600' : ''}`}>
-                                <p>{getStatName(i)}</p>
+                                <p className="border-b border-dashed border-gray-600" data-tip data-for={'stat-'+i.toString()}>
+                                    {getStatName(i)}
+                                </p>
                                 {s.stat && nature.increased && s.stat.name === nature.increased.name ? <HiOutlineArrowUp /> : null}
                                 {s.stat && nature.decreased && s.stat.name === nature.decreased.name ? <HiOutlineArrowDown /> : null}
                             </div>
@@ -79,7 +81,9 @@ export default function PokemonStats({stats, nature}) {
                             />
                             <div className="absolute w-full h-full">
                                 {i < stats.length - 1 ? 
-                                    <div className="px-2 flex items-center justify-between text-xs text-gray-600 w-full h-full">
+                                    <div
+                                        style={{marginTop: "1px"}} 
+                                        className="px-2 flex items-center justify-between text-xs text-gray-600 w-full h-full">
                                         <p>{s.ev} / {s.iv}</p>
                                         <p>{s.calculated_stat}</p>
                                     </div>

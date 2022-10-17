@@ -10,14 +10,14 @@ export default function Pokemon({pokemon}) {
     const context = React.useContext(TeamBuilderContext);
 
     const getGenders = () => {
-        if(pokemon.gender_rate < 0)
-            return <FaGenderless />
-        else if (pokemon.gender_rate === 0)
-            return <CgGenderMale />
-        else if (pokemon.gender_rate === 8)
-            return <CgGenderFemale />
-        else 
-            return <div className="flex"><CgGenderMale /><CgGenderFemale /></div>
+        switch(pokemon.gender){
+            case "male": 
+                return <CgGenderMale />
+            case "female": 
+                return <CgGenderFemale />
+            default:
+               return <FaGenderless />
+        }            
     }    
 
     return (
@@ -37,11 +37,19 @@ export default function Pokemon({pokemon}) {
             </div>
             <PokemonStats stats={pokemon.stats} nature={pokemon.nature}/> 
             <div className="flex w-full justify-between items-center text-xs text-gray-600">
-                <p className="w-1/3 capitalize" data-tip data-for={'nature'}>{pokemon.nature.name}</p>
-                {/* <p className="w-1/3" data-tip data-for={'height'}>{pokemon.height/10}m</p> */}
-                <div className="w-1/3 text-base flex justify-center items-center" data-tip data-for={'gender'}>{getGenders()}</div>
-                {/* <p className="w-1/3 text-right" data-tip data-for={'weight'}>{pokemon.weight/10}kg</p> */}
-                <p className="w-1/3 text-right" data-tip data-for={'height_weight'}>{pokemon.height/10}m / {pokemon.weight/10}kg</p>
+                <div className="flex w-1/3">
+                    <p className="capitalize border-b border-dashed border-gray-600" data-tip data-for={'nature'}>
+                        {pokemon.nature.name}
+                    </p>
+                </div>                
+                <div className="w-1/3 text-base flex justify-center items-center">
+                    <div data-tip data-for={'gender'} className="border-b border-dashed border-gray-600">{getGenders()}</div>
+                </div>                                
+                <div className="flex justify-end w-1/3">
+                    <p className="capitalize border-b border-dashed border-gray-600" data-tip data-for={'height_weight'}>
+                        {pokemon.height/10}m / {pokemon.weight/10}kg
+                    </p>
+                </div>                
             </div>                       
         </div>
     )

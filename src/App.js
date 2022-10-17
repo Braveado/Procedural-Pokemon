@@ -99,7 +99,7 @@ export default function App() {
     'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
     'medicine', 'one', 'symbiosis',
     // Filtered pokemon forms specific.
-    'schooling',      
+    'schooling', 'gulping', 'gorging',      
     // Unusable in tournaments.
     'anticipation', 'forewarn', 'frisk',     
     // BRANCH LOGIC. All accounted for.
@@ -341,6 +341,16 @@ export default function App() {
         const species = await axios.get(pokemon.species.url);
         // visuals
         pokemon.gender_rate = species.data.gender_rate;
+        if(pokemon.gender_rate < 0)
+          pokemon.gender = "genderless";
+        else if(pokemon.gender_rate === 0)
+          pokemon.gender = "male";
+        else if(pokemon.gender_rate === 8)
+          pokemon.gender = "female";
+        else {
+          pokemon.gender = (Math.random()*101) <= (pokemon.gender_rate * 12.5) ? "female" : "male";
+        }        
+        pokemon.has_gender_differences = species.data.has_gender_differences;        
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;        
         pokemon.shiny = (index === shinyIndex);
@@ -1621,6 +1631,9 @@ export default function App() {
         if(p.selected){
           let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
           exportText += capitalizeWords(p.name, "-");
+          if(p.gender != "genderless"){
+            exportText += " (" + (p.gender == "male" ? "M" : "F") + ")";
+          }
           exportText += " @ " + capitalizeWords(itemOptions[p.item].name, "-");
           exportText += "\r\nAbility: " + capitalizeWords(abilityOptions[p.ability].name, "-");
           exportText += "\r\nLevel: " + p.level;

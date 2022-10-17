@@ -183,32 +183,16 @@ export default function Tooltips() {
                     <p>Usually affects two stats excluding HP, increasing one by 10% and decreasing another by 10%.</p>
                 </div>
             </ReactTooltip>
-            {/* <ReactTooltip id="height" delayShow={200}>
-                <div className="text-center">
-                    <p>Height</p>
-                    <p>How tall the pokemon is.</p>
-                </div>
-            </ReactTooltip>
-            <ReactTooltip id="weight" delayShow={200}>
-                <div className="text-center">
-                    <p>Weight</p>
-                    <p>How heavy the pokemon is.</p>               
-                </div>
-            </ReactTooltip> */}
             <ReactTooltip id="gender" delayShow={200}>
                 <div className="text-center">
-                    <p>Genders</p>
-                    <p>Possible genders for the pokemon.</p>              
+                    <p>Gender</p>
+                    <p>Selected from the possible genders of the pokemon.</p>              
                 </div>
             </ReactTooltip>
             <ReactTooltip id="height_weight" delayShow={200}>
-                <div className="text-center text-center border-b">
-                    <p>Height</p>
-                    <p>How tall the pokemon is.</p>
-                </div>
                 <div className="text-center">
-                    <p>Weight</p>
-                    <p>How heavy the pokemon is.</p>               
+                    <p>Height and Weight</p>
+                    <p>How tall and heavy is the pokemon.</p>
                 </div>
             </ReactTooltip>
             <ReactTooltip id="pp" delayShow={200}>
