@@ -7,7 +7,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { FaEraser, FaCopy, FaPencilAlt } from 'react-icons/fa';
 
 export default function TeamBuilder({
-    loading, randomRolls, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
+    loading, randomOptions, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
     }) {   
 
     // Change title.
@@ -45,14 +45,14 @@ export default function TeamBuilder({
     }
     
     const generationProgress = () => {
-        if(pokemonOptions.length < randomRolls.pokemons)
-            return `Generating Pokemons (${pokemonOptions.length}/${randomRolls.pokemons})`;   
-        else if(movesetOptions.length < randomRolls.movesets)
-            return `Generating Movesets (${movesetOptions.length}/${randomRolls.movesets})`;
-        else if(abilityOptions.length < randomRolls.abilities)
-            return `Generating Abilities (${abilityOptions.length}/${randomRolls.abilities})`;
-        else if(itemOptions.length < randomRolls.items)
-            return `Generating Items (${itemOptions.length}/${randomRolls.items})`;
+        if(pokemonOptions.length < randomOptions.pokemons)
+            return `Generating Pokemons (${pokemonOptions.length}/${randomOptions.pokemons})`;   
+        else if(movesetOptions.length < randomOptions.movesets)
+            return `Generating Movesets (${movesetOptions.length}/${randomOptions.movesets})`;
+        else if(abilityOptions.length < randomOptions.abilities)
+            return `Generating Abilities (${abilityOptions.length}/${randomOptions.abilities})`;
+        else if(itemOptions.length < randomOptions.items)
+            return `Generating Items (${itemOptions.length}/${randomOptions.items})`;
         else
             return 'Done!';
     }    

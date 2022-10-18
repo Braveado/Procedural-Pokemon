@@ -1,7 +1,10 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import toast, { Toaster } from 'react-hot-toast';
+import * as api from './constants/api';
+import * as filters from './constants/filters';
+import * as usability from './constants/usability';
+import * as team from './constants/team';
 import { TeamBuilderContext } from './context/TeamBuilderContext';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -9,20 +12,10 @@ import Home from './containers/Home';
 import Format from './containers/Format';
 import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
+import toast, { Toaster } from 'react-hot-toast';
 import Tooltips from './components/Tooltips';
 
 export default function App() {
-  // ----- CONSTANTS -----
-  // API
-  const apiUrl = 'https://pokeapi.co/api/v2/';
-  const pokemonCount = 898;
-  const moveCount = 826;
-  const abilityCount = 267;
-  const itemCount = [2, 115, 1, 4, 24, 2, 9, 1, 1, 23];
-  const itemOffset = [111, 189, 441, 562, 581, 666, 678, 727, 831, 844];
-  const typeCount = 18;
-  const natureCount = 25; 
-
   // ----- STATE -----
   // API
   const [loading, setLoading] = useState(true);  
@@ -33,16 +26,9 @@ export default function App() {
   const [typeList, setTypeList] = useState([]);
   const [natureList, setNatureList] = useState([]);   
 
-  // Options.
+  // Team builder.
   const [generating, setGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
-  const [randomRolls] = useState({
-    pokemons: 9,
-    movesets: 6,
-    moves: 6,
-    abilities: 9,
-    items: 9
-  });
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
   const [abilityOptions, setAbilityOptions] = useState([]);
@@ -51,219 +37,6 @@ export default function App() {
     movesetsPerType: [],
     usableTypes: [],
     reverseOptions: []
-  });    
-
-  // Filters.  
-  const [pokemonFilter] = useState([ // Exclude pokemons with this keywords.
-    // Legendary forms above 720 total stats.
-    'eternamax', 'primal', 'ultra',
-    // General forms as strong as legendaries.
-    'mega', 'gmax', 'eternal', 'ash',
-    // Pokemons and forms below 360 total stats.
-    'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
-    // Others.
-    'totem', 'bond', 'zygarde'
-  ]);
-  const [pokemonAllow] = useState([ // Include pokemons with this keywords even when excluded by filter.
-    '10', '50', 'complete'
-  ]);
-  const [moveFilter] = useState ([ // Exclude moves with this keywords.
-    // General max and z moves.
-    'max', 'physical', 'special',
-    // Specific z moves.
-    'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
-    'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
-    // Unusable in format.
-    'natural', 'stuff', 'teatime', 'happy', 'belch', 'return', 'frustration', 'gear', 'spotlight', 'helping', 'aromatic',
-    'coaching', 'wide-guard', 'veevee', 'quash', 'magnetic', 'decorate', 
-    // No effect.
-    'splash', 'celebrate', 'hands', 'struggle',    
-    // BRANCH LOGIC. All accounted for.
-    // Combo moves.
-    //'stockpile', 'swallow', 'spit',     
-    // Held items.
-    //'techno', 'judgement',
-    // Specific pokemons.
-    //'hyperspace'
-    // REVERSE BRANCH LOGIC. All accounted for.
-    // Need lost or consumed held items to work.
-    //'recycle',  
-  ]);
-  const [moveAllow] = useState([ // Include moves with this keywords even when excluded by filter.
-    'bug', 'grind', 'shift'
-  ]);
-  const [moveStatusLimit] = useState(3); // Max number of status moves in a moveset.
-  const [abilityFilter] = useState([ // Exclude abilities with this keywords.
-    // Unusable in format.
-    'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
-    'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
-    'medicine', 'one', 'symbiosis',
-    // Filtered pokemon forms specific.
-    'schooling', 'gulping', 'gorging',      
-    // Unusable in tournaments.
-    'anticipation', 'forewarn', 'frisk',     
-    // BRANCH LOGIC. All accounted for.
-    // Pokemon forms specific.
-    //'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 
-    // Move mechanic. 
-    // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',
-    // 'tough-claws', 'unseen-fist',    
-    // Move type.
-    // 'flash-fire', 'overgrow', 'blaze', 'torrent', 'swarm', 'scrappy', 'sand-force', 'gale-wings', 
-    // 'dark-aura', 'fairy-aura', 'steelworker', 'transistor', 'dragons-maw',
-    // Move type changes.
-    // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
-    // Specific pokemons.
-    //'multitype', 'rks',
-    // Harmful to owner.
-    //'truant', 'stall', 'klutz', 'slow', 'defeatist',
-    // REVERSE BRANCH LOGIC. All accounted for.
-    // Need lost or consumed held items to work.
-    // 'pickup', 'unburden', 'pickpocket', 'magician',
-  ]);  
-  const [abilityAllow] = useState([ // Include abilities with this keywords even when excluded by filter.
-    
-  ]);
-  const [itemFilter] = useState([ // Exclude items with this keywords.
-    // Unusable in format.
-    'power', 'scarf', 'smoke', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
-    'pure', 'ability', 
-    // Evolution related or filtered pokemon specific.    
-    'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
-    'reaper', 'whipped', 'sachet', 'light',    
-    // BRANCH LOGIC. All accounted for.
-    // Pokemon specific.
-    // 'dew', 'thick', 'stick'
-    // Move or ability mechanic.
-    //'heat', 'smooth', 'icy', 'damp', 'sludge', 'clay', 'orb', 
-    // Harmful to user.
-    //'full', 'lagging', 'sticky', 'target', 'iron'
-  ]);
-  const [itemAllow] = useState([ // Include items with this keywords even when excluded by filter.    
-    'herb', 'choice', 'bright', 'silver', 'silk', 'clay'
-  ]);
-
-  // Usability.  
-  // Moves.
-  const [chargeMoves] = useState([ // Power herb.
-    'bounce', 'dig', 'dive', 'fly', 'freeze-shock', 'geomancy', 'ice-burn', 'meteor-beam', 'phantom-force', 'razor-wind',
-    'shadow-force', 'skull-bash', 'sky-attack', 'solar-beam', 'solar-blade'
-  ]);
-  const [bindMoves] = useState([ // Grip claw, binding band.
-    'bind', 'clamp', 'fire-spin', 'infestation', 'magma-storm', 'sand-tomb', 'snap-trap', 'thunder-cage', 'whirlpool', 'wrap'
-  ]);
-  const [drainMoves] = useState([ // Big root.
-    'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed',
-    'mega-drain', 'oblivion-wing', 'parabolic-charge', 'strength-sap', 'ingrain', 'aqua-ring'
-  ]);
-  const [terrainMoves] = useState([ // Terrain extender.
-    'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
-  ]);
-  const [barrierMoves] = useState([ // Light clay.
-    'light-screen', 'reflect', 'aurora-veil'
-  ]);  
-  const [orbMoves] = useState([ // Toxic and flame orb.
-    'facade', 'psycho-shift'
-  ]);
-  const [punchMoves] = useState([ // Iron fist.
-    'bullet-punch', 'comet-punch', 'dizzy-punch', 'double-iron-bash', 'drain-punch', 'dynamic-punch', 'fire-punch', 'focus-punch',
-    'hammer-arm', 'ice-hammer', 'ice-punch', 'mach-punch', 'mega-punch', 'meteor-mash', 'plasma-fists', 'power-up-punch',
-    'shadow-punch', 'sky-uppercut', 'thunder-punch'
-  ]);
-  const [multistrikeMoves] = useState([ // Skill link.
-    'arm-thrust', 'barrage', 'bone-rush', 'bullet-seed', 'comet-punch', 'double-slap', 'fury-attack', 'fury-swipes', 'icicle-spear',
-    'pin-missile', 'rock-blast', 'scale-shot', 'spike-cannon', 'tail-slap', 'triple-axel', 'triple-kick', 'water-shuriken'
-  ]);
-  const [recoilMoves] = useState([ // Reckless.
-    'brave-bird', 'double-edge', 'flare-blitz', 'head-charge', 'head-smash', 'high-jump-kick', 'jump-kick', 'submission', 'take-down',
-    'wild-charge', 'light-of-ruin', 'volt-tackle', 'wood-hammer'
-  ]);
-  const [biteMoves] = useState([ // Strong jaw.
-    'bite', 'crunch', 'fire-fang', 'fishious-rend', 'hyper-fang', 'ice-fang', 'jaw-lock', 'poison-fang', 'psychic-fangs', 'thunder-fang'
-  ]);
-  const [pulseMoves] = useState([ // Mega launcher.
-    'aura-sphere', 'dark-pulse', 'dragon-pulse', 'heal-pulse', 'origin-pulse', 'terrain-pulse', 'water-pulse'
-  ]);
-  const [soundMoves] = useState([ // Liquid voice.
-    'boomburst', 'bug-buzz', 'chatter', 'clanging-scales', 'disarming-voice', 'echoed-voice', 'eerie-spell', 'hyper-voice',
-    'overdrive', 'relic-song', 'round', 'snarl', 'snore', 'uproar'
-  ]);
-  const [healMoves] = useState([ // Triage.
-    'draining-kiss', 'floral-healing', 'giga-drain', 'rest', 'synthesis', 'absorb', 'drain-punch', 'dream-eater', 'heal-order',
-    'heal-pulse', 'healing-wish', 'horn-leech', 'leech-life', 'lunar-dance', 'mega-drain', 'milk-drink', 'moonlight', 'morning-sun',
-    'oblivion-wing', 'parabolic-charge', 'purify', 'recover', 'roost', 'shore-up', 'slack-off', 'soft-boiled', 'strength-sap',
-    'swallow', 'wish'
-  ]);
-  const [contactMoves] = useState([ // Tough claws, unseen fist.
-    'accelerock', 'acrobatics', 'aerial-ace', 'anchor-shot', 'aqua-jet', 'aqua-tail', 'arm-thrust', 'assurance', 'astonish', 'avalanche', 
-    'behemoth-bash', 'behemoth-blade', 'bide', 'bind', 'bite', 'blaze-kick', 'body-press', 'body-slam', 'bolt-beak', 'bolt-strike', 'bounce', 'branch-poke', 'brave-bird', 'breaking-swipe', 'brick-break', 'brutal-swing', 'bug-bite', 'bullet-punch',
-    'chip-away', 'circle-throw', 'clamp', 'close-combat', 'comet-punch', 'constrict', 'counter', 'covet', 'crabhammer', 'cross-chop', 'cross-poison', 'crunch', 'crush-claw', 'crush-grip', 'cut',
-    'darkest-lariat', 'dig', 'dive', 'dizzy-punch', 'double-edge', 'double-hit', 'double-iron-bash', 'double-kick', 'double-slap', 'dragon-ascent', 'dragon-claw', 'dragon-hammer', 'dragon-rush', 'dragon-tail', 'draining-kiss', 'drain-punch', 'drill-peck', 'drill-run', 'dual-chop', 'dual-wingbeat', 'dynamic-punch',
-    'endeavor', 'extreme-speed',
-    'facade', 'fake-out', 'false-surrender', 'false-swipe', 'feint-attack', 'fell-stinger', 'fire-fang', 'fire-lash', 'fire-punch', 'first-impression', 'fishious-rend', 'flail', 'flame-charge', 'flame-wheel', 'flare-blitz', 'flip-turn', 'floaty-fall', 'fly', 'flying-press', 'focus-punch', 'force-palm', 'foul-play', 'frustration', 'fury-attack', 'fury-cutter', 'fury-swipes',
-    'gear-grind', 'giga-impact', 'grass-knot', 'grassy-glide', 'guillotine', 'gyro-ball',
-    'hammer-arm', 'headbutt', 'head-charge', 'head-smash', 'heart-stamp', 'heat-crash', 'heavy-slam', 'high-horsepower', 'high-jump-kick', 'hold-back', 'horn-attack', 'horn-drill', 'horn-leech', 'hyper-fang',
-    'ice-ball', 'ice-fang', 'ice-hammer', 'ice-punch', 'infestation', 'iron-head', 'iron-tail',
-    'jaw-lock', 'jump-kick', 
-    'karate-chop', 'knock-off', 
-    'lash-out', 'last-resort', 'leaf-blade', 'leech-life', 'lick', 'liquidation', 'low-kick', 'low-sweep', 'lunge',
-    'mach-punch', 'megahorn', 'mega-kick', 'mega-punch', 'metal-claw', 'meteor-mash', 'multi-attack', 
-    'needle-arm', 'night-slash', 'nuzzle', 
-    'outrage', 
-    'payback', 'peck', 'petal-dance', 'phantom-force', 'plasma-fists', 'play-rough', 'pluck', 'poison-fang', 'poison-jab', 'poison-tail', 'pound', 'power-trip', 'power-up-punch', 'power-whip', 'psychic-fangs', 'punishment', 'pursuit', 
-    'quick-attack', 
-    'rage', 'rapid-spin', 'razor-shell', 'retaliate', 'return', 'revenge', 'reversal', 'rock-climb', 'rock-smash', 'rolling-kick', 'rollout', 
-    'sacred-sword', 'scratch', 'seismic-toss', 'shadow-claw', 'shadow-force', 'shadow-punch', 'shadow-sneak', 'shadow-strike', 'sizzly-slide', 'skitter-smack', 'skull-bash', 'sky-drop', 'sky-uppercut', 'slam', 'slash', 'smart-strike', 'smelling-salts', 'snap-trap', 'solar-blade', 'spark', 'spectral-thief', 'spirit-break', 'steamroller', 'steel-roller', 'steel-wing', 'stomp', 'stomping-tantrum', 'storm-throw', 'strength', 'struggle', 'submission', 'sucker-punch', 'sunsteel-strike', 'super-fang', 'superpower', 'surging-strikes', 
-    'tackle', 'tail-slap', 'take-down', 'thief', 'thrash', 'throat-chop', 'thunder-fang', 'thunderous-kick', 'thunder-punch', 'triple-axel', 'triple-kick', 'trop-kick', 'trump-card', 
-    'u-turn', 
-    'v-create',
-    'veevee-volley', 'vine-whip', 'vise-grip', 'vital-throw', 'volt-tackle',
-    'wake-up-slap', 'waterfall', 'wicked-blow', 'wild-charge', 'wing-attack', 'wood-hammer', 'wrap', 'wring-out', 
-    'x-scissor',
-    'zen-headbutt', 'zing-zap', 'zippy-zap'
-  ]);
-  const [consumableItemMoves] = useState([ // Consumable items. Reverse branch logic trigger.
-    'recycle'
-  ]);
-  const [badItemMoves] = useState([ // Bad items.
-    'bestow', 'fling', 'switcheroo', 'trick'
-  ]);
-  const [badAbilityMoves] = useState([ // Bad abilities.
-    'entrainment', 'skill-swap'
-  ]);
-  // Abilities.
-  const [terrainAbilities] = useState([ // Terrain extender.
-    'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
-  ]);
-  const [orbAbilities] = useState([ // Toxic and flame orb.
-    'guts', 'magic-guard', 'quick-feet', 'marvel-scale'
-  ]);
-  const [consumableItemAbilities] = useState([ // Consumable items. Reverse branch logic trigger.
-    'pickup', 'unburden', 'pickpocket', 'magician'
-  ]);  
-  // Items.
-  const [consumableItems] = useState([ // Consumable items. Reverse branch logic.
-    'absorb-bulb', 'air-balloon', 'cell-battery', 'eject-button' ,'electric-seed', 'focus-sash', 'grassy-seed',
-    'luminous-moss', 'mental-herb', 'misty-seed', 'power-herb', 'psychic-seed', 'red-card', 'white-herb', 'snowball', 'weakness-policy',
-    'bug-gem', 'dark-gem', 'dragon-gem', 'electric-gem', 'fairy-gem', 'fighting-gem', 'fire-gem', 'flying-gem',
-    'ghost-gem', 'grass-gem', 'ground-gem', 'ice-gem', 'poison-gem', 'psychic-gem', 'rock-gem', 'steel-gem', 'water-gem'
-  ]);  
-  const [plateItems] = useState([ // Plate items. Reverse branch logic.
-    'draco-plate', 'dread-plate', 'earth-plate', 'fist-plate', 'flame-plate', 'icicle-plate', 'insect-plate', 'iron-plate',
-    'meadow-plate', 'mind-plate', 'pixie-plate', 'sky-plate', 'splash-plate', 'spooky-plate', 'stone-plate', 'toxic-plate', 'zap-plate'
-  ]);  
-  const [memoryItems] = useState([ // Memory items. Reverse branch logic.
-    'bug-memory', 'dark-memory', 'dragon-memory', 'electric-memory', 'fairy-memory', 'fighting-memory', 'fire-memory', 'flying-memory',
-    'ghost-memory', 'grass-memory', 'ground-memory', 'ice-memory', 'poison-memory', 'psychic-memory', 'rock-memory', 'steel-memory', 'water-memory'
-  ]);
-
-  // Selections.
-  const [selectionsNeeded] = useState({
-    pokemons: 6,    
-    movesets: 6,
-    moves: 4,
-    abilities: 6,
-    items: 6
   });
   const [selectionsMade, setSelectionsMade] = useState({
     pokemons: 0,
@@ -287,16 +60,16 @@ export default function App() {
     setLoading(true);  
 
     async function fetchData() {      
-      const pokemonResults = await axios.get(`${apiUrl}pokemon?limit=${pokemonCount}`);
-      const moveResults = await axios.get(`${apiUrl}move?limit=${moveCount}`);
-      const abilityResults = await axios.get(`${apiUrl}ability?limit=${abilityCount}`);
+      const pokemonResults = await axios.get(`${api.url}pokemon?limit=${api.pokemonCount}`);
+      const moveResults = await axios.get(`${api.url}move?limit=${api.moveCount}`);
+      const abilityResults = await axios.get(`${api.url}ability?limit=${api.abilityCount}`);
       let itemResults = [];
-      for(let i = 0; i < itemCount.length; i++){
-        itemResults.push(await (await axios.get(`${apiUrl}item?limit=${itemCount[i]}&offset=${itemOffset[i]}`)).data.results);
+      for(let i = 0; i < api.itemCount.length; i++){
+        itemResults.push(await (await axios.get(`${api.url}item?limit=${api.itemCount[i]}&offset=${api.itemOffset[i]}`)).data.results);
       };      
       itemResults = [].concat.apply([], itemResults);
-      const typeResults = await axios.get(`${apiUrl}type?limit=${typeCount}`);
-      const natureResults = await axios.get(`${apiUrl}nature?nature=${natureCount}`);
+      const typeResults = await axios.get(`${api.url}type?limit=${api.typeCount}`);
+      const natureResults = await axios.get(`${api.url}nature?nature=${api.natureCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
         setMoveList(moveResults.data.results);
@@ -310,10 +83,10 @@ export default function App() {
     fetchData();
     
     return () => cancel = true;
-    // Disable dependency warning, itemCount and itemOffset will never change.
     // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, []);
 
+  // Start generation.
   function generateOptions() {        
     setPokemonOptions([]);
     setMovesetOptions([]); 
@@ -328,6 +101,7 @@ export default function App() {
     setGenerating(true);    
   }
 
+  // Generate pokemon 
   useEffect(() => {
     let cancel = false;
 
@@ -336,10 +110,10 @@ export default function App() {
       let pokemons = [];
       let shinyIndex = Math.round((Math.random()*100 / 12.5));      
 
-      for (let index = 0; index < randomRolls.pokemons; index++) {
+      for (let index = 0; index < team.randomOptions.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons, index);
         const species = await axios.get(pokemon.species.url);
-        // visuals
+        // gender
         pokemon.gender_rate = species.data.gender_rate;
         if(pokemon.gender_rate < 0)
           pokemon.gender = "genderless";
@@ -350,7 +124,7 @@ export default function App() {
         else {
           pokemon.gender = (Math.random()*101) <= (pokemon.gender_rate * 12.5) ? "female" : "male";
         }        
-        pokemon.has_gender_differences = species.data.has_gender_differences;        
+        //                 
         pokemon.is_mythical = species.data.is_mythical;
         pokemon.is_legendary = species.data.is_legendary;        
         pokemon.shiny = (index === shinyIndex);
@@ -366,36 +140,19 @@ export default function App() {
           do{
             stat = pokemon.stats[Math.floor(Math.random()*pokemon.stats.length)];
           } while (stat.ev > 0)
-          switch(i){
-            case 0:
-            case 1:
-                stat.ev = 252;
-              break;
-            case 2:
-                stat.ev = 4;
-              break;
-            default:
-              break;
-          }
+          if (i <= 1)
+            stat.ev = 252;
+          else if (i === 2)
+            stat.ev = 4;        
         }        
         for(let i = 0; i < 6; i++){
           do{
             stat = pokemon.stats[Math.floor(Math.random()*pokemon.stats.length)];
           } while (stat.iv >= 0)
-          switch(i){
-            case 0:
-            case 1:
-            case 2:
-                stat.iv = 31;
-              break;
-            case 3:
-            case 4:
-            case 5:
-                stat.iv = Math.floor(Math.random() * 32);
-              break;
-            default:
-              break;
-          }          
+          if (i <= 2)
+            stat.iv = 31;
+          else if (i >= 3)
+            stat.iv = Math.floor(Math.random() * 32);                    
         }
         pokemon.nature = natureList[Math.floor(Math.random()*natureList.length)];
         const nature = await axios.get(pokemon.nature.url);
@@ -415,7 +172,7 @@ export default function App() {
           return s;
         });
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
-        // builder
+        // selections
         pokemon.selected = false;
         pokemon.moveset = null;
         pokemon.ability = null;
@@ -436,9 +193,8 @@ export default function App() {
   
       do {          
           let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-          //console.log('initial: '+pokemon.name);
 
-          const initialPokemon = await axios.get(`${apiUrl}pokemon/${pokemon.name}`);
+          const initialPokemon = await axios.get(`${api.url}pokemon/${pokemon.name}`);
           const species = await axios.get(initialPokemon.data.species.url);
           const evolutions = await axios.get(species.data.evolution_chain.url);
           
@@ -474,37 +230,31 @@ export default function App() {
                 evoData = evoData['evolves_to'][0];
               }
                         
-          } while (!!evoData && evoData.hasOwnProperty('evolves_to')); 
-          //console.log('evolutions: '+evoChain);       
+          } while (!!evoData && evoData.hasOwnProperty('evolves_to'));   
           
           // Get the/a final evolution.
           let finalEvolution = evoChain[evoChain.length - 1];
           if(Array.isArray(finalEvolution)){
             finalEvolution = finalEvolution[Math.floor(Math.random()*finalEvolution.length)];        
           }
-          //console.log('final evolution: '+finalEvolution);
   
           // Get the varieties for the final evolution.
-          const finalSpecies = await axios.get(`${apiUrl}pokemon-species/${finalEvolution}`);
+          const finalSpecies = await axios.get(`${api.url}pokemon-species/${finalEvolution}`);
           let varieties = [];
           finalSpecies.data.varieties.forEach((v, i) => {
             varieties.push(finalSpecies.data.varieties[i].pokemon.name)
           });                
-          //console.log('final evolution varieties: '+varieties);
   
           // Filter varieties for more balance.
           varieties = varieties.filter(v => {          
-            return !FindKeywords(v, '-', pokemonFilter, pokemonAllow);            
-          });
-          //console.log('filtered varieties: '+varieties);        
+            return !FindKeywords(v, '-', filters.pokemonFilter, filters.pokemonAllow);            
+          });       
   
           // Get the final pokemon from the varieties.
           finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
-          //console.log('final pokemon: '+finalPokemon);
   
-      } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon))   
-      //console.log(finalPokemon); 
-      newPokemon = await axios.get(`${apiUrl}pokemon/${finalPokemon}`);
+      } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon))
+      newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
       return newPokemon.data
     };
 
@@ -512,7 +262,7 @@ export default function App() {
       getPokemonOptions();      
     }
     return () => cancel = true;
-  }, [generating, generationStep, pokemonList, randomRolls, pokemonFilter, pokemonAllow, natureList])
+  }, [generating, generationStep, pokemonList, natureList])
 
   // Helper functions for usability checks.
   const getPokemonUsability = useCallback((pokemons) => {    
@@ -524,6 +274,7 @@ export default function App() {
     return types[Math.floor(Math.random()*types.length)].name;
   }, [typeList]);
 
+  // Generate movesets
   useEffect(() => {
     let cancel = false;
 
@@ -531,7 +282,7 @@ export default function App() {
     async function getMovesetOptions() {              
       let movesets = [];            
 
-      for (let index = 0; index < randomRolls.movesets; index++) {
+      for (let index = 0; index < team.randomOptions.movesets; index++) {
         const moveset = await getNewMoveset()
         movesets.push(moveset);
         if(!cancel)
@@ -550,7 +301,7 @@ export default function App() {
       let usable = true;  
       let combo = '';
       
-      for (let index = 0; index < randomRolls.moves; index++) {            
+      for (let index = 0; index < team.randomOptions.moves; index++) {            
         do{        
           if(combo){
             move = {name: combo};
@@ -558,7 +309,7 @@ export default function App() {
           }
           else
             move = moveList[Math.floor(Math.random()*moveList.length)];
-          move = await axios.get(`${apiUrl}move/${move.name}`);
+          move = await axios.get(`${api.url}move/${move.name}`);
           status = move.data.damage_class && move.data.damage_class.name === 'status'; 
           usable = true;       
 
@@ -567,32 +318,30 @@ export default function App() {
             case 'spit-up':
               // Check space for combo moves.
               if(!newMoveset.find(m => m.name === 'stockpile')){
-                usable = (randomRolls.moves - newMoveset.length) >= 2;
+                usable = (team.randomOptions.moves - newMoveset.length) >= 2;
                 if(usable){
-                  if(move.data.name === 'swallow' && (moveStatusLimit - statusMoves) >= 2)
+                  if(move.data.name === 'swallow' && (filters.moveStatusLimit - statusMoves) >= 2)
                     combo = 'stockpile';
-                  else if(move.data.name === 'spit-up' && (moveStatusLimit - statusMoves) >= 1)
+                  else if(move.data.name === 'spit-up' && (filters.moveStatusLimit - statusMoves) >= 1)
                     combo = 'stockpile';
-                  else if((moveStatusLimit - statusMoves) <= 0)
+                  else if((filters.moveStatusLimit - statusMoves) <= 0)
                     usable = false;
                 }                                  
               }                          
-              //console.log(move.data.name+": "+usable);
               break;              
             case 'stockpile':
               // Check space for combo moves.
               if(!newMoveset.find(m => m.name === 'swallow') && !newMoveset.find(m => m.name === 'spit-up')){
-                usable = (randomRolls.moves - newMoveset.length) >= 2;
+                usable = (team.randomOptions.moves - newMoveset.length) >= 2;
                 if(usable){
-                  if((moveStatusLimit - statusMoves) >= 2)
+                  if((filters.moveStatusLimit - statusMoves) >= 2)
                     combo = Math.random() < 0.5 ? 'swallow' : 'spit-up';
-                  else if((moveStatusLimit - statusMoves) >= 1)
+                  else if((filters.moveStatusLimit - statusMoves) >= 1)
                     combo = 'spit-up';
-                  else if((moveStatusLimit - statusMoves) <= 0)
+                  else if((filters.moveStatusLimit - statusMoves) <= 0)
                     usable = false;
                 }
               }
-              //console.log(move.data.name+": "+usable);
               break;            
             case 'hyperspace-fury':
               // Check for specific pokemon.
@@ -613,18 +362,16 @@ export default function App() {
             default:
               break;
           }
-        } while (checkDuplicatedName(newMoveset, move.data.name) || FindKeywords(move.data.name, '-', moveFilter, moveAllow) ||
-                (status && statusMoves >= moveStatusLimit) || !usable)
+        } while (checkDuplicatedName(newMoveset, move.data.name) || 
+                FindKeywords(move.data.name, '-', filters.moveFilter, filters.moveAllow) ||
+                (status && statusMoves >= filters.moveStatusLimit) || !usable)
         move.data.selected = false;
         newMoveset.push(move.data);      
         if(status){
           statusMoves = statusMoves + 1;
           status = false;
         }
-        //console.log(move.data.name);
-        //console.log(statusMoves);
       }
-      //console.log('----- done -----');
       return newMoveset;
     }
 
@@ -632,14 +379,13 @@ export default function App() {
       getMovesetOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, moveList, randomRolls, moveFilter, moveAllow, moveStatusLimit,
-      getPokemonUsability, getRandomPokemonType]);
+  }, [generating, generationStep, moveList, getPokemonUsability, getRandomPokemonType]);
 
   // Respond to moveset options generated completely.
   useEffect (() => {  
     let cancel = false;
 
-    if(generating && generationStep === 2 && movesetOptions.length >= randomRolls.movesets){
+    if(generating && generationStep === 2 && movesetOptions.length >= team.randomOptions.movesets){
       let msPerType = [];
 
       typeList.forEach(type => {
@@ -659,7 +405,7 @@ export default function App() {
       }
     }    
     return () => cancel = true;
-  }, [generating, generationStep, movesetOptions, randomRolls, typeList]);  
+  }, [generating, generationStep, movesetOptions, typeList]);  
 
   // Helper functions for usability checks.
   const getPokemonTypeUsability = useCallback((type) => {
@@ -667,7 +413,6 @@ export default function App() {
   }, [pokemonOptions])  
 
   const getMovesetTypeUsability = useCallback((types) => {
-    //console.log(types);
     let usable = types.find(t => optionsData.usableTypes.includes(t));
     return usable;
   }, [optionsData]);
@@ -740,43 +485,42 @@ export default function App() {
     else {
       switch(mechanic){
         case 'charge':
-          return moveNames.find(name => chargeMoves.includes(name));
+          return moveNames.find(name => usability.chargeMoves.includes(name));
         case 'bind':
-          return moveNames.find(name => bindMoves.includes(name));
+          return moveNames.find(name => usability.bindMoves.includes(name));
         case 'drain':
-          return moveNames.find(name => drainMoves.includes(name));
+          return moveNames.find(name => usability.drainMoves.includes(name));
         case 'terrain':
-          return moveNames.find(name => terrainMoves.includes(name));
+          return moveNames.find(name => usability.terrainMoves.includes(name));
         case 'barrier':        
-          return moveNames.find(name => barrierMoves.includes(name));
+          return moveNames.find(name => usability.barrierMoves.includes(name));
         case 'orb':        
-          return moveNames.find(name => orbMoves.includes(name));
+          return moveNames.find(name => usability.orbMoves.includes(name));
         case 'punch':        
-          return moveNames.find(name => punchMoves.includes(name));
+          return moveNames.find(name => usability.punchMoves.includes(name));
         case 'multistrike':        
-          return moveNames.find(name => multistrikeMoves.includes(name));
+          return moveNames.find(name => usability.multistrikeMoves.includes(name));
         case 'recoil':        
-          return moveNames.find(name => recoilMoves.includes(name));
+          return moveNames.find(name => usability.recoilMoves.includes(name));
         case 'bite':        
-          return moveNames.find(name => biteMoves.includes(name));
+          return moveNames.find(name => usability.biteMoves.includes(name));
         case 'pulse':        
-          return moveNames.find(name => pulseMoves.includes(name));
+          return moveNames.find(name => usability.pulseMoves.includes(name));
         case 'sound':        
-          return moveNames.find(name => soundMoves.includes(name));
+          return moveNames.find(name => usability.soundMoves.includes(name));
         case 'heal':        
-          return moveNames.find(name => healMoves.includes(name));
+          return moveNames.find(name => usability.healMoves.includes(name));
         case 'contact':        
-          return moveNames.find(name => contactMoves.includes(name));
+          return moveNames.find(name => usability.contactMoves.includes(name));
         case 'bad-item':        
-          return moveNames.find(name => badItemMoves.includes(name));
+          return moveNames.find(name => usability.badItemMoves.includes(name));
         case 'bad-ability':        
-          return moveNames.find(name => badAbilityMoves.includes(name));
+          return moveNames.find(name => usability.badAbilityMoves.includes(name));
         default:
           return false;
       }    
     }
-  }, [movesetOptions, chargeMoves, bindMoves, drainMoves, terrainMoves, barrierMoves, orbMoves, punchMoves, badItemMoves,
-      multistrikeMoves, recoilMoves, biteMoves, pulseMoves, soundMoves, healMoves, contactMoves, badAbilityMoves]);
+  }, [movesetOptions]);
 
   const getAbilityMechanicUsability = useCallback((mechanic, exactAbilities) => {
     let abilityNames = abilityOptions.map(a => { return a.name } );
@@ -787,14 +531,14 @@ export default function App() {
     else {
       switch(mechanic){
         case 'terrain':
-          return abilityNames.find(name => terrainAbilities.includes(name));      
+          return abilityNames.find(name => usability.terrainAbilities.includes(name));      
         case 'orb':
-          return abilityNames.find(name => orbAbilities.includes(name));
+          return abilityNames.find(name => usability.orbAbilities.includes(name));
         default:
           return false;
       }    
     }
-  }, [abilityOptions, terrainAbilities, orbAbilities])
+  }, [abilityOptions])
 
   // Helper funciton for usability checks.
   const getReverseOption = useCallback((index) => {
@@ -804,6 +548,7 @@ export default function App() {
       return null;      
   }, [optionsData])
 
+  // Generate abilities
   useEffect(() => {
     let cancel = false;
 
@@ -811,7 +556,7 @@ export default function App() {
     async function getAbilityOptions() {      
       let abilities = [];            
 
-      for (let index = 0; index < randomRolls.abilities; index++) {
+      for (let index = 0; index < team.randomOptions.abilities; index++) {
         const ability = await getNewAbility(abilities);
         abilities.push(ability);
         if(!cancel)
@@ -828,7 +573,7 @@ export default function App() {
     
       do{        
         let ability = abilityList[Math.floor(Math.random()*abilityList.length)];      
-        newAbility = await axios.get(`${apiUrl}ability/${ability.name}`);     
+        newAbility = await axios.get(`${api.url}ability/${ability.name}`);     
         usable = true;    
                                
         switch(newAbility.data.name){
@@ -988,8 +733,8 @@ export default function App() {
           default:
             break;
         }                  
-      } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || FindKeywords(newAbility.data.name, '-', abilityFilter, abilityAllow) || !usable)
-      //console.log(newAbility.data.name);
+      } while (checkDuplicatedName(currentAbilities, newAbility.data.name) || 
+              FindKeywords(newAbility.data.name, '-', filters.abilityFilter, filters.abilityAllow) || !usable)      
 
       return newAbility.data;
     }
@@ -998,14 +743,14 @@ export default function App() {
       getAbilityOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, abilityList, randomRolls, abilityFilter, abilityAllow, 
+  }, [generating, generationStep, abilityList, 
       getMoveMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
 
   // Respond to ability options generated completely.
   useEffect (() => {  
     let cancel = false;
 
-    if(generating && generationStep === 4 && abilityOptions.length >= randomRolls.abilities){
+    if(generating && generationStep === 4 && abilityOptions.length >= team.randomOptions.abilities){
 
       // Check abilities that change move types.
       let msPerType = optionsData.movesetsPerType;            
@@ -1045,7 +790,7 @@ export default function App() {
 
       // Check for reverse branch logic options. 
       options.forEach(opt => {
-        if(!rOptions.includes('consumable') && [...consumableItemMoves, ...consumableItemAbilities].includes(opt))
+        if(!rOptions.includes('consumable') && [...usability.consumableItemMoves, ...usability.consumableItemAbilities].includes(opt))
           rOptions.push('consumable');
         else if(!rOptions.includes('plate') && opt === 'multitype')
           rOptions.push('plate');
@@ -1059,16 +804,16 @@ export default function App() {
       }
     }    
     return () => cancel = true;
-  }, [generating, generationStep, movesetOptions, abilityOptions, randomRolls, optionsData, 
-      consumableItemMoves, consumableItemAbilities]);
+  }, [generating, generationStep, movesetOptions, abilityOptions, optionsData]);
 
+  // Generate items
   useEffect(() => {
     let cancel = false;
 
     // Get a set of item options.
     async function getItemOptions() {          
       let items = [];                  
-      for (let index = 0; index < randomRolls.items; index++) {
+      for (let index = 0; index < team.randomOptions.items; index++) {
         let itemType = getReverseOption(index);
         let item = "";
         if(itemType)
@@ -1092,19 +837,19 @@ export default function App() {
         let item = "";
         switch(itemType){
           case 'consumable':
-            item = {name: consumableItems[Math.floor(Math.random()*consumableItems.length)]};
+            item = {name: usability.consumableItems[Math.floor(Math.random()*usability.consumableItems.length)]};
             break;
           case 'plate':
-            item = {name: plateItems[Math.floor(Math.random()*plateItems.length)]};
+            item = {name: usability.plateItems[Math.floor(Math.random()*usability.plateItems.length)]};
             break;
           case 'memory':
-            item = {name: memoryItems[Math.floor(Math.random()*memoryItems.length)]};
+            item = {name: usability.memoryItems[Math.floor(Math.random()*usability.memoryItems.length)]};
             break;
           default:
             item = itemList[Math.floor(Math.random()*itemList.length)];      
             break;
         }        
-        newItem = await axios.get(`${apiUrl}item/${item.name}`);   
+        newItem = await axios.get(`${api.url}item/${item.name}`);   
         usable = true;    
                                
         switch(newItem.data.category.name){
@@ -1242,9 +987,9 @@ export default function App() {
           default:
             break;
         }                      
-      } while (checkDuplicatedName(currentItems, newItem.data.name) || FindKeywords(newItem.data.name, '-', itemFilter, itemAllow) || !usable)
-      //console.log(newItem.data.name);
-
+      } while (checkDuplicatedName(currentItems, newItem.data.name) || 
+              FindKeywords(newItem.data.name, '-', filters.itemFilter, filters.itemAllow) || !usable)
+      
       return newItem.data;
     } 
 
@@ -1252,7 +997,7 @@ export default function App() {
       getItemOptions();
     }
     return () => cancel = true;
-  }, [generating, generationStep, itemList, randomRolls, itemFilter, itemAllow, consumableItems, plateItems, memoryItems,
+  }, [generating, generationStep, itemList,
       getMovesetTypeUsabilityForItems, getMoveMechanicUsability, getAbilityMechanicUsability, getPokemonTypeUsability,
       getReverseOption, getSpecificOptionsUsabilityForItems, getPokemonUsability, getMovesetTypeUsability])
 
@@ -1282,12 +1027,12 @@ export default function App() {
             p.item = null;          
             change = true;
           }
-          else if(!p.selected && selectionsMade.pokemons < selectionsNeeded.pokemons) {
+          else if(!p.selected && selectionsMade.pokemons < team.selectionsNeeded.pokemons) {
             p.selected = true;
             change = true;
           }
           else {
-            setToast('Pokemon Options', `Only ${selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
+            setToast('Pokemon Options', `Only ${team.selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
           }
         }
         return p;
@@ -1311,12 +1056,12 @@ export default function App() {
             m.selected = false;
             change = true;
           }
-          else if(!m.selected && selectionsMade.moves[moveset] < selectionsNeeded.moves){
+          else if(!m.selected && selectionsMade.moves[moveset] < team.selectionsNeeded.moves){
             m.selected = true;
             change = true;
           }
           else {
-            setToast('Moveset Options', `Only ${selectionsNeeded.moves} moves can be selected in a moveset.`, {warning: true});
+            setToast('Moveset Options', `Only ${team.selectionsNeeded.moves} moves can be selected in a moveset.`, {warning: true});
           }
         }
         return m;
@@ -1434,63 +1179,63 @@ export default function App() {
     let change = false;
     switch(string){
       case 'pokemons':
-        if(!sCompleted.pokemons && val >= selectionsNeeded.pokemons){
+        if(!sCompleted.pokemons && val >= team.selectionsNeeded.pokemons){
           sCompleted.pokemons = true;
           change = true;
-          setToast('Pokemon Options', `All ${selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
+          setToast('Pokemon Options', `All ${team.selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
         }
-        else if(sCompleted.pokemons && val < selectionsNeeded.pokemons){
+        else if(sCompleted.pokemons && val < team.selectionsNeeded.pokemons){
           sCompleted.pokemons = false;
           change = true;
-          setToast('Pokemon Options', `There must be ${selectionsNeeded.pokemons} pokemons selected.`, {warning: true});
+          setToast('Pokemon Options', `There must be ${team.selectionsNeeded.pokemons} pokemons selected.`, {warning: true});
         }
         break;
       case 'movesets':
-        if(!sCompleted.movesets && val >= selectionsNeeded.movesets){
+        if(!sCompleted.movesets && val >= team.selectionsNeeded.movesets){
           sCompleted.movesets = true;
           change = true;
-          setToast('Moveset Options', `All ${selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
+          setToast('Moveset Options', `All ${team.selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
         }
-        else if(sCompleted.movesets && val < selectionsNeeded.movesets){
+        else if(sCompleted.movesets && val < team.selectionsNeeded.movesets){
           sCompleted.movesets = false;
           change = true;
-          setToast('Moveset Options', `There must be ${selectionsNeeded.movesets} pokemons assigned to a moveset.`, {warning: true});
+          setToast('Moveset Options', `There must be ${team.selectionsNeeded.movesets} pokemons assigned to a moveset.`, {warning: true});
         }
         break;
       case 'moves':
-        if(!sCompleted.moves && val >= selectionsNeeded.movesets * selectionsNeeded.moves){
+        if(!sCompleted.moves && val >= team.selectionsNeeded.movesets * team.selectionsNeeded.moves){
           sCompleted.moves = true;
           change = true;
-          setToast('Moveset Options', `All ${selectionsNeeded.movesets * selectionsNeeded.moves} moves have been selected.`, {success: true});    
+          setToast('Moveset Options', `All ${team.selectionsNeeded.movesets * team.selectionsNeeded.moves} moves have been selected.`, {success: true});    
         }
-        else if(sCompleted.moves && val < selectionsNeeded.movesets * selectionsNeeded.moves){
+        else if(sCompleted.moves && val < team.selectionsNeeded.movesets * team.selectionsNeeded.moves){
           sCompleted.moves = false;
           change = true;
-          setToast('Moveset Options', `There must be ${selectionsNeeded.movesets * selectionsNeeded.moves} moves selected.`, {warning: true});    
+          setToast('Moveset Options', `There must be ${team.selectionsNeeded.movesets * team.selectionsNeeded.moves} moves selected.`, {warning: true});    
         }
         break;
       case 'abilities':
-        if(!sCompleted.abilities && val >= selectionsNeeded.abilities){
+        if(!sCompleted.abilities && val >= team.selectionsNeeded.abilities){
           sCompleted.abilities = true;
           change = true;
-          setToast('Ability Options', `All ${selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
+          setToast('Ability Options', `All ${team.selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
         }
-        else if(sCompleted.abilities && val < selectionsNeeded.abilities){
+        else if(sCompleted.abilities && val < team.selectionsNeeded.abilities){
           sCompleted.abilities = false;
           change = true;
-          setToast('Ability Options', `There must be ${selectionsNeeded.abilities} pokemons assigned to an ability.`, {warning: true});
+          setToast('Ability Options', `There must be ${team.selectionsNeeded.abilities} pokemons assigned to an ability.`, {warning: true});
         }
         break;
       case 'items':
-        if(!sCompleted.items && val >= selectionsNeeded.items){
+        if(!sCompleted.items && val >= team.selectionsNeeded.items){
           sCompleted.items = true;
           change = true;
-          setToast('Item Options', `All ${selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
+          setToast('Item Options', `All ${team.selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
         }
-        else if(sCompleted.items && val < selectionsNeeded.items){
+        else if(sCompleted.items && val < team.selectionsNeeded.items){
           sCompleted.items = false;
           change = true;
-          setToast('Item Options', `There must be ${selectionsNeeded.items} pokemons assigned to an item.`, {warning: true});
+          setToast('Item Options', `There must be ${team.selectionsNeeded.items} pokemons assigned to an item.`, {warning: true});
         }
         break;
       default:
@@ -1501,7 +1246,7 @@ export default function App() {
       if(Object.values(sCompleted).every(val => val))
         setToast('Team Builder', `Team completely built, export your team!`, {success: true});
     }
-  }, [sectionsCompleted, selectionsNeeded]);
+  }, [sectionsCompleted]);
 
   // Respond to changes in slections/assignments for pokemon, movesets, abilities and items.
   useEffect (() => {
@@ -1560,7 +1305,7 @@ export default function App() {
     });        
     return total;
   }  
-    
+
   const getStatDisplay = (name) => {
     switch(name){
       case "hp":
@@ -1703,7 +1448,7 @@ export default function App() {
   return (        
     <TeamBuilderContext.Provider value={{
       pokemonOptions: pokemonOptions,
-      selectionsNeeded: selectionsNeeded,
+      selectionsNeeded: team.selectionsNeeded,
       selectionsMade: selectionsMade,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
@@ -1725,7 +1470,7 @@ export default function App() {
                 <Route path="/builder">        
                   <TeamBuilder
                     loading={loading}
-                    randomRolls={randomRolls}
+                    randomOptions={team.randomOptions}
                     pokemonOptions={pokemonOptions}
                     movesetOptions={movesetOptions}
                     abilityOptions={abilityOptions}
