@@ -12,7 +12,7 @@ export default function TeamBuilder({
 
     // Change title.
     useEffect (() => {
-        document.title = 'Team Builder - Procedural Pokemon';
+        document.title = 'Team Builder - Procedural Pokémon';
     }, []);
 
     const getControls = () => {
@@ -46,7 +46,7 @@ export default function TeamBuilder({
     
     const generationProgress = () => {
         if(pokemonOptions.length < randomOptions.pokemons)
-            return `Generating Pokemons (${pokemonOptions.length}/${randomOptions.pokemons})`;   
+            return `Generating Pokémon (${pokemonOptions.length}/${randomOptions.pokemons})`;   
         else if(movesetOptions.length < randomOptions.movesets)
             return `Generating Movesets (${movesetOptions.length}/${randomOptions.movesets})`;
         else if(abilityOptions.length < randomOptions.abilities)

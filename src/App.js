@@ -274,7 +274,7 @@ export default function App() {
       } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon) ||
               (isTopPokemon && topPokemon >= team.topPokemonBalance) ||
               (!isTopPokemon && topPokemon < team.topPokemonBalance && 
-              currentPokemons + team.topPokemonBalance >= team.randomOptions.pokemons))
+              currentPokemons.length + team.topPokemonBalance >= team.randomOptions.pokemons))
       return newPokemon.data
     };
 
@@ -1052,7 +1052,7 @@ export default function App() {
             change = true;
           }
           else {
-            setToast('Pokemon Options', `Only ${team.selectionsNeeded.pokemons} pokemons can be selected.`, {warning: true});
+            setToast('Pokémon Options', `Only ${team.selectionsNeeded.pokemons} pokémon can be selected.`, {warning: true});
           }
         }
         return p;
@@ -1062,7 +1062,7 @@ export default function App() {
       }
     }
     else
-      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
+      setToast('Controls', 'Your options are still being generated.', {warning: true});
   }   
 
   // Select a move.
@@ -1091,7 +1091,7 @@ export default function App() {
       }
     }
     else
-      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
+      setToast('Controls', 'Your options are still being generated.', {warning: true});
   }
 
   // Assign a pokemon to a moveset, ability or item.
@@ -1159,7 +1159,7 @@ export default function App() {
       }
     }
     else
-      setToast('Team Builder', 'Your options are still being generated.', {warning: true});
+      setToast('Controls', 'Your options are still being generated.', {warning: true});
   }    
 
   // Clear all selections and assignments.
@@ -1202,24 +1202,24 @@ export default function App() {
         if(!sCompleted.pokemons && val >= team.selectionsNeeded.pokemons){
           sCompleted.pokemons = true;
           change = true;
-          setToast('Pokemon Options', `All ${team.selectionsNeeded.pokemons} pokemons have been selected.`, {success: true});
+          setToast('Pokémon Options', `All ${team.selectionsNeeded.pokemons} pokémon have been selected.`, {success: true});
         }
         else if(sCompleted.pokemons && val < team.selectionsNeeded.pokemons){
           sCompleted.pokemons = false;
           change = true;
-          setToast('Pokemon Options', `There must be ${team.selectionsNeeded.pokemons} pokemons selected.`, {warning: true});
+          setToast('Pokémon Options', `There must be ${team.selectionsNeeded.pokemons} pokémon selected.`, {warning: true});
         }
         break;
       case 'movesets':
         if(!sCompleted.movesets && val >= team.selectionsNeeded.movesets){
           sCompleted.movesets = true;
           change = true;
-          setToast('Moveset Options', `All ${team.selectionsNeeded.movesets} pokemons have been assigned to a moveset.`, {success: true});
+          setToast('Moveset Options', `All ${team.selectionsNeeded.movesets} pokémon have been assigned to a moveset.`, {success: true});
         }
         else if(sCompleted.movesets && val < team.selectionsNeeded.movesets){
           sCompleted.movesets = false;
           change = true;
-          setToast('Moveset Options', `There must be ${team.selectionsNeeded.movesets} pokemons assigned to a moveset.`, {warning: true});
+          setToast('Moveset Options', `There must be ${team.selectionsNeeded.movesets} pokémon assigned to a moveset.`, {warning: true});
         }
         break;
       case 'moves':
@@ -1238,24 +1238,24 @@ export default function App() {
         if(!sCompleted.abilities && val >= team.selectionsNeeded.abilities){
           sCompleted.abilities = true;
           change = true;
-          setToast('Ability Options', `All ${team.selectionsNeeded.abilities} pokemons have been assigned to an ability.`, {success: true});
+          setToast('Ability Options', `All ${team.selectionsNeeded.abilities} pokémon have been assigned to an ability.`, {success: true});
         }
         else if(sCompleted.abilities && val < team.selectionsNeeded.abilities){
           sCompleted.abilities = false;
           change = true;
-          setToast('Ability Options', `There must be ${team.selectionsNeeded.abilities} pokemons assigned to an ability.`, {warning: true});
+          setToast('Ability Options', `There must be ${team.selectionsNeeded.abilities} pokémon assigned to an ability.`, {warning: true});
         }
         break;
       case 'items':
         if(!sCompleted.items && val >= team.selectionsNeeded.items){
           sCompleted.items = true;
           change = true;
-          setToast('Item Options', `All ${team.selectionsNeeded.items} pokemons have been assigned to an item.`, {success: true});
+          setToast('Item Options', `All ${team.selectionsNeeded.items} pokémon have been assigned to an item.`, {success: true});
         }
         else if(sCompleted.items && val < team.selectionsNeeded.items){
           sCompleted.items = false;
           change = true;
-          setToast('Item Options', `There must be ${team.selectionsNeeded.items} pokemons assigned to an item.`, {warning: true});
+          setToast('Item Options', `There must be ${team.selectionsNeeded.items} pokémon assigned to an item.`, {warning: true});
         }
         break;
       default:
@@ -1264,7 +1264,7 @@ export default function App() {
     if(change){
       setSectionsCompleted(sCompleted);
       if(Object.values(sCompleted).every(val => val))
-        setToast('Team Builder', `Team completely built, export your team!`, {success: true});
+        setToast('Controls', `Team completely built, export it!`, {success: true});
     }
   }, [sectionsCompleted]);
 
@@ -1474,7 +1474,7 @@ export default function App() {
       selectMove: selectMove,
       assignPokemon: assignPokemon
     }}>
-      <div className="bg-gray-100 bg-unown-pattern min-h-screen">
+      <div className="bg-gray-50 bg-unown-pattern min-h-screen">
         <Router basename="/React-Procedural-Pokemon">
           <div className="flex w-full">
             <div className="h-screen sticky top-0">
