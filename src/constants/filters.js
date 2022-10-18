@@ -40,7 +40,6 @@ const moveFilter = [ // Exclude moves with this keywords.
 const moveAllow = [ // Include moves with this keywords even when excluded by filter.
 'bug', 'grind', 'shift'
 ];
-const moveStatusLimit = 3; // Max number of status moves in a moveset.
 
 // Abilities
 const abilityFilter = [ // Exclude abilities with this keywords.
@@ -97,7 +96,7 @@ const itemAllow = [ // Include items with this keywords even when excluded by fi
 
 export {
     pokemonFilter, pokemonAllow, 
-    moveFilter, moveAllow, moveStatusLimit, 
+    moveFilter, moveAllow, 
     abilityFilter, abilityAllow,
     itemFilter, itemAllow
 }

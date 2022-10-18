@@ -108,10 +108,12 @@ export default function App() {
     // Get a new set of pokemon options.
     async function getPokemonOptions() {
       let pokemons = [];
-      let shinyIndex = Math.round((Math.random()*100 / 12.5));      
+      let shinyIndex = Math.floor(Math.random()*team.randomOptions.pokemons);  
+      let topPokemon = 0;
+      let checkTopPokemon = true;
 
       for (let index = 0; index < team.randomOptions.pokemons; index++) {
-        const pokemon = await getNewPokemon(pokemons, index);
+        const pokemon = await getNewPokemon(pokemons, topPokemon);
         const species = await axios.get(pokemon.species.url);
         // gender
         pokemon.gender_rate = species.data.gender_rate;
@@ -124,9 +126,15 @@ export default function App() {
         else {
           pokemon.gender = (Math.random()*101) <= (pokemon.gender_rate * 12.5) ? "female" : "male";
         }        
-        //                 
+        // balance
+        if(topPokemon < team.topPokemonBalance)
+          checkTopPokemon = true;                
         pokemon.is_mythical = species.data.is_mythical;
-        pokemon.is_legendary = species.data.is_legendary;        
+        pokemon.is_legendary = species.data.is_legendary;  
+        if(checkTopPokemon && (pokemon.is_mythical || pokemon.is_legendary)){
+          topPokemon += 1;      
+          checkTopPokemon = false;
+        }          
         pokemon.shiny = (index === shinyIndex);
         pokemon.level = pokemon.shiny ? 60 : 50;
         // stats        
@@ -172,6 +180,10 @@ export default function App() {
           return s;
         });
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
+        if(checkTopPokemon && (pokemon.stats[6].base_stat >= 600)){
+          topPokemon += 1;      
+          checkTopPokemon = false;
+        }   
         // selections
         pokemon.selected = false;
         pokemon.moveset = null;
@@ -187,10 +199,11 @@ export default function App() {
     }
 
     // Get a new single pokemon option.
-    async function getNewPokemon(currentPokemons) {    
+    async function getNewPokemon(currentPokemons, topPokemon) {    
       let newPokemon = '';
       let finalPokemon = '';
-  
+      let isTopPokemon = false;
+
       do {          
           let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
 
@@ -252,9 +265,16 @@ export default function App() {
   
           // Get the final pokemon from the varieties.
           finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
-  
-      } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon))
-      newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
+          if(finalPokemon){
+            newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
+            // Check for top pokemon balance
+            isTopPokemon = (finalSpecies.data.is_mythical || finalSpecies.data.is_legendary || 
+              getTotalStats(newPokemon.data.stats) >= 600);            
+          }
+      } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon) ||
+              (isTopPokemon && topPokemon >= team.topPokemonBalance) ||
+              (!isTopPokemon && topPokemon < team.topPokemonBalance && 
+              currentPokemons + team.topPokemonBalance >= team.randomOptions.pokemons))
       return newPokemon.data
     };
 
@@ -320,11 +340,11 @@ export default function App() {
               if(!newMoveset.find(m => m.name === 'stockpile')){
                 usable = (team.randomOptions.moves - newMoveset.length) >= 2;
                 if(usable){
-                  if(move.data.name === 'swallow' && (filters.moveStatusLimit - statusMoves) >= 2)
+                  if(move.data.name === 'swallow' && (team.moveStatusLimit - statusMoves) >= 2)
                     combo = 'stockpile';
-                  else if(move.data.name === 'spit-up' && (filters.moveStatusLimit - statusMoves) >= 1)
+                  else if(move.data.name === 'spit-up' && (team.moveStatusLimit - statusMoves) >= 1)
                     combo = 'stockpile';
-                  else if((filters.moveStatusLimit - statusMoves) <= 0)
+                  else if((team.moveStatusLimit - statusMoves) <= 0)
                     usable = false;
                 }                                  
               }                          
@@ -334,11 +354,11 @@ export default function App() {
               if(!newMoveset.find(m => m.name === 'swallow') && !newMoveset.find(m => m.name === 'spit-up')){
                 usable = (team.randomOptions.moves - newMoveset.length) >= 2;
                 if(usable){
-                  if((filters.moveStatusLimit - statusMoves) >= 2)
+                  if((team.moveStatusLimit - statusMoves) >= 2)
                     combo = Math.random() < 0.5 ? 'swallow' : 'spit-up';
-                  else if((filters.moveStatusLimit - statusMoves) >= 1)
+                  else if((team.moveStatusLimit - statusMoves) >= 1)
                     combo = 'spit-up';
-                  else if((filters.moveStatusLimit - statusMoves) <= 0)
+                  else if((team.moveStatusLimit - statusMoves) <= 0)
                     usable = false;
                 }
               }
@@ -364,7 +384,7 @@ export default function App() {
           }
         } while (checkDuplicatedName(newMoveset, move.data.name) || 
                 FindKeywords(move.data.name, '-', filters.moveFilter, filters.moveAllow) ||
-                (status && statusMoves >= filters.moveStatusLimit) || !usable)
+                (status && statusMoves >= team.moveStatusLimit) || !usable)
         move.data.selected = false;
         newMoveset.push(move.data);      
         if(status){
