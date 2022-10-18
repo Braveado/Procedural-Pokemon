@@ -1025,7 +1025,7 @@ export default function App() {
     let cancel = false;
 
     if(generating && generationStep === 6){
-      setToast('Controls', 'Options generated, build your team!', {success: true});
+      setToast('Actions', 'Options generated, build your team!', {success: true});
       if(!cancel)
         setGenerating(false);   
     }
@@ -1062,7 +1062,7 @@ export default function App() {
       }
     }
     else
-      setToast('Controls', 'Your options are still being generated.', {warning: true});
+      setToast('Actions', 'Your options are still being generated.', {warning: true});
   }   
 
   // Select a move.
@@ -1091,7 +1091,7 @@ export default function App() {
       }
     }
     else
-      setToast('Controls', 'Your options are still being generated.', {warning: true});
+      setToast('Actions', 'Your options are still being generated.', {warning: true});
   }
 
   // Assign a pokemon to a moveset, ability or item.
@@ -1159,7 +1159,7 @@ export default function App() {
       }
     }
     else
-      setToast('Controls', 'Your options are still being generated.', {warning: true});
+      setToast('Actions', 'Your options are still being generated.', {warning: true});
   }    
 
   // Clear all selections and assignments.
@@ -1185,10 +1185,10 @@ export default function App() {
       });          
       setMovesetOptions([...msOptions]);
 
-      setToast('Controls', 'Choices cleared, start again!', {success: true});
+      setToast('Actions', 'Choices cleared, start again!', {success: true});
     }
     else {
-      setToast('Controls', 'There are no choices to clear.', {warning: true});
+      setToast('Actions', 'There are no choices to clear.', {warning: true});
     }
   }
 
@@ -1264,7 +1264,7 @@ export default function App() {
     if(change){
       setSectionsCompleted(sCompleted);
       if(Object.values(sCompleted).every(val => val))
-        setToast('Controls', `Team completely built, export it!`, {success: true});
+        setToast('Actions', `Team completely built, export it!`, {success: true});
     }
   }, [sectionsCompleted]);
 
@@ -1427,7 +1427,7 @@ export default function App() {
       copyTextToClipboard(exportText);      
     }
     else {
-      setToast('Controls', 'The team is not completely built!', {warning: true});      
+      setToast('Actions', 'The team is not completely built!', {warning: true});      
     }
   }  
 
@@ -1441,11 +1441,11 @@ export default function App() {
     try {
       var successful = document.execCommand("copy");
       if(successful)
-        setToast('Controls', 'Team copied to clipboard!', {success: true});      
+        setToast('Actions', 'Team copied to clipboard!', {success: true});      
       else
-        setToast('Controls', 'Error copying the team to clipboard!', {error: true});
+        setToast('Actions', 'Error copying the team to clipboard!', {error: true});
     } catch (err) {
-      setToast('Controls', 'Unable to copy the team to clipboard!', {error: true});
+      setToast('Actions', 'Unable to copy the team to clipboard!', {error: true});
     }  
     document.body.removeChild(textArea);
   }
@@ -1456,10 +1456,10 @@ export default function App() {
     }
     navigator.clipboard.writeText(text).then(
       function() {
-        setToast('Controls', 'Team copied to clipboard!', {success: true});
+        setToast('Actions', 'Team copied to clipboard!', {success: true});
       },
       function(err) {
-        setToast('Controls', 'Error copying the team to clipboard!', {error: true});
+        setToast('Actions', 'Error copying the team to clipboard!', {error: true});
       }
     );
   }

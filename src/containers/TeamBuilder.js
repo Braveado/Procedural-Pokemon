@@ -61,7 +61,7 @@ export default function TeamBuilder({
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
             <div id="controls" className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
-                    <p className="text-lg">Controls</p>
+                    <p className="text-lg">Actions</p>
                     <p className="text-base text-gray-300">Actions for building your team.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">

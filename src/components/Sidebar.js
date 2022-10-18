@@ -29,7 +29,7 @@ export default function Sidebar({ sectionsCompleted }) {
                     {location.pathname === "/builder" ? <div className="flex flex-col">
                         <HashLink smooth to="/builder#controls"
                             className="w-full flex justify-between items-center pr-4 pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Controls</p>
+                            <p>Actions</p>
                             {Object.values(sectionsCompleted).every(val => val) ? <FaCopy className="text-green-400 animate-enter" /> : null}
                         </HashLink>
                         <HashLink smooth to="/builder#pokemon"
