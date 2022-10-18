@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import Home from './containers/Home';
 import Format from './containers/Format';
 import TeamBuilder from './containers/TeamBuilder';
-import About from './containers/About';
+import Tools from './containers/Tools';
 import toast, { Toaster } from 'react-hot-toast';
 import Tooltips from './components/Tooltips';
 
@@ -1502,8 +1502,8 @@ export default function App() {
                   /> 
                   <Tooltips />                                  
                 </Route>
-                <Route path="/about">
-                  <About />
+                <Route path="/tools">
+                  <Tools />
                 </Route>
                 <Route path="/">
                   <Home />

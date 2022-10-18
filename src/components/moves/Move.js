@@ -86,9 +86,9 @@ export default function Move({move, moveset}) {
                 </div>                                
             </div>
             <div className="flex w-full gap-2 justify-between text-sm">
-                <p data-tip data-for={'pp'}>PP: {move.pp}</p>
-                <p data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
-                <p data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
+                <p className="border-b border-dashed border-gray-600" data-tip data-for={'pp'}>PP: {move.pp}</p>
+                <p className="border-b border-dashed border-gray-600" data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
+                <p className="border-b border-dashed border-gray-600" data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
             <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                 {getEffect()}

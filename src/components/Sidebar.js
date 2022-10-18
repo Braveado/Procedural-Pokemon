@@ -83,10 +83,10 @@ export default function Sidebar({ sectionsCompleted }) {
                         </HashLink>
                     </div> : null}
                 </div>         
-                <NavLink to='/about'
+                <NavLink to='/tools'
                     className="inline-flex items-center justify-left text-lg w-full pl-8 py-2 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out"
                     activeClassName="bg-gray-300 border-gray-600">
-                    <p>About</p>
+                    <p>Tools</p>
                 </NavLink>
             </div>        
         </div>

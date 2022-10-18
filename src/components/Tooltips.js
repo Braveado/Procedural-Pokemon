@@ -168,7 +168,7 @@ export default function Tooltips() {
             <ReactTooltip id="stat-4" delayShow={200}>
                 <div className="text-center">
                     <p>Special Defense</p>
-                    <p>Mitigated damage received when hit by a special move.</p>               
+                    <p>Mitigates damage received when hit by a special move.</p>               
                 </div>
             </ReactTooltip> 
             <ReactTooltip id="stat-5" delayShow={200}>
