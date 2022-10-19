@@ -3,12 +3,17 @@ import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
 import ItemOptions from '../components/items/ItemOptions';
+import { TeamBuilderContext } from '../context/TeamBuilderContext';
 import { BiLoaderAlt } from 'react-icons/bi';
-import { FaEraser, FaCopy, FaPencilAlt } from 'react-icons/fa';
+import { FaEraser, FaCopy } from 'react-icons/fa';
+import {GoPencil} from 'react-icons/go';
+import { FiExternalLink } from 'react-icons/fi';
 
 export default function TeamBuilder({
-    loading, randomOptions, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generateOptions, clearChoices, exportTeam
+    loading, randomOptions, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating,
+    generateOptions, clearChoices, exportTeam
     }) {   
+    const context = React.useContext(TeamBuilderContext);
 
     // Change title.
     useEffect (() => {
@@ -28,17 +33,24 @@ export default function TeamBuilder({
             return (
                 <>
                     <button type="button" onClick={() => clearChoices()}
-                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
+                        ${Object.values(context.selectionsMade).find(val => val > 0) ? 'bg-red-100 border-red-200 ring ring-red-100' : 'bg-white  border-gray-200 '}`}>
                         <FaEraser /> Clear Choices
                     </button>
                     <button type="button" onClick={() => generateOptions()}
-                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white border-2 border-gray-200 w-48 hover:bg-gray-200 transition duration-150 ease-in-out">
-                        <FaPencilAlt /> Generate Options
+                        className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
+                        ${pokemonOptions.length > 0 ? 'bg-yellow-100 border-yellow-200 ring ring-yellow-100' : 'bg-white  border-gray-200 '}`}>
+                        <GoPencil /> Generate Options
                     </button>
                     <button type="button" onClick={() => exportTeam()}
-                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-white hover:bg-gray-200 border-2 border-gray-200 w-48 transition duration-150 ease-in-out">
+                        className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
+                        ${Object.values(context.sectionsCompleted).every(val => val) ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
                         <FaCopy /> Export Team
                     </button>
+                    <a type="button" href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer"
+                        className="flex gap-2 items-center justify-center p-4 rounded-md bg-blue-100 hover:bg-gray-200 border-2 border-blue-200 ring ring-blue-100 w-48 transition duration-150 ease-in-out">
+                        <FiExternalLink /> Open Showdown
+                    </a>
                 </>
             )
         }        

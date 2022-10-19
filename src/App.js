@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import Home from './containers/Home';
 import Format from './containers/Format';
 import TeamBuilder from './containers/TeamBuilder';
-import Tools from './containers/Tools';
+import About from './containers/About';
 import toast, { Toaster } from 'react-hot-toast';
 import Tooltips from './components/Tooltips';
 
@@ -1474,6 +1474,7 @@ export default function App() {
       pokemonOptions: pokemonOptions,
       selectionsNeeded: team.selectionsNeeded,
       selectionsMade: selectionsMade,
+      sectionsCompleted: sectionsCompleted,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
       assignPokemon: assignPokemon
@@ -1482,9 +1483,7 @@ export default function App() {
         <Router basename="/React-Procedural-Pokemon">
           <div className="flex w-full">
             <div className="h-screen sticky top-0">
-              <Sidebar
-                sectionsCompleted={sectionsCompleted}
-              />
+              <Sidebar />
             </div>
             <div className="w-full flex flex-col">
               <Switch>          
@@ -1506,8 +1505,8 @@ export default function App() {
                   /> 
                   <Tooltips />                                  
                 </Route>
-                <Route path="/tools">
-                  <Tools />
+                <Route path="/about">
+                  <About />
                 </Route>
                 <Route path="/">
                   <Home />

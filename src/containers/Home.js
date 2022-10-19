@@ -38,6 +38,25 @@ export default function Home() {
                             </p>                          
                         </div>                                                                      
                     </div>                                                                       
+                </div>
+                <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">              
+                    <div id="links" className="flex flex-col w-full">
+                        <div className="flex justify-start items-center gap-4 text-center">                    
+                            <p className="text-lg">Useful Links</p>
+                            <p className="text-base text-gray-300">General resources.</p>
+                        </div>            
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
+                            <a href="https://bulbapedia.bulbagarden.net/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                Bulbapedia
+                            </a>
+                            <a href="https://img.pokemondb.net/images/typechart.png" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                Pokémon Type Chart
+                            </a>
+                            <a href="https://www.pkmn.help/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                Pokémon Type Calculator
+                            </a>                   
+                        </div>                                                            
+                    </div>                    
                 </div>                                                            
             </div>
         </div>
