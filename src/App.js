@@ -119,6 +119,10 @@ export default function App() {
         pokemon.gender_rate = species.data.gender_rate;
         if(pokemon.gender_rate < 0)
           pokemon.gender = "genderless";
+        else if(FindKeywords(pokemon.name, '-', ['male']))
+          pokemon.gender = "male";
+        else if(FindKeywords(pokemon.name, '-', ['female']))
+          pokemon.gender = "female";
         else if(pokemon.gender_rate === 0)
           pokemon.gender = "male";
         else if(pokemon.gender_rate === 8)
