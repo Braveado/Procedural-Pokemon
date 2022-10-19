@@ -31,25 +31,25 @@ export default function PokemonStats({stats, nature}) {
     const getStatWidth = (stat, first = false, total = false) => { 
         if(stat <= 50 || (first && stat <= 120) || (total && stat <= 360))
             return 'w-1/12';
-        else if(stat <= 65 || (first && stat <= 130) || (total && stat <= 390))
+        else if(stat <= 65 || (first && stat <= 135) || (total && stat <= 390))
             return 'w-2/12';
-        else if(stat <= 80 || (first && stat <= 140) || (total && stat <= 420))
+        else if(stat <= 80 || (first && stat <= 150) || (total && stat <= 420))
             return 'w-3/12';
-        else if(stat <= 95 || (first && stat <= 150) || (total && stat <= 450))
+        else if(stat <= 95 || (first && stat <= 165) || (total && stat <= 450))
             return 'w-4/12';
-        else if(stat <= 110 || (first && stat <= 160) || (total && stat <= 480))
+        else if(stat <= 110 || (first && stat <= 180) || (total && stat <= 480))
             return 'w-5/12';
-        else if(stat <= 125 || (first && stat <= 170) || (total && stat <= 510))
+        else if(stat <= 125 || (first && stat <= 195) || (total && stat <= 510))
             return 'w-6/12';
-        else if(stat <= 140 || (first && stat <= 180) || (total && stat <= 550))
+        else if(stat <= 140 || (first && stat <= 210) || (total && stat <= 550))
             return 'w-7/12';
-        else if(stat <= 155 || (first && stat <= 190) || (total && stat <= 590))
+        else if(stat <= 155 || (first && stat <= 225) || (total && stat <= 590))
             return 'w-8/12';
-        else if(stat <= 170 || (first && stat <= 200) || (total && stat <= 620))
+        else if(stat <= 170 || (first && stat <= 240) || (total && stat <= 620))
             return 'w-9/12';
-        else if(stat <= 185 || (first && stat <= 210) || (total && stat <= 650))
+        else if(stat <= 185 || (first && stat <= 255) || (total && stat <= 650))
             return 'w-10/12';
-        else if(stat <= 200 || (first && stat <= 220) || (total && stat <= 680))
+        else if(stat <= 200 || (first && stat <= 270) || (total && stat <= 680))
             return 'w-11/12';
         else
             return 'w-full';            
