@@ -184,7 +184,7 @@ export default function App() {
           return s;
         });
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
-        if(checkTopPokemon && (pokemon.stats[6].base_stat >= 600)){
+        if(checkTopPokemon && (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold)){
           topPokemon += 1;      
           checkTopPokemon = false;
         }   
@@ -273,7 +273,7 @@ export default function App() {
             newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
             // Check for top pokemon balance
             isTopPokemon = (finalSpecies.data.is_mythical || finalSpecies.data.is_legendary || 
-              getTotalStats(newPokemon.data.stats) >= 600);            
+              getTotalStats(newPokemon.data.stats) >= team.topPokemonTotalStatsThreshold);            
           }
       } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon) ||
               (isTopPokemon && topPokemon >= team.topPokemonBalance) ||

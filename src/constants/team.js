@@ -13,10 +13,18 @@ abilities: 6,
 items: 6
 };
 
-const topPokemonBalance = 1; // Number of top pokemon generated. 
+const topPokemonBalance = 1; // Number of top pokemon generated (legendary / mythical / high stats). 
+const topPokemonTotalStatsThreshold = 600; // Total stats for a normal pokemon to count as top.
 const moveStatusLimit = 3; // Max number of status moves in a moveset.
+
+const statRanges = {
+hp: [120, 280],
+general: [40, 200],
+total: [360, 680],
+};
 
 export {
     randomOptions, selectionsNeeded,
-    topPokemonBalance, moveStatusLimit
+    topPokemonBalance, topPokemonTotalStatsThreshold, moveStatusLimit,
+    statRanges,
 }

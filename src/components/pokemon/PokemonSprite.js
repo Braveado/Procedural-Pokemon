@@ -1,6 +1,7 @@
 import React from 'react'
 import {GiSparkles} from 'react-icons/gi';
 import {BiSearchAlt} from 'react-icons/bi';
+import {topPokemonTotalStatsThreshold} from '../../constants/team';
 
 export default function PokemonSprite({pokemon, assign, opacity}) {
     const getRarity = () => {
@@ -8,7 +9,7 @@ export default function PokemonSprite({pokemon, assign, opacity}) {
             return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
         else if(pokemon.is_mythical)
             return "bg-purple-100 border-2 border-purple-200 ring ring-purple-100 animate-pulse"
-        else if(pokemon.stats[6].base_stat >= 600)
+        else if(pokemon.stats[6].base_stat >= topPokemonTotalStatsThreshold)
             return "bg-blue-100 border-2 border-blue-200 ring ring-blue-100 animate-pulse"
         else
             return 'animate-none'

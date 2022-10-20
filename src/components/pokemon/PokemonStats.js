@@ -1,5 +1,6 @@
 import React from 'react';
 import { HiOutlineArrowUp, HiOutlineArrowDown } from 'react-icons/hi';
+import {statRanges} from '../../constants/team';
 
 export default function PokemonStats({stats, nature}) {
     const getStatName = (stat) => {
@@ -28,31 +29,40 @@ export default function PokemonStats({stats, nature}) {
         }
     }
 
-    const getStatWidth = (stat, first = false, total = false) => { 
-        if(stat <= 50 || (first && stat <= 120) || (total && stat <= 360))
+    const getStatPercentage = (range, input) => {
+        return ((input - range[0]) * 100) / (range[1] - range[0]); // 12.34
+    }
+
+    const statStep = 100 / 12; // 8.33
+
+    const getStatStep = (stat, statRange) => {
+        const statPercent = getStatPercentage(statRange, stat);
+        if(statPercent <= statStep * 1)
             return 'w-1/12';
-        else if(stat <= 65 || (first && stat <= 135) || (total && stat <= 390))
+        else if(statPercent <= statStep * 2)
             return 'w-2/12';
-        else if(stat <= 80 || (first && stat <= 150) || (total && stat <= 420))
+        else if(statPercent <= statStep * 3)
             return 'w-3/12';
-        else if(stat <= 95 || (first && stat <= 165) || (total && stat <= 450))
+        else if(statPercent <= statStep * 4)
             return 'w-4/12';
-        else if(stat <= 110 || (first && stat <= 180) || (total && stat <= 480))
+        else if(statPercent <= statStep * 5)
             return 'w-5/12';
-        else if(stat <= 125 || (first && stat <= 195) || (total && stat <= 510))
+        else if(statPercent <= statStep * 6)
             return 'w-6/12';
-        else if(stat <= 140 || (first && stat <= 210) || (total && stat <= 550))
+        else if(statPercent <= statStep * 7)
             return 'w-7/12';
-        else if(stat <= 155 || (first && stat <= 225) || (total && stat <= 590))
+        else if(statPercent <= statStep * 8)
             return 'w-8/12';
-        else if(stat <= 170 || (first && stat <= 240) || (total && stat <= 620))
+        else if(statPercent <= statStep * 9)
             return 'w-9/12';
-        else if(stat <= 185 || (first && stat <= 255) || (total && stat <= 650))
+        else if(statPercent <= statStep * 10)
             return 'w-10/12';
-        else if(stat <= 200 || (first && stat <= 270) || (total && stat <= 680))
+        else if(statPercent <= statStep * 11)
             return 'w-11/12';
-        else
-            return 'w-full';            
+        else if(statPercent <= statStep * 12)
+            return 'w-full';
+        else if(statPercent > statStep * 12)
+            return 'w-full animate-pulse';
     }
 
     return (
@@ -75,8 +85,10 @@ export default function PokemonStats({stats, nature}) {
                         <div className="flex w-2/3 relative items-center">
                             <div
                                 style={{marginTop: "2px"}}
-                                className={`${getStatColor(i)} rounded-md h-3 
-                                    ${getStatWidth(i < stats.length - 1 ? s.calculated_stat : s.base_stat, (i === 0), (i === stats.length - 1))}
+                                className={`${getStatColor(i)} rounded-md h-3
+                                    ${i === 0 ? getStatStep(s.calculated_stat, statRanges.hp) : ''}
+                                    ${i > 0 && i < stats.length - 1 ? getStatStep(s.calculated_stat, statRanges.general) : ''}
+                                    ${i === stats.length - 1 ? getStatStep(s.base_stat, statRanges.total) : ''}
                                 `}
                             />
                             <div className="absolute w-full h-full">
