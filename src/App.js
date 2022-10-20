@@ -20,6 +20,7 @@ export default function App() {
   // API
   const [loading, setLoading] = useState(true);  
   const [pokemonList, setPokemonList] = useState([]);
+  const [topPokemonList, setTopPokemonList] = useState([]);
   const [moveList, setMoveList] = useState([]);
   const [abilityList, setAbilityList] = useState([]);  
   const [itemList, setItemList] = useState([]);  
@@ -61,6 +62,11 @@ export default function App() {
 
     async function fetchData() {      
       const pokemonResults = await axios.get(`${api.url}pokemon?limit=${api.pokemonCount}`);
+      let topPokemonResults = [];
+      for(let i = 0; i < api.topPokemonCount.length; i++){
+        topPokemonResults.push(await (await axios.get(`${api.url}pokemon?limit=${api.topPokemonCount[i]}&offset=${api.topPokemonOffset[i]}`)).data.results);
+      };      
+      topPokemonResults = [].concat.apply([], topPokemonResults);
       const moveResults = await axios.get(`${api.url}move?limit=${api.moveCount}`);
       const abilityResults = await axios.get(`${api.url}ability?limit=${api.abilityCount}`);
       let itemResults = [];
@@ -72,6 +78,7 @@ export default function App() {
       const natureResults = await axios.get(`${api.url}nature?nature=${api.natureCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
+        setTopPokemonList(topPokemonResults);
         setMoveList(moveResults.data.results);
         setAbilityList(abilityResults.data.results);
         setItemList(itemResults);
@@ -209,7 +216,11 @@ export default function App() {
       let isTopPokemon = false;
 
       do {          
-          let pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
+          let pokemon = null;
+          if(topPokemon < team.topPokemonBalance && currentPokemons.length + team.topPokemonBalance >= team.randomOptions.pokemons)
+            pokemon = topPokemonList[Math.floor(Math.random()*topPokemonList.length)];
+          else
+            pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
 
           const initialPokemon = await axios.get(`${api.url}pokemon/${pokemon.name}`);
           const species = await axios.get(initialPokemon.data.species.url);

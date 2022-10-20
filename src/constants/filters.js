@@ -5,9 +5,9 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 // General forms as strong as legendaries.
 'mega', 'gmax', 'eternal', 'ash',
 // Pokemons and forms below 360 total stats.
-'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown',
+'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'meltan',
 // Others.
-'totem', 'bond', 'zygarde'
+'totem', 'bond', 'zygarde', 'phione'
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
 // Zygarde forms
