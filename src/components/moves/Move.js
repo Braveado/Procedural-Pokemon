@@ -85,10 +85,10 @@ export default function Move({move, moveset}) {
                     {move.damage_class ? <MoveCategory category={move.damage_class.name} /> : ''}
                 </div>                                
             </div>
-            <div className="flex w-full gap-2 justify-between text-sm">
-                <p className="border-b border-dashed border-gray-600" data-tip data-for={'pp'}>PP: {move.pp}</p>
-                <p className="border-b border-dashed border-gray-600" data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
-                <p className="border-b border-dashed border-gray-600" data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
+            <div className="w-full grid grid-cols-3 text-sm">
+                <p className="border-b border-dashed border-gray-600 justify-self-start" data-tip data-for={'pp'}>PP: {move.pp}</p>
+                <p className="border-b border-dashed border-gray-600 justify-self-center" data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
+                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
             <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                 {getEffect()}
