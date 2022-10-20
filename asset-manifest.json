@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/React-Procedural-Pokemon/static/css/main.00f55b32.chunk.css",
-    "main.js": "/React-Procedural-Pokemon/static/js/main.0737414e.chunk.js",
-    "main.js.map": "/React-Procedural-Pokemon/static/js/main.0737414e.chunk.js.map",
-    "runtime-main.js": "/React-Procedural-Pokemon/static/js/runtime-main.65a05598.js",
-    "runtime-main.js.map": "/React-Procedural-Pokemon/static/js/runtime-main.65a05598.js.map",
-    "static/js/2.e316ef6b.chunk.js": "/React-Procedural-Pokemon/static/js/2.e316ef6b.chunk.js",
-    "static/js/2.e316ef6b.chunk.js.map": "/React-Procedural-Pokemon/static/js/2.e316ef6b.chunk.js.map",
-    "static/js/3.f83b943d.chunk.js": "/React-Procedural-Pokemon/static/js/3.f83b943d.chunk.js",
-    "static/js/3.f83b943d.chunk.js.map": "/React-Procedural-Pokemon/static/js/3.f83b943d.chunk.js.map",
+    "main.css": "/React-Procedural-Pokemon/static/css/main.e8c946fe.chunk.css",
+    "main.js": "/React-Procedural-Pokemon/static/js/main.596718ea.chunk.js",
+    "main.js.map": "/React-Procedural-Pokemon/static/js/main.596718ea.chunk.js.map",
+    "runtime-main.js": "/React-Procedural-Pokemon/static/js/runtime-main.401eed7f.js",
+    "runtime-main.js.map": "/React-Procedural-Pokemon/static/js/runtime-main.401eed7f.js.map",
+    "static/js/2.6e973c9f.chunk.js": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js",
+    "static/js/2.6e973c9f.chunk.js.map": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js.map",
+    "static/js/3.2ffb4890.chunk.js": "/React-Procedural-Pokemon/static/js/3.2ffb4890.chunk.js",
+    "static/js/3.2ffb4890.chunk.js.map": "/React-Procedural-Pokemon/static/js/3.2ffb4890.chunk.js.map",
     "index.html": "/React-Procedural-Pokemon/index.html",
-    "static/css/main.00f55b32.chunk.css.map": "/React-Procedural-Pokemon/static/css/main.00f55b32.chunk.css.map",
-    "static/js/2.e316ef6b.chunk.js.LICENSE.txt": "/React-Procedural-Pokemon/static/js/2.e316ef6b.chunk.js.LICENSE.txt",
+    "static/css/main.e8c946fe.chunk.css.map": "/React-Procedural-Pokemon/static/css/main.e8c946fe.chunk.css.map",
+    "static/js/2.6e973c9f.chunk.js.LICENSE.txt": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js.LICENSE.txt",
     "static/media/logo.1e1593df.png": "/React-Procedural-Pokemon/static/media/logo.1e1593df.png",
     "static/media/index.css": "/React-Procedural-Pokemon/static/media/unown-pattern3.72452582.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.65a05598.js",
-    "static/js/2.e316ef6b.chunk.js",
-    "static/css/main.00f55b32.chunk.css",
-    "static/js/main.0737414e.chunk.js"
+    "static/js/runtime-main.401eed7f.js",
+    "static/js/2.6e973c9f.chunk.js",
+    "static/css/main.e8c946fe.chunk.css",
+    "static/js/main.596718ea.chunk.js"
   ]
 }
