@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function PokemonType({type}) {
+export default function PokemonType({type, size = 'md'}) {
     const getColor = () => {
         switch(type) {
             case 'normal': return 'bg-normal';
@@ -23,10 +23,19 @@ export default function PokemonType({type}) {
             case 'fairy': return 'bg-fairy';
             default: return '';
         }
+    }    
+
+    const getSize = () => {
+        switch(size){
+            case 'sm':
+                return 'w-auto text-xs px-1 py-0.5'
+            default:
+                return 'w-16 text-sm px-1.5 py-0.5';
+        }
     }
 
     return (
-        <p className={`flex items-center justify-center w-16 capitalize text-sm px-1.5 py-0.5 rounded-md text-white font-semibold ${getColor()}`}>
+        <p className={`flex items-center justify-center ${getSize()} capitalize rounded-md text-white font-semibold ${getColor()}`}>
             {type}
         </p>
     )

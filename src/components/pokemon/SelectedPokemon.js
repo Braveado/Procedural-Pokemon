@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
-import PokemonSprite from './PokemonSprite'
+import PokemonSprite from './PokemonSprite';
 
 export default function SelectedPokemon({ assignable }) {
     const context = React.useContext(TeamBuilderContext);   
@@ -33,7 +33,7 @@ export default function SelectedPokemon({ assignable }) {
         if(selectedPokemon.length > 0 && !assignedPokemon) {
             return selectedPokemon.map((p, i) => {
                 return (
-                    <PokemonSprite key={i} pokemon={p} assign={() => context.assignPokemon(p, assignable)}
+                    <PokemonSprite key={i} pokemon={p} types={true} stats={true} assign={() => context.assignPokemon(p, assignable)}
                         opacity={(assignedPokemon && p.name !== assignedPokemon.name) ||
                         (!assignedPokemon && getAssignedOutside(p))}
                     />
@@ -41,7 +41,7 @@ export default function SelectedPokemon({ assignable }) {
             })            
         }
         else if(selectedPokemon.length > 0 && assignedPokemon) {
-            return <PokemonSprite pokemon={assignedPokemon} assign={() => context.assignPokemon(assignedPokemon, assignable)} />            
+            return <PokemonSprite pokemon={assignedPokemon} types={true} stats={true} assign={() => context.assignPokemon(assignedPokemon, assignable)} />            
         }
         else {
             return (

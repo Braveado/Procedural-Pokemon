@@ -2,8 +2,10 @@ import React from 'react'
 import {GiSparkles} from 'react-icons/gi';
 import {BiSearchAlt} from 'react-icons/bi';
 import {topPokemonTotalStatsThreshold} from '../../constants/team';
+import PokemonType from './PokemonType';
+import {getStatColor, getStatName} from './PokemonStats';
 
-export default function PokemonSprite({pokemon, assign, opacity}) {
+export default function PokemonSprite({pokemon, assign, opacity, types = false, stats = false}) {
     const getRarity = () => {
         if(pokemon.is_legendary)
             return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
@@ -32,6 +34,40 @@ export default function PokemonSprite({pokemon, assign, opacity}) {
                         <BiSearchAlt /> Bulbapedia
                     </a>
                 </p>
+            }
+            {stats ?
+                <div className="absolute inset-x-0 top-0 w-full">                    
+                    <div className="relative w-full flex justify-center items-center text-xs">
+                        {
+                            [...Array(3)].map((e, i) => {
+                                return(
+                                    <div className="flex items-center justify-center">
+                                        <div 
+                                            className={`h-3 rounded-md px-1.5 text-transparent flex items-center justify-center
+                                            ${getStatColor(pokemon.highestStats[i].statIndex)} 
+                                            ${pokemon.highestStats[i].percentage > 100 ? 'animate-pulse' : ''}`} 
+                                        >
+                                            {getStatName(pokemon.highestStats[i].statIndex)}   
+                                        </div>
+                                        <p 
+                                            style={{marginTop: "-2px"}}
+                                            className="absolute"
+                                        >{getStatName(pokemon.highestStats[i].statIndex)}</p>
+                                    </div>
+                                )
+                            })
+                        }       
+                    </div>                                                                 
+                </div>
+            : null}
+            {types &&
+                <div className="absolute inset-x-0 bottom-0 flex justify-center items-center">
+                    {pokemon.types.map((t, i) => {
+                        return (                                    
+                            <PokemonType key={i} type={t.type.name} size="sm" />
+                        )
+                    })}                           
+                </div>
             }
         </div>
     )

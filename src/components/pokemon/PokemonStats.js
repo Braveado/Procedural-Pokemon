@@ -2,36 +2,37 @@ import React from 'react';
 import { HiOutlineArrowUp, HiOutlineArrowDown } from 'react-icons/hi';
 import {statRanges} from '../../constants/team';
 
-export default function PokemonStats({stats, nature}) {
-    const getStatName = (stat) => {
-        switch (stat) {
-            case 0: return 'HP';
-            case 1: return 'Atk';
-            case 2: return 'Def';
-            case 3: return 'SpA';
-            case 4: return 'SpD';
-            case 5: return 'Spe';
-            case 6: return 'Total';
-            default: break;
-        }
+const getStatName = (stat) => {
+    switch (stat) {
+        case 0: return 'HP';
+        case 1: return 'Atk';
+        case 2: return 'Def';
+        case 3: return 'SpA';
+        case 4: return 'SpD';
+        case 5: return 'Spe';
+        case 6: return 'Total';
+        default: break;
     }
+}
 
-    const getStatColor = (stat) => {
-        switch (stat) {
-            case 0: return 'bg-red-400';
-            case 1: return 'bg-yellow-500';
-            case 2: return 'bg-yellow-300';
-            case 3: return 'bg-green-400';
-            case 4: return 'bg-blue-400';
-            case 5: return 'bg-purple-400';
-            case 6: return 'bg-gray-300';
-            default: break;
-        }
+const getStatColor = (stat) => {
+    switch (stat) {
+        case 0: return 'bg-red-400';
+        case 1: return 'bg-yellow-500';
+        case 2: return 'bg-yellow-300';
+        case 3: return 'bg-green-400';
+        case 4: return 'bg-blue-400';
+        case 5: return 'bg-purple-400';
+        case 6: return 'bg-gray-300';
+        default: break;
     }
+}
 
-    const getStatPercentage = (range, input) => {
-        return ((input - range[0]) * 100) / (range[1] - range[0]); // 12.34
-    }
+const getStatPercentage = (range, input) => {
+    return ((input - range[0]) * 100) / (range[1] - range[0]); // 12.34
+}
+
+export default function PokemonStats({stats, nature}) {        
 
     const statStep = 100 / 12; // 8.33
 
@@ -107,4 +108,8 @@ export default function PokemonStats({stats, nature}) {
             })}                                        
         </div>
     )
+}
+
+export {
+    getStatName, getStatColor, getStatPercentage
 }

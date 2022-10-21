@@ -14,6 +14,7 @@ import TeamBuilder from './containers/TeamBuilder';
 import About from './containers/About';
 import toast, { Toaster } from 'react-hot-toast';
 import Tooltips from './components/Tooltips';
+import {getStatPercentage} from './components/pokemon/PokemonStats';
 
 export default function App() {
   // ----- STATE -----
@@ -194,6 +195,11 @@ export default function App() {
           }
           return s;
         });
+        pokemon.highestStats = pokemon.stats.map((s, i) => {
+          return {statIndex: i, 
+            percentage: getStatPercentage(i === 0 ? team.statRanges.hp : team.statRanges.general, s.calculated_stat)}
+        });
+        pokemon.highestStats.sort(function(a, b){return b.percentage-a.percentage});
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
         if(checkTopPokemon && (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold)){
           topPokemon += 1;      
