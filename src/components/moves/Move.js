@@ -3,13 +3,14 @@ import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
 import {BiSearchAlt} from 'react-icons/bi';
+//import * as tooltips from '../../constants/tooltips';
 
 export default function Move({move, moveset}) {
     const context = React.useContext(TeamBuilderContext);            
 
     const formatEffect = (effect) => {
         let formattedEffect = effect;
-        // Adjust specific items.      
+        // Adjust specific moves.      
         switch(move.name){
             case 'techno-blast':
                 formattedEffect = formattedEffect.replace('plate or ', '');
@@ -45,8 +46,8 @@ export default function Move({move, moveset}) {
         }           
         // Adjust general moves.
         formattedEffect = formattedEffect.replace(/\$effect_chance/g, move.effect_chance);
-        if(move.meta && move.meta.crit_rate > 0)
-            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage."));
+        /* if(move.meta && move.meta.crit_rate > 0)
+            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage.")); */
         if(move.priority !== 0)
             formattedEffect = formattedEffect.concat(' Priority '+move.priority);
         return formattedEffect;
@@ -93,6 +94,11 @@ export default function Move({move, moveset}) {
             <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                 {getEffect()}
             </div>
+            {/* <div className="text-sm w-full flex justify-center items-center border-t-2 border-gray-200">
+                <p className="border-b border-dashed border-gray-600" data-tip={formattedEffect} data-for={'dynamic'}>
+                    Tooltip
+                </p>
+            </div> */}
         </div>
     )
 }
