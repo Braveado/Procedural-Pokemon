@@ -63,15 +63,19 @@ export default function App() {
     async function fetchData() {      
       const pokemonResults = await axios.get(`${api.url}pokemon?limit=${api.pokemonCount}`);
       let topPokemonResults = [];
-      for(let i = 0; i < api.topPokemonCount.length; i++){
-        topPokemonResults.push(await (await axios.get(`${api.url}pokemon?limit=${api.topPokemonCount[i]}&offset=${api.topPokemonOffset[i]}`)).data.results);
+      for(let i = 0; i < api.topPokemonCountOffset.length; i++){
+        topPokemonResults.push(await 
+          (await axios.get(`${api.url}pokemon?limit=${api.topPokemonCountOffset[i][0]}&offset=${api.topPokemonCountOffset[i][1]}`)
+        ).data.results);
       };      
       topPokemonResults = [].concat.apply([], topPokemonResults);
       const moveResults = await axios.get(`${api.url}move?limit=${api.moveCount}`);
       const abilityResults = await axios.get(`${api.url}ability?limit=${api.abilityCount}`);
       let itemResults = [];
-      for(let i = 0; i < api.itemCount.length; i++){
-        itemResults.push(await (await axios.get(`${api.url}item?limit=${api.itemCount[i]}&offset=${api.itemOffset[i]}`)).data.results);
+      for(let i = 0; i < api.itemCountOffset.length; i++){
+        itemResults.push(await 
+          (await axios.get(`${api.url}item?limit=${api.itemCountOffset[i][0]}&offset=${api.itemCountOffset[i][1]}`)
+        ).data.results);
       };      
       itemResults = [].concat.apply([], itemResults);
       const typeResults = await axios.get(`${api.url}type?limit=${api.typeCount}`);

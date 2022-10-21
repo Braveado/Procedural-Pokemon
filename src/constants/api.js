@@ -1,20 +1,26 @@
 const url = 'https://pokeapi.co/api/v2/';
 const pokemonCount = 898;
-const topPokemonCount = [8, 9, 3, 16, 3, 15, 3, 11, 3, 6, 1, 2, 11, 3, 3, 14];
-const topPokemonOffset = [143, 242, 286, 370, 442, 479, 632, 637, 703, 715, 745, 771, 781, 799, 806, 884];
+const topPokemonCountOffset = [
+    [8, 143], [9, 242], [3, 286], [16, 370], [3, 442], 
+    [15, 479], [3, 632], [11, 637], [3, 703], [6, 715], 
+    [1, 745], [2, 771], [11, 781], [3, 799], [3, 806],
+    [14, 884]
+];
 const moveCount = 826;
 const abilityCount = 267;
-const itemCount = [2, 115, 1, 4, 24, 2, 9, 1, 1, 23];
-const itemOffset = [111, 189, 441, 562, 581, 666, 678, 727, 831, 844];
+const itemCountOffset = [
+    [2, 111], [115, 189], [1, 441], [4, 256], [24, 581], 
+    [2, 666], [9, 678], [1, 727], [1, 831], [23, 844]
+];
 const typeCount = 18;
 const natureCount = 25;
 
 export {
     url, 
-    pokemonCount, topPokemonCount, topPokemonOffset,
+    pokemonCount, topPokemonCountOffset,
     moveCount, 
     abilityCount, 
-    itemCount, itemOffset, 
+    itemCountOffset,
     typeCount, 
     natureCount
 }
