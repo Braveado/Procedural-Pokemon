@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/React-Procedural-Pokemon/static/css/main.e8c946fe.chunk.css",
-    "main.js": "/React-Procedural-Pokemon/static/js/main.d4c8e49e.chunk.js",
-    "main.js.map": "/React-Procedural-Pokemon/static/js/main.d4c8e49e.chunk.js.map",
+    "main.css": "/React-Procedural-Pokemon/static/css/main.b4d30f1f.chunk.css",
+    "main.js": "/React-Procedural-Pokemon/static/js/main.f04c48fe.chunk.js",
+    "main.js.map": "/React-Procedural-Pokemon/static/js/main.f04c48fe.chunk.js.map",
     "runtime-main.js": "/React-Procedural-Pokemon/static/js/runtime-main.401eed7f.js",
     "runtime-main.js.map": "/React-Procedural-Pokemon/static/js/runtime-main.401eed7f.js.map",
-    "static/js/2.6e973c9f.chunk.js": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js",
-    "static/js/2.6e973c9f.chunk.js.map": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js.map",
+    "static/js/2.c2156a81.chunk.js": "/React-Procedural-Pokemon/static/js/2.c2156a81.chunk.js",
+    "static/js/2.c2156a81.chunk.js.map": "/React-Procedural-Pokemon/static/js/2.c2156a81.chunk.js.map",
     "static/js/3.2ffb4890.chunk.js": "/React-Procedural-Pokemon/static/js/3.2ffb4890.chunk.js",
     "static/js/3.2ffb4890.chunk.js.map": "/React-Procedural-Pokemon/static/js/3.2ffb4890.chunk.js.map",
     "index.html": "/React-Procedural-Pokemon/index.html",
-    "static/css/main.e8c946fe.chunk.css.map": "/React-Procedural-Pokemon/static/css/main.e8c946fe.chunk.css.map",
-    "static/js/2.6e973c9f.chunk.js.LICENSE.txt": "/React-Procedural-Pokemon/static/js/2.6e973c9f.chunk.js.LICENSE.txt",
+    "static/css/main.b4d30f1f.chunk.css.map": "/React-Procedural-Pokemon/static/css/main.b4d30f1f.chunk.css.map",
+    "static/js/2.c2156a81.chunk.js.LICENSE.txt": "/React-Procedural-Pokemon/static/js/2.c2156a81.chunk.js.LICENSE.txt",
     "static/media/logo.1e1593df.png": "/React-Procedural-Pokemon/static/media/logo.1e1593df.png",
     "static/media/index.css": "/React-Procedural-Pokemon/static/media/unown-pattern3.72452582.png"
   },
   "entrypoints": [
     "static/js/runtime-main.401eed7f.js",
-    "static/js/2.6e973c9f.chunk.js",
-    "static/css/main.e8c946fe.chunk.css",
-    "static/js/main.d4c8e49e.chunk.js"
+    "static/js/2.c2156a81.chunk.js",
+    "static/css/main.b4d30f1f.chunk.css",
+    "static/js/main.f04c48fe.chunk.js"
   ]
 }
