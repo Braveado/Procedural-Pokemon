@@ -49,7 +49,7 @@ export default function TeamBuilder({
                     </button>
                     <a type="button" href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer"
                         className="flex gap-2 items-center justify-center p-4 rounded-md bg-blue-100 hover:bg-gray-200 border-2 border-blue-200 ring ring-blue-100 w-48 transition duration-150 ease-in-out">
-                        <FiExternalLink /> Open Showdown
+                        <FiExternalLink /> Showdown Teams
                     </a>
                 </>
             )
