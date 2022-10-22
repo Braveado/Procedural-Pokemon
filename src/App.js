@@ -1501,7 +1501,7 @@ export default function App() {
       selectMove: selectMove,
       assignPokemon: assignPokemon
     }}>
-      <div className="bg-gray-50 bg-unown-pattern min-h-screen">
+      <div className="bg-gray-50 bg-unown-pattern-tiled min-h-screen">        
         <Router basename="/React-Procedural-Pokemon">
           <div className="flex w-full">
             <div className="h-screen sticky top-0">

@@ -44,7 +44,7 @@ module.exports = {
         leave: 'leave 4s ease-in-out',
       },
       backgroundImage: theme => ({
-        'unown-pattern': "url('/src/assets/unown-pattern3.png')"
+        'unown-pattern-tiled': "url('/src/assets/unown-pattern-tiled.png')"
       })
     }
   },
