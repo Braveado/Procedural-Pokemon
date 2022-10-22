@@ -14,7 +14,7 @@ export default function PokemonOptions({ options }) {
             );
         } else {
             return (                
-                <div className="p-4 text-gray-300">
+                <div className="p-4 text-gray-400">
                     Empty
                 </div>            
             );
@@ -27,7 +27,7 @@ export default function PokemonOptions({ options }) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Pokémon Options</p>
-                    <p className="text-base text-gray-300">Select pokémon for your team.</p>
+                    <p className="text-base text-gray-400">Select pokémon for your team.</p>
                 </span>
                 <p className="text-lg">{context.selectionsMade.pokemons}/{context.selectionsNeeded.pokemons} Pokémon Selected</p>
             </div>            

@@ -43,7 +43,7 @@ export default function Home() {
                     <div id="links" className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Useful Links</p>
-                            <p className="text-base text-gray-300">General resources.</p>
+                            <p className="text-base text-gray-400">General resources.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             <a href="https://bulbapedia.bulbagarden.net/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">

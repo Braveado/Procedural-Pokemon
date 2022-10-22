@@ -45,7 +45,7 @@ export default function SelectedPokemon({ assignable }) {
         }
         else {
             return (
-                <div className="p-4 text-gray-300">
+                <div className="p-4 text-gray-400">
                     No selected pokémon
                 </div> 
             );

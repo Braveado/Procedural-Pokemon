@@ -14,7 +14,7 @@ export default function AbilityOptions({options}) {
             );
         } else {
             return (                
-                <div className="p-4 text-gray-300">
+                <div className="p-4 text-gray-400">
                     Empty
                 </div>            
             );
@@ -26,7 +26,7 @@ export default function AbilityOptions({options}) {
             <div className="flex justify-between items-center gap-4 text-center">
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">Ability Options</p>
-                    <p className="text-base text-gray-300">Assign your selected pokémon to an ability.</p>
+                    <p className="text-base text-gray-400">Assign your selected pokémon to an ability.</p>
                 </span>
                 <span className="flex gap-4 items-center">
                     <p className="text-lg">{context.selectionsMade.abilities}/{context.selectionsNeeded.abilities} Pokémon Assigned</p>                    

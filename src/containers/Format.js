@@ -11,13 +11,13 @@ export default function Format() {
             <div id="usage" className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
                     <p className="text-lg">Usage</p>
-                    <p className="text-base text-gray-300">How to use the format.</p>
+                    <p className="text-base text-gray-400">How to use the format.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-2 border-gray-200 rounded-md">
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Basics</p>
-                            <p className="text-base text-gray-300">General points about the format.</p>
+                            <p className="text-base text-gray-400">General points about the format.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             <p>
@@ -34,7 +34,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Guide</p>
-                            <p className="text-base text-gray-300">Process for creating, importing and playing with a team.</p>
+                            <p className="text-base text-gray-400">Process for creating, importing and playing with a team.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             The steps to create a team are the following:
@@ -77,13 +77,13 @@ export default function Format() {
             <div id="generation" className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
                     <p className="text-lg">Generation</p>
-                    <p className="text-base text-gray-300">How options are generated.</p>
+                    <p className="text-base text-gray-400">How options are generated.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-2 border-gray-200 rounded-md">
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Pokémon Options</p>
-                            <p className="text-base text-gray-300">Process for generating pokémon options.</p>
+                            <p className="text-base text-gray-400">Process for generating pokémon options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             The steps to generate each pokémon option are the following:
@@ -145,7 +145,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Moveset Options</p>
-                            <p className="text-base text-gray-300">Process for generating moveset options.</p>
+                            <p className="text-base text-gray-400">Process for generating moveset options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             The steps to generate each move option in a moveset are the following:
@@ -186,7 +186,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Ability Options</p>
-                            <p className="text-base text-gray-300">Process for generating ability options.</p>
+                            <p className="text-base text-gray-400">Process for generating ability options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             The steps to generate each ability option are the following:
@@ -220,7 +220,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Item Options</p>
-                            <p className="text-base text-gray-300">Process for generating item options.</p>
+                            <p className="text-base text-gray-400">Process for generating item options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             The steps to generate each item option are the following:
@@ -229,7 +229,7 @@ export default function Format() {
                                     Get a random item.
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li><a href="https://bulbapedia.bulbagarden.net/wiki/Category:In-battle_effect_items" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
-                                            In battle effect items
+                                            In-battle effect items
                                         </a></li>
                                     </ul>
                                 </li>
