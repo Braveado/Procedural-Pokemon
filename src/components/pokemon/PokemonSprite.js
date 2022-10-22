@@ -39,22 +39,22 @@ export default function PokemonSprite({pokemon, assign, opacity, types = false, 
                 <div className="absolute inset-x-0 top-0 w-full">                    
                     <div className="relative w-full flex justify-center items-center text-xs">
                         {
-                            [...Array(3)].map((e, i) => {
+                            pokemon.highestStats.map((e, i) => {
+                                if(i < 3){
                                 return(
                                     <div className="flex items-center justify-center">
                                         <div 
-                                            className={`h-3 rounded-md px-1.5 text-transparent flex items-center justify-center
+                                            className={`h-3 rounded-md w-8
                                             ${getStatColor(pokemon.highestStats[i].statIndex)} 
                                             ${pokemon.highestStats[i].percentage > 100 ? 'animate-pulse' : ''}`} 
-                                        >
-                                            {getStatName(pokemon.highestStats[i].statIndex)}   
-                                        </div>
+                                        />                                                                                    
                                         <p 
                                             style={{marginTop: "-2px"}}
                                             className="absolute"
                                         >{getStatName(pokemon.highestStats[i].statIndex)}</p>
                                     </div>
-                                )
+                                )}
+                                else return null;
                             })
                         }       
                     </div>                                                                 

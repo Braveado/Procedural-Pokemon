@@ -200,6 +200,7 @@ export default function App() {
             percentage: getStatPercentage(i === 0 ? team.statRanges.hp : team.statRanges.general, s.calculated_stat)}
         });
         pokemon.highestStats.sort(function(a, b){return b.percentage-a.percentage});
+        pokemon.highestStats = pokemon.highestStats.filter(s => s.percentage >= 50);
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
         if(checkTopPokemon && (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold)){
           topPokemon += 1;      
