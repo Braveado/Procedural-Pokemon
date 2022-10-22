@@ -1,6 +1,7 @@
 import React from 'react';
 import { HiOutlineArrowUp, HiOutlineArrowDown } from 'react-icons/hi';
 import {statRanges} from '../../constants/team';
+import {pokemon as pokemonTooltips} from '../../constants/tooltips';
 
 const getStatName = (stat) => {
     switch (stat) {
@@ -75,7 +76,7 @@ export default function PokemonStats({stats, nature}) {
                             <div className={`flex items-center 
                                 ${s.stat && nature.increased && s.stat.name === nature.increased.name ? 'text-blue-600' : ''}
                                 ${s.stat && nature.decreased && s.stat.name === nature.decreased.name ? 'text-red-600' : ''}`}>
-                                <p className="border-b border-dashed border-gray-600" data-tip data-for={'stat-'+i.toString()}>
+                                <p className="border-b border-dashed border-gray-600" data-tip={pokemonTooltips[i]} data-for={'pokemon'}>
                                     {getStatName(i)}
                                 </p>
                                 {s.stat && nature.increased && s.stat.name === nature.increased.name ? <HiOutlineArrowUp /> : null}

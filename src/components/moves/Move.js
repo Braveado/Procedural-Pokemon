@@ -4,6 +4,7 @@ import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
 import {BiSearchAlt} from 'react-icons/bi';
 import TooltipTags from '../TooltipTags';
+import {moves as moveTooltips} from '../../constants/tooltips';
 
 export default function Move({move, moveset}) {
     const context = React.useContext(TeamBuilderContext);            
@@ -47,7 +48,7 @@ export default function Move({move, moveset}) {
         // Adjust general moves.
         formattedEffect = formattedEffect.replace(/\$effect_chance/g, move.effect_chance);
         if(move.meta && move.meta.crit_rate > 0)
-            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage."));
+            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `Move's critical hit rate is increased by ${move.meta.crit_rate} stage(s).`);
         if(move.priority !== 0)
             formattedEffect = formattedEffect.concat(' Priority '+move.priority);
         return formattedEffect;
@@ -87,9 +88,9 @@ export default function Move({move, moveset}) {
                 </div>                                
             </div>
             <div className="w-full grid grid-cols-3 text-sm">
-                <p className="border-b border-dashed border-gray-600 justify-self-start" data-tip data-for={'pp'}>PP: {move.pp}</p>
-                <p className="border-b border-dashed border-gray-600 justify-self-center" data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
-                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
+                <p className="border-b border-dashed border-gray-600 justify-self-start" data-tip={moveTooltips[0]} data-for={'moves'}>PP: {move.pp}</p>
+                <p className="border-b border-dashed border-gray-600 justify-self-center" data-tip={moveTooltips[1]} data-for={'moves'}>Pwr: {move.power ? move.power : '-'}</p>
+                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip={moveTooltips[2]} data-for={'moves'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
             <div className="flex flex-col justify-start items-center text-sm w-full">
                 {getEffect()}

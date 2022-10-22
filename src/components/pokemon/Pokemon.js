@@ -5,6 +5,7 @@ import PokemonStats from './PokemonStats';
 import PokemonSprite from './PokemonSprite';
 import { FaGenderless } from 'react-icons/fa';
 import { CgGenderMale, CgGenderFemale } from 'react-icons/cg';
+import {pokemon as pokemonTooltips} from '../../constants/tooltips';
 
 export default function Pokemon({pokemon}) {
     const context = React.useContext(TeamBuilderContext);
@@ -37,13 +38,13 @@ export default function Pokemon({pokemon}) {
             </div>
             <PokemonStats stats={pokemon.stats} nature={pokemon.nature}/> 
             <div className="w-full grid grid-cols-3 text-xs text-gray-600">
-                <p className="capitalize border-b border-dashed border-gray-600 justify-self-start" data-tip data-for={'nature'}>
+                <p className="capitalize border-b border-dashed border-gray-600 justify-self-start" data-tip={pokemonTooltips[6]} data-for={'pokemon'}>
                     {pokemon.nature.name}
                 </p>               
-                <p className="text-base border-b border-dashed border-gray-600 justify-self-center" data-tip data-for={'gender'}>
+                <p className="text-base border-b border-dashed border-gray-600 justify-self-center" data-tip={pokemonTooltips[7]} data-for={'pokemon'}>
                     {getGenders()}
                 </p>                               
-                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip data-for={'height_weight'}>
+                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip={pokemonTooltips[8]} data-for={'pokemon'}>
                     {pokemon.height/10}m / {pokemon.weight/10}kg
                 </p>               
             </div>                       

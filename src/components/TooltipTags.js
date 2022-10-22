@@ -1,5 +1,5 @@
 import React from 'react'
-import * as tooltips from '../constants/tooltips';
+import {effects as effectTooltips} from '../constants/tooltips';
 
 export default function TooltipTags({effect}){
 
@@ -9,9 +9,9 @@ export default function TooltipTags({effect}){
             let formattedEffect = effect.toLowerCase().replace(/[.,]/g, "");
             let tooltipData=[];
             
-            tooltips.data.forEach(data => {                
+            effectTooltips.forEach(data => {                
                 data[0].forEach(key => {
-                    if(!tooltipData.includes(data[1]) && formattedEffect.match(new RegExp('\\s'+key, 'g'))){
+                    if(!tooltipData.includes(data[1]) && formattedEffect.match(new RegExp('\\b'+key, 'g'))){
                         tooltipData.push(data[1])
                     }
                 });            
@@ -19,7 +19,7 @@ export default function TooltipTags({effect}){
 
             return (tooltipData.map((d, i) => {
                 return (
-                    <p className="border-b border-dashed border-gray-600" key={i} data-tip={[d]} data-for={'dynamic'}>
+                    <p className="border-b border-dashed border-gray-600" key={i} data-tip={[d]} data-for={'effects'}>
                         {d.split("|")[0]}
                     </p>
                 )

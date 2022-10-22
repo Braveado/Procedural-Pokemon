@@ -1,4 +1,22 @@
-const data = [ // Identifiers, descriptions
+const pokemon = [ // Content
+    ["Hit Points|Determines the total damage a pokemon can receive before fainting."],
+    ["Attack|Determines damage dealt when using a physical move."],
+    ["Defense|Mitigates damage received when hit by a physical move."],
+    ["Special Attack|Determines damage dealt when using a special move."],
+    ["Special Defense|Mitigates damage received when hit by a special move."],
+    ["Speed|Determines the turn order in battle."],
+    ["Nature|Usually affects two stats excluding HP, increasing one by 10% and decreasing another by 10%."],
+    ["Gender|Selected from the possible genders of the pokemon."],
+    ["Height and Weight|How tall and heavy is the pokemon."],
+];
+
+const moves = [ // Content
+    ["Power Points|How many times the move can be used."],
+    ["Power|Determines damage dealt by the move."],
+    ["Accuracy|Determines how likely the move is to hit."],
+];
+
+const effects = [ // Keys, content
     [['priority'], "Priority|Higher priority moves are performed first."],
     [['critical hit'], "Critical Hit|Deals 1.5x the damage. The attacker's negative stat stages, the defender's positive stat stages and screen-creating moves are ignored."],
     [['stages', 'stage'], "Stages|Modifies a stat by 50% each. Max 6 or -6 stages per stat."],
@@ -48,5 +66,7 @@ const data = [ // Identifiers, descriptions
 ];
 
 export {
-    data
+    pokemon,
+    moves,
+    effects
 }
