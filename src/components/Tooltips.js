@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import ReactTooltip from 'react-tooltip';
-import * as tooltips from '../constants/tooltips';
+//import * as tooltips from '../constants/tooltips';
 
 export default function Tooltips() {
     // Rebind tooltips when component mounts/update.
@@ -11,33 +11,16 @@ export default function Tooltips() {
     // Format dynamic tooltip.
     const formatTooltipData = (data) => {   
         if(!data)
-            return null;
-
-        let formattedEffect = data.toLowerCase().replace(/[.,]/g, "");
-        let tooltipData=[];
+            return null;        
         
-        tooltips.data.forEach(data => {                
-            data[0].forEach(key => {
-                if(!tooltipData.includes(data[1]) && formattedEffect.includes(key)){
-                    tooltipData.push(data[1])
-                }
-            });            
-        });
-        
-        if(tooltipData.length > 0){
-            let dataArray = tooltipData.map(d => {return {header: d.split('|')[0], content: d.split('|')[1].split("*")}})            
-            return (dataArray.map((d, i) => {
-                return(
-                    <div className={i+1 < dataArray.length ? "text-center border-b" : "text-center"} key={i}>
-                        <p>{d.header}</p>
-                        {d.content.map((c, i) => {return <p key={i}>{c}</p>})}
-                    </div>
-                );
-            }))
-        }
-        else {
-            return null;
-        }
+        let header = data.split("|")[0];
+        let content = data.split("|")[1].split("*");
+            return(
+                <div className="text-center">
+                    <p>{header}</p>
+                    {content.map((c, i) => {return <p key={i}>{c}</p>})}
+                </div>
+            );            
     }
 
     return (

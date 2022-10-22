@@ -3,7 +3,7 @@ import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from './MoveCategory';
 import {BiSearchAlt} from 'react-icons/bi';
-//import * as tooltips from '../../constants/tooltips';
+import TooltipTags from '../TooltipTags';
 
 export default function Move({move, moveset}) {
     const context = React.useContext(TeamBuilderContext);            
@@ -73,7 +73,7 @@ export default function Move({move, moveset}) {
                 </p>
             )
         }
-    }
+    }    
 
     return (
         <div onClick={() => context.selectMove(move, moveset)}
@@ -91,14 +91,10 @@ export default function Move({move, moveset}) {
                 <p className="border-b border-dashed border-gray-600 justify-self-center" data-tip data-for={'power'}>Pwr: {move.power ? move.power : '-'}</p>
                 <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip data-for={'accuracy'}>Acc: {move.accuracy ? move.accuracy : '-'}</p>                
             </div>
-            <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
+            <div className="flex flex-col justify-start items-center text-sm w-full">
                 {getEffect()}
             </div>
-            {/* <div className="text-sm w-full flex justify-center items-center border-t-2 border-gray-200">
-                <p className="border-b border-dashed border-gray-600" data-tip={formattedEffect} data-for={'dynamic'}>
-                    Tooltip
-                </p>
-            </div> */}
+            <TooltipTags effect={formattedEffect} />
         </div>
     )
 }

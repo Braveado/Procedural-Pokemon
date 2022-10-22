@@ -2,6 +2,7 @@ import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import SelectedPokemon from '../pokemon/SelectedPokemon';
 import {BiSearchAlt} from 'react-icons/bi';
+import TooltipTags from '../TooltipTags';
 
 export default function Ability({ability, index}) {
     const context = React.useContext(TeamBuilderContext);
@@ -55,9 +56,6 @@ export default function Ability({ability, index}) {
 
     return (
         <div className="animate-enter flex flex-col justify-start items-end">
-            {/* <div className="flex w-full justify-start items-center">
-                <p className="text-base">{!selected ? 'No ' : ''}Pokemon Assigned</p>
-            </div> */}
             <div className={`flex flex-col gap-2 justify-start items-center rounded-md p-2 w-96 h-auto border-2 border-gray-200 transition duration-150 ease-in-out  
                 ${selected ? 'border-green-200 ring ring-green-100' : ''}`}>            
                 <SelectedPokemon assignable={{ability: index}} />
@@ -66,9 +64,10 @@ export default function Ability({ability, index}) {
                     <div className="flex justify-center items-center w-full gap-2">
                         <p className="capitalize">{ability.name.replace(/-/g, " ")}</p>                
                     </div>            
-                    <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
+                    <div className="flex flex-col justify-start items-center text-sm w-full">
                         {getEffect()}
-                    </div>            
+                    </div>  
+                    <TooltipTags effect={formattedEffect} />          
                 </div>
             </div>
         </div>

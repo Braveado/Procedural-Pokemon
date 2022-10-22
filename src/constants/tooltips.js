@@ -3,7 +3,7 @@ const data = [ // Identifiers, descriptions
     [['critical hit'], "Critical Hit|Deals 1.5x the damage. The attacker's negative stat stages, the defender's positive stat stages and screen-creating moves are ignored."],
     [['stages', 'stage'], "Stages|Modifies a stat by 50% each. Max 6 or -6 stages per stat."],
     [['flinch', 'flinching'], "Flinch|Unable to attack for that turn."],
-    [['confuses', 'confused', 'confuse'], "Confusion|33% chance of attacking itself instead of executing a move for 2-5 turns. Volatile status condition."],
+    [['confuses', 'confused', 'confuse', 'confusion'], "Confusion|33% chance of attacking itself instead of executing a move for 2-5 turns. Volatile status condition."],
     [['paralyzes', 'paralyzed', 'paralyze'], "Paralysis|50% speed reduction and 25% chance of losing each turn. Non-volatile status condition."],
     [['freezes', 'freeze', 'frozen'], "Freeze|Unable to make a move and 20% chance of being thawed out each turn. Non-volatile status condition."],
     [['burned', 'burns', 'burn'], "Burn|Takes 1/16 max HP as damage every turn and halves damage dealt with physical moves. Non-volatile status condition."],

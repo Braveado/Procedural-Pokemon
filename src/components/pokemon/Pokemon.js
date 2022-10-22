@@ -36,20 +36,16 @@ export default function Pokemon({pokemon}) {
                 })}                           
             </div>
             <PokemonStats stats={pokemon.stats} nature={pokemon.nature}/> 
-            <div className="flex w-full justify-between items-center text-xs text-gray-600">
-                <div className="flex w-1/3">
-                    <p className="capitalize border-b border-dashed border-gray-600" data-tip data-for={'nature'}>
-                        {pokemon.nature.name}
-                    </p>
-                </div>                
-                <div className="w-1/3 text-base flex justify-center items-center">
-                    <div data-tip data-for={'gender'} className="border-b border-dashed border-gray-600">{getGenders()}</div>
-                </div>                                
-                <div className="flex justify-end w-1/3">
-                    <p className="capitalize border-b border-dashed border-gray-600" data-tip data-for={'height_weight'}>
-                        {pokemon.height/10}m / {pokemon.weight/10}kg
-                    </p>
-                </div>                
+            <div className="w-full grid grid-cols-3 text-xs text-gray-600">
+                <p className="capitalize border-b border-dashed border-gray-600 justify-self-start" data-tip data-for={'nature'}>
+                    {pokemon.nature.name}
+                </p>               
+                <p className="text-base border-b border-dashed border-gray-600 justify-self-center" data-tip data-for={'gender'}>
+                    {getGenders()}
+                </p>                               
+                <p className="border-b border-dashed border-gray-600 justify-self-end" data-tip data-for={'height_weight'}>
+                    {pokemon.height/10}m / {pokemon.weight/10}kg
+                </p>               
             </div>                       
         </div>
     )
