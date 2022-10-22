@@ -47,10 +47,10 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
 'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
 'medicine', 'one', 'symbiosis',
+// Unusable with info.
+'anticipation', 'forewarn', 'frisk',
 // Filtered pokemon forms specific.
-'schooling', 'gulping', 'gorging',      
-// Unusable in tournaments.
-'anticipation', 'forewarn', 'frisk',     
+'schooling',          
 // BRANCH LOGIC. All accounted for.
 // Pokemon forms specific.
 //'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 

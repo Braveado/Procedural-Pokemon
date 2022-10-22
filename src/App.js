@@ -291,6 +291,9 @@ export default function App() {
   
           // Get the final pokemon from the varieties.
           finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
+
+          // Get a random form
+
           if(finalPokemon){
             newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
             // Check for top pokemon balance

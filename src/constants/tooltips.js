@@ -23,7 +23,7 @@ const effects = [ // Keys, content
     [['flinch', 'flinching'], "Flinch|Unable to attack for that turn."],
     [['confuses', 'confused', 'confuse', 'confusion'], "Confusion|33% chance of attacking itself instead of executing a move for 2-5 turns. Volatile status condition."],
     [['paralyzes', 'paralyzed', 'paralyze'], "Paralysis|50% speed reduction and 25% chance of losing each turn. Non-volatile status condition."],
-    [['freezes', 'freeze', 'frozen'], "Freeze|Unable to make a move and 20% chance of being thawed out each turn. Non-volatile status condition."],
+    [['freezes', 'freeze', 'freezing', 'frozen'], "Freeze|Unable to make a move and 20% chance of being thawed out each turn. Non-volatile status condition."],
     [['burned', 'burns', 'burn'], "Burn|Takes 1/16 max HP as damage every turn and halves damage dealt with physical moves. Non-volatile status condition."],
     [['poisoned', 'poisons', 'poisoning', 'poison'], "Poison|Takes 1/8 max HP as damage every turn. Non-volatile status condition."],
     [['sleeping', 'asleep', 'sleep'], "Sleep|Unable to make a move for 1-3 turns. Non-volatile status condition."],
@@ -33,7 +33,7 @@ const effects = [ // Keys, content
     [['critical hit rate', 'critical hit ratio'], "Critical Hit Rate|A base chance of 1/16 of dealing a critical hit, increases based on stages (1/8, 1/2, always)."],
     [['major status effect', 'major status ailment'], "Major Statuses|All the non-volatile status effects (Burn, Freeze, Paralysis, Poison, Badly Poison and Sleep)."],
     [['scatters spikes'], "Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6, 1/4 max HP)."],
-    [['scatters poisoned spikes'], "Poisoned Spikes|place-holder."],
+    [['scatters poisoned spikes'], "Poisoned Spikes|Affect foes when they switch in based on layers placed (poisons, badly poisons)."],
     [['causes damage when opposing pokémon switch in'], "Stealth Rock|Damages foes when they switch in based on the effectivenes of Rock-type against them (from 1/32 to 1/2 max HP)."],
     [['grassy terrain'], "Grassy Terrain|"+
         "*Boosts the power of Grass-type moves by 30%."+
