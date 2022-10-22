@@ -290,9 +290,7 @@ export default function App() {
           });       
   
           // Get the final pokemon from the varieties.
-          finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
-
-          // Get a random form
+          finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];          
 
           if(finalPokemon){
             newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
@@ -402,7 +400,7 @@ export default function App() {
               break;
             case 'aura-wheel':
               // Check for specific pokemon.
-              usable = getPokemonUsability(['morpeko']);
+              usable = getPokemonUsability(['morpeko-full-belly']);
               break;
             case 'hidden-power':
               // Set a random type other than normal and fairy.
@@ -729,22 +727,22 @@ export default function App() {
             break;
           case 'ice-face':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['eiscue-ice', 'eiscue-noice']);
+            usable = getPokemonUsability(['eiscue-ice']);
             break;
           case 'hunger-switch':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['morpeko']);
+            usable = (getPokemonUsability(['morpeko-full-belly']) && getMoveMechanicUsability('', ['aura-wheel']));
             break;
           case 'forecast':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['castform', 'castform-sunny', 'castform-rainy', 'castform-snowy']);
+            usable = getPokemonUsability(['castform']);
             break;
           case 'flower-gift':
             // Check for specific pokemon.
             usable = getPokemonUsability(['cherrim']);
             break;
           case 'zen-mode':
-            // Check for specific pokemon. No effect: 'darmanitan-zen', 'darmanitan-zen-galar'
+            // Check for specific pokemon.
             usable = getPokemonUsability(['darmanitan-standard', 'darmanitan-standard-galar']);
             break;
           case 'battle-bond':
@@ -753,7 +751,7 @@ export default function App() {
             break;
           case 'stance-change':
             // Check for specific pokemon.
-            usable = (getPokemonUsability(['aegislash-shield']) || (getPokemonUsability(['aegislash-blade']) && getMoveMechanicUsability('', ['kings-shield'])));
+            usable = (getPokemonUsability(['aegislash-shield']) && getMoveMechanicUsability('', ['kings-shield']));
             break;
           case 'power-construct':
             // Check for specific pokemon. No effect: 'zygarde-complete'
@@ -761,7 +759,8 @@ export default function App() {
             break;
           case 'shields-down':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['minior-meteror', 'minior-core']);
+            usable = getPokemonUsability(['minior-red-meteor', 'minior-violet-meteor', 'minior-indigo-meteor',
+              'minior-blue-meteor', 'minior-green-meteor', 'minior-yellow-meteor', 'minior-orange-meteor']);
             break;
           case 'disguise':
             // Check for specific pokemon. No effect: 'mimikyu-busted'
@@ -1019,7 +1018,7 @@ export default function App() {
                   break;
                 case 'griseous-orb':
                   // Check for a specific pokemon and move types.
-                  usable = (getPokemonUsability(['giratina-origin', 'giratina-altered']) && getMovesetTypeUsability(['dragon', 'ghost']));
+                  usable = (getPokemonUsability(['giratina-altered']) && getMovesetTypeUsability(['dragon', 'ghost']));
                   break;
                 case 'adamant-orb':
                   // Check for a specific pokemon and move types.
@@ -1028,6 +1027,14 @@ export default function App() {
                 case 'lustrous-orb':
                   // Check for a specific pokemon and move types.
                   usable = (getPokemonUsability(['palkia']) && getMovesetTypeUsability(['dragon', 'water']));
+                  break;
+                case 'rusted-sword':
+                  // Check for a specific pokemon.
+                  usable = getPokemonUsability(['zacian']);
+                  break;
+                case 'rusted-shield':
+                  // Check for a specific pokemon.
+                  usable = getPokemonUsability(['zamazenta']);
                   break;
                 default:
                   break;
@@ -1423,7 +1430,12 @@ export default function App() {
       let exportText = "";         
       pokemonOptions.forEach(p => {
         if(p.selected){
-          let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {return m.name});
+          let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {
+            if(m.name === "hidden-power"){
+              return m.name + " [" + capitalizeWords(m.type.name, "-") + "]";
+            }
+            else return m.name;
+          });
           exportText += capitalizeWords(p.name, "-");
           if(p.gender !== "genderless"){
             exportText += " (" + (p.gender === "male" ? "M" : "F") + ")";

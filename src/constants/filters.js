@@ -4,14 +4,19 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 'eternamax', 'primal', 'ultra',
 // General forms as strong as legendaries.
 'mega', 'gmax', 'eternal', 'ash',
+// Pokemon form changes
+'sunny', 'rainy', 'snowy', 'origin', 'zen', 'pirouette', 'blade', 'crowned', 'gulping', 'gorging', 
+'noice', 'hangry', 'minior',
 // Pokemons and forms below 360 total stats.
-'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'meltan',
+'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'zygarde', 'phione'
+'totem', 'bond', 'construct', 'phione', 'meltan', 'calyrex',
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
-// Zygarde forms
-'10', '50', 'complete'
+// Calyrex forms
+'ice', 'shadow',
+// Minior forms
+'meteor'
 ];
 
 // Moves
@@ -53,7 +58,7 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 'schooling',          
 // BRANCH LOGIC. All accounted for.
 // Pokemon forms specific.
-//'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 
+//'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 'forecast', 
 // Move mechanic. 
 // 'iron-fist', 'skill-link', 'reckless', 'strong-jaw', 'mega-launcher', 'liquid-voice', 'punk-rock', 'triage',
 // 'tough-claws', 'unseen-fist',    
@@ -63,7 +68,7 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 // Move type changes.
 // 'normalize', 'refrigerate', 'pixilate', 'galvanize', 'aerilate',
 // Specific pokemons.
-//'multitype', 'rks',
+//'multitype', 'rks', 'rusted',
 // Harmful to owner.
 //'truant', 'stall', 'klutz', 'slow', 'defeatist',
 // REVERSE BRANCH LOGIC. All accounted for.

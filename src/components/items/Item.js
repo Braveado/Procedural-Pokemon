@@ -82,7 +82,7 @@ export default function Item({item, index}) {
                 <div className={`flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                     ${selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>                    
                     <div className="flex justify-center items-center w-full gap-2">
-                        <img src={item.sprites.default} alt="" width="30px" height="30px"/>
+                        {item.sprites.default ? <img src={item.sprites.default} alt="" width="30px" height="30px"/> : null}
                         <p className="capitalize">{item.name.replace(/-/g, " ")}</p>                
                     </div>            
                     <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
