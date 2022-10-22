@@ -12,15 +12,18 @@ export default function Tooltips() {
     const formatTooltipData = (data) => {   
         if(!data)
             return null;        
-        
-        let header = data.split("|")[0];
-        let content = data.split("|")[1].split("*");
+        data = data.split("|");
+        if(data.length == 2){
+            let header = data[0];
+            let content = data[1].split("*");
             return(
                 <div className="text-center">
                     <p>{header}</p>
                     {content.map((c, i) => {return <p key={i}>{c}</p>})}
                 </div>
             );            
+        }
+        else return null;
     }
 
     return (
