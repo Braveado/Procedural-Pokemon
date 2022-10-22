@@ -83,6 +83,10 @@ export default function Sidebar() {
                             className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
                             <p>Items</p>
                         </HashLink>
+                        <HashLink smooth to="/format#guide"
+                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
+                            <p>Guide</p>
+                        </HashLink>
                     </div> : null}
                 </div>         
                 <NavLink to='/about'

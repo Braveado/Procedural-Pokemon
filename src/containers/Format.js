@@ -14,11 +14,15 @@ export default function Format() {
                     <p className="text-base text-gray-300">General points about the format.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                    The format aims to generate random yet balanced pokémon teams (singles) using procedural generation.<br />
-                    Randomly generated numbers are used to get pokémon, moves, abilities and items across the first 8 generations of the main Pokémon games.<br />
-                    Potential options are then put through filters to prevent unbalanced or unusable ones.<br />
-                    Once all options have been generated, a complete pokémon team must be built with them to then export it.<br />
-                    Teams can be imported to Pokémon Showdown for battles via custom games. 
+                    <p>
+                        The format aims to generate random yet balanced pokémon teams (singles) using procedural generation.
+                        Randomly generated numbers are used to get pokémon, moves, abilities and items across the first 8 generations of the main Pokémon games.
+                        Potential options are then put through filters to prevent unbalanced or unusable ones.
+                    </p>                    
+                    <p>
+                        Once all options have been generated, a complete pokémon team must be built with them to then export it.&nbsp;
+                        Teams can be imported to Pokémon Showdown for battles via custom games. 
+                    </p>
                 </div>                                                            
             </div>
             <div id="pokemon" className="flex flex-col w-full">
@@ -180,6 +184,25 @@ export default function Format() {
                                 <li>Ability mechanic specific.</li>
                             </ul>
                         </li>
+                    </ul>                    
+                </div>                                                            
+            </div>
+            <div id="guide" className="flex flex-col w-full">
+                <div className="flex justify-start items-center gap-4 text-center">                    
+                    <p className="text-lg">Import Guide</p>
+                    <p className="text-base text-gray-300">Process for importing a team.</p>
+                </div>            
+                <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
+                    The steps to import a team are the following:
+                    <ul className="pl-4 space-y-2">
+                        <li>
+                            Go to Pokémon Showdown.
+                            <ul className="pl-4 text-gray-600 text-sm">
+                                <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                    Team builder
+                                </a></li>
+                            </ul>
+                        </li>                        
                     </ul>                    
                 </div>                                                            
             </div>
