@@ -1,10 +1,15 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react';
+import * as guide from '../constants/guide';
 
 export default function Format() {
     // Change title.
     useEffect (() => {
         document.title = 'Format - Procedural Pokémon';
     }, []);
+
+    const [showCreate, setShowCreate] = useState(false);
+    const [showImport, setShowImport] = useState(false);
+    const [showPlay, setShowPlay] = useState(false); 
 
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
@@ -34,42 +39,173 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Guide</p>
-                            <p className="text-base text-gray-400">Process for creating, importing and playing with a team.</p>
+                            <p className="text-base text-gray-400">Steps for creating, importing and playing with a team.</p>
                         </div>            
-                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            The steps to create a team are the following:
-                            <ul className="pl-4 space-y-2">
-                                <li>
-                                    Go to Pokémon Showdown.
-                                    <ul className="pl-4 text-gray-600 text-sm">
-                                        <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
-                                            Team builder
-                                        </a></li>
-                                    </ul>
-                                </li>                        
-                            </ul>                    
-                            The steps to import a team are the following:
-                            <ul className="pl-4 space-y-2">
-                                <li>
-                                    Go to Pokémon Showdown.
-                                    <ul className="pl-4 text-gray-600 text-sm">
-                                        <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
-                                            Team builder
-                                        </a></li>
-                                    </ul>
-                                </li>                        
-                            </ul>                    
-                            The steps to play a custom game are the following:
-                            <ul className="pl-4 space-y-2">
-                                <li>
-                                    Go to Pokémon Showdown.
-                                    <ul className="pl-4 text-gray-600 text-sm">
-                                        <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
-                                            Team builder
-                                        </a></li>
-                                    </ul>
-                                </li>                        
-                            </ul>                    
+                        <div className="flex flex-col justify-start items-start gap-8 p-4 w-full border-t-2 border-gray-200">  
+                            <div className={`pl-4 border-l-2 space-y-4 ${showCreate ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                          
+                                <div >
+                                    <button type="button" onClick={() => setShowCreate(!showCreate)}
+                                        className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
+                                        ${showCreate ? 'bg-gray-200' : 'bg-white'}`}>
+                                        Create team
+                                    </button>
+                                </div>
+                                {showCreate ?
+                                <ul className="space-y-4">                                
+                                    <li>
+                                        Generate options inside the Team Builder.
+                                        <ul className="pl-4">
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.createTeam[0]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>   
+                                    <li>
+                                        Select all required pokémon.
+                                        <ul className="pl-4">
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md" 
+                                                    src={guide.createTeam[1]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>                                    
+                                    </li>    
+                                    <li>
+                                        Assign each selected pokémon to a moveset.
+                                        <ul className="pl-4">
+                                            <li className="text-gray-600 text-sm">
+                                                Select all required moves for each moveset.
+                                            </li>  
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.createTeam[2]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>   
+                                    <li>
+                                        Assign each selected pokémon to an ability.
+                                        <ul className="pl-4">
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.createTeam[3]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                
+                                    <li>
+                                        Assign each selected pokémon to an item.
+                                        <ul className="pl-4">
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.createTeam[4]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>  
+                                    <li>
+                                        Done! Export the team.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.createTeam[5]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                              
+                                </ul> 
+                                : null}   
+                            </div> 
+                            <div className={`pl-4 border-l-2 space-y-4 ${showImport ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                          
+                                <div >
+                                    <button type="button" onClick={() => setShowImport(!showImport)}
+                                        className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
+                                        ${showImport ? 'bg-gray-200' : 'bg-white'}`}>
+                                        Import team
+                                    </button>
+                                </div>
+                                {showImport ?
+                                <ul className="space-y-4">
+                                    <li>
+                                        Go to Pokémon Showdown.
+                                        <ul className="pl-4 text-gray-600 text-sm">
+                                            <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                                Team builder
+                                            </a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Create a new team.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.importTeam[0]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                          
+                                    <li>
+                                        Import using text.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.importTeam[1]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li> 
+                                    <li>
+                                        Paste an exported team and save.
+                                        <ul className="pl-4">
+                                            <li className="text-gray-600 text-sm">
+                                                Shortcut: Ctrl + V.
+                                            </li>
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.importTeam[2]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                          
+                                    <li>
+                                        Done! Go back when ready.
+                                        <ul className="pl-4">
+                                            <li className="text-gray-600 text-sm">
+                                                Tip: Rename the team and/or pokémon.
+                                            </li>
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.importTeam[3]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                          
+                                </ul>    
+                                : null} 
+                            </div>          
+                            <div className={`pl-4 border-l-2 space-y-4 ${showPlay ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                               
+                                <div >
+                                    <button type="button" onClick={() => setShowPlay(!showPlay)}
+                                        className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
+                                        ${showPlay ? 'bg-gray-200' : 'bg-white'}`}>
+                                        Play game
+                                    </button>
+                                </div>
+                                {showPlay ?
+                                <ul className="space-y-4">
+                                    <li>
+                                        Go to Pokémon Showdown.
+                                        <ul className="pl-4 text-gray-600 text-sm">
+                                            <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                                Team builder
+                                            </a></li>
+                                        </ul>
+                                    </li>                        
+                                </ul> 
+                                : null} 
+                            </div>                  
                         </div>                                                            
                     </div>
                 </div>                                                            
