@@ -63,29 +63,13 @@ export default function Sidebar() {
                         <p>Format</p>
                     </NavLink>
                     {location.pathname === "/format" ? <div className="flex flex-col">
-                        <HashLink smooth to="/format#basics"
+                        <HashLink smooth to="/format#usage"
                             className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Basics</p>
+                            <p>Usage</p>
                         </HashLink>
-                        <HashLink smooth to="/format#pokemon"
+                        <HashLink smooth to="/format#generation"
                             className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Pokémon</p>
-                        </HashLink>
-                        <HashLink smooth to="/format#movesets"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Movesets</p>
-                        </HashLink>
-                        <HashLink smooth to="/format#abilities"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Abilities</p>
-                        </HashLink>
-                        <HashLink smooth to="/format#items"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Items</p>
-                        </HashLink>
-                        <HashLink smooth to="/format#guide"
-                            className="w-full pl-12 py-1 border-r-4 border-transparent hover:bg-gray-300 transition duration-150 ease-in-out">
-                            <p>Guide</p>
+                            <p>Generation</p>
                         </HashLink>
                     </div> : null}
                 </div>         
