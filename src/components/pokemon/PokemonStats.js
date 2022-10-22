@@ -76,7 +76,8 @@ export default function PokemonStats({stats, nature}) {
                             <div className={`flex items-center 
                                 ${s.stat && nature.increased && s.stat.name === nature.increased.name ? 'text-blue-600' : ''}
                                 ${s.stat && nature.decreased && s.stat.name === nature.decreased.name ? 'text-red-600' : ''}`}>
-                                <p className="border-b border-dashed border-gray-600" data-tip={pokemonTooltips[i]} data-for={'pokemon'}>
+                                <p className={i < stats.length - 1 ? 'border-b border-dashed border-gray-600' : ''}
+                                    data-tip={i < stats.length - 1 ? pokemonTooltips[i] : ''} data-for={'pokemon'}>
                                     {getStatName(i)}
                                 </p>
                                 {s.stat && nature.increased && s.stat.name === nature.increased.name ? <HiOutlineArrowUp /> : null}
