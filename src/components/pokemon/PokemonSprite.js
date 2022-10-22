@@ -42,7 +42,7 @@ export default function PokemonSprite({pokemon, assign, opacity, types = false, 
                             pokemon.highestStats.map((e, i) => {
                                 if(i < 3){
                                 return(
-                                    <div className="flex items-center justify-center">
+                                    <div className="flex items-center justify-center" key={i}>
                                         <div 
                                             className={`h-3 rounded-md w-8
                                             ${getStatColor(pokemon.highestStats[i].statIndex)} 
