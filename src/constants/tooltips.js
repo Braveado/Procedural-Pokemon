@@ -12,7 +12,7 @@ const data = [ // Identifiers, descriptions
     [['traps'], "Trap|Prevents the target from switching out if the user remains in battle."],
     [['infatuates', 'infatuation'], "Infatuation|Cannot attack 50% of the time."],
     [['badly poisoned', 'badly poisons'], "Poison|Takes 1/8 max HP as damage every turn. Non-volatile status condition."],
-    //[['critical hit rate', 'critical hit ratio'], "Critical Hit Rate|A base chance of 1/16 of dealing a critical hit, increases based on stages (1/8, 1/2, always)."],
+    [['critical hit rate', 'critical hit ratio'], "Critical Hit Rate|A base chance of 1/16 of dealing a critical hit, increases based on stages (1/8, 1/2, always)."],
     [['major status effect', 'major status ailment'], "Major Statuses|All the non-volatile status effects (Burn, Freeze, Paralysis, Poison, Badly Poison and Sleep)."],
     [['scatters spikes'], "Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6, 1/4 max HP)."],
     [['scatters poisoned spikes'], "Poisoned Spikes|place-holder."],

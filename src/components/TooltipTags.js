@@ -11,7 +11,7 @@ export default function TooltipTags({effect}){
             
             tooltips.data.forEach(data => {                
                 data[0].forEach(key => {
-                    if(!tooltipData.includes(data[1]) && formattedEffect.includes(key)){
+                    if(!tooltipData.includes(data[1]) && formattedEffect.match(new RegExp('\\s'+key, 'g'))){
                         tooltipData.push(data[1])
                     }
                 });            

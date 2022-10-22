@@ -13,7 +13,7 @@ export default function Tooltips() {
         if(!data)
             return null;        
         data = data.split("|");
-        if(data.length == 2){
+        if(data.length === 2){
             let header = data[0];
             let content = data[1].split("*");
             return(

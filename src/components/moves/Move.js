@@ -46,8 +46,8 @@ export default function Move({move, moveset}) {
         }           
         // Adjust general moves.
         formattedEffect = formattedEffect.replace(/\$effect_chance/g, move.effect_chance);
-        /* if(move.meta && move.meta.crit_rate > 0)
-            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage.")); */
+        if(move.meta && move.meta.crit_rate > 0)
+            formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `move's critical hit rate is increased by ${move.meta.crit_rate} `+(move.meta.crit_rate > 1 ? "stage(s)." : "stage."));
         if(move.priority !== 0)
             formattedEffect = formattedEffect.concat(' Priority '+move.priority);
         return formattedEffect;
