@@ -24,6 +24,9 @@ export default function Ability({ability, index}) {
             case 'fur-coat':
                 formattedEffect = formattedEffect.replace('damage', 'damage received');
                 break;
+            case 'delta-stream':
+                formattedEffect = formattedEffect.replace('a mysterious air current', 'strong winds');
+                break;
             default:
                 break;
         }           

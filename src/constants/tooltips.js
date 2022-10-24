@@ -17,52 +17,104 @@ const moves = [ // Content
 ];
 
 const effects = [ // Keys, content
-    [['priority'], "Priority|Higher priority moves are performed first."],
-    [['critical hit'], "Critical Hit|Deals 1.5x the damage. The attacker's negative stat stages, the defender's positive stat stages and screen-creating moves are ignored."],
-    [['stages', 'stage'], "Stages|Modifies a stat by 50% each. Max 6 or -6 stages per stat."],
-    [['flinch', 'flinching'], "Flinch|Unable to attack for that turn."],
-    [['confuses', 'confused', 'confuse', 'confusion'], "Confusion|33% chance of attacking itself instead of executing a move for 2-5 turns. Volatile status condition."],
-    [['paralyzes', 'paralyzed', 'paralyze'], "Paralysis|50% speed reduction and 25% chance of losing each turn. Non-volatile status condition."],
-    [['freezes', 'freeze', 'freezing', 'frozen'], "Freeze|Unable to make a move and 20% chance of being thawed out each turn. Non-volatile status condition."],
-    [['burned', 'burns', 'burn'], "Burn|Takes 1/16 max HP as damage every turn and halves damage dealt with physical moves. Non-volatile status condition."],
-    [['poisoned', 'poisons', 'poisoning', 'poison'], "Poison|Takes 1/8 max HP as damage every turn. Non-volatile status condition."],
-    [['sleeping', 'asleep', 'sleep'], "Sleep|Unable to make a move for 1-3 turns. Non-volatile status condition."],
-    [['traps'], "Trap|Prevents the target from switching out if the user remains in battle."],
-    [['infatuates', 'infatuation'], "Infatuation|Cannot attack 50% of the time."],
-    [['badly poisoned', 'badly poisons'], "Poison|Takes 1/8 max HP as damage every turn. Non-volatile status condition."],
-    [['critical hit rate', 'critical hit ratio'], "Critical Hit Rate|A base chance of 1/16 of dealing a critical hit, increases based on stages (1/8, 1/2, always)."],
+    [['priority'], "Priority|"+
+        "*Base value of 0."+
+        "*Higher priority moves are performed first."],
+    [['critical hit'], "Critical Hit|"+
+        "*Deals 1.5x the damage."+
+        "*The attacker's negative stat stages, the defender's positive stat stages and screen-creating moves are ignored."],
+    [['critical hit rate', 'critical hit ratio'], "Critical Hit Rate|"+
+        "*A base chance of 1/24 of dealing a critical hit."+
+        "*Increases based on stages (1/8, 1/2, always)."],
+    [['evasion', 'evasiveness'], "Evasion|"+
+        "*Base value of 100%."+
+        "*Determines the probability of avoiding other pokémon moves."],
+    [['stages', 'stage'], "Stages|"+
+        "*Modifies a stat by 50% each."+
+        "*Maximum +6 or -6 stages per stat."],
+    [['burned', 'burns', 'burn'], "Burn|"+
+        "*Takes 1/16 max HP as damage every turn."+
+        "*Halves damage dealt with physical moves."+
+        "*Non-volatile status condition."],
+    [['badly poisoned', 'badly poisons'], "Bad Poison|"+
+        "*Takes 1/8 max HP as damage every turn."+
+        "*Damage taken increases by 1/8 each time."+
+        "*Non-volatile status condition."],
+    [['poisoned', 'poisons', 'poisoning', 'poison'], "Poison|"+
+        "*Takes 1/8 max HP as damage every turn."+
+        "*Non-volatile status condition."],
+    [['paralyzes', 'paralyzed', 'paralyze', 'paralysis'], "Paralysis|"+
+        "*Speed reduced by 50%."+
+        "*25% chance of being unable to make a move."+
+        "*Non-volatile status condition."],
+    [['freezes', 'freeze', 'freezing', 'frozen'], "Freeze|"+
+        "*Unable to make a move."+
+        "*20% chance of being thawed out each turn."+
+        "*Non-volatile status condition."],        
+    [['sleeping', 'asleep', 'sleep'], "Sleep|"+
+        "*Unable to make a move for 1-3 turns."+
+        "*Non-volatile status condition."],    
     [['major status effect', 'major status ailment'], "Major Statuses|All the non-volatile status effects (Burn, Freeze, Paralysis, Poison, Badly Poison and Sleep)."],
-    [['scatters spikes'], "Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6, 1/4 max HP)."],
+    [['confuses', 'confused', 'confuse', 'confusion'], "Confusion|"+
+        "*33% chance of attacking itself instead of executing a move for 2-5 turns."+
+        "*Volatile status condition."],    
+    [['infatuates', 'infatuation'], "Infatuation|"+
+        "*Cannot attack 50% of the time."+
+        "*Volatile status condition."],        
+    [['flinch', 'flinching'], "Flinch|Unable to make a move for that turn."],        
+    [['traps'], "Trap|Prevents the target from switching out if the user remains in battle."],        
     [['scatters poisoned spikes'], "Poisoned Spikes|Affect foes when they switch in based on layers placed (poisons, badly poisons)."],
+    [['scatters spikes'], "Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6, 1/4 max HP)."],    
     [['causes damage when opposing pokémon switch in'], "Stealth Rock|Damages foes when they switch in based on the effectivenes of Rock-type against them (from 1/32 to 1/2 max HP)."],
+    [['electric terrain'], "Electric Terrain|"+
+        "*Boosts the power of Electric-type moves used by pokémon on the ground by 30%."+
+        "*Prevents pokémon on the ground from falling asleep and being afflicted by Yawn."],
     [['grassy terrain'], "Grassy Terrain|"+
-        "*Boosts the power of Grass-type moves by 30%."+
-        "*Restores 1/16 max HP of pokemon at the end of their turn."+
+        "*Boosts the power of Grass-type moves used by pokémon on the ground by 30%."+
+        "*Restores 1/16 max HP of pokémon on the ground at the end of their turn."+
         "*The power of Bulldoze, Earthquake, and Magnitude is halved."],
     [['misty terrain'], "Misty Terrain|"+
-        "*Halves the power of Dragon-type moves."+
-        "*Prevents being afflicted by non-volatile status conditions."],
-    [['strong sunlight'], "Strong Sunlight|"+
+        "*Halves the damage taken by pokémon on the ground from Dragon-type moves."+
+        "*Prevents pokémon on the ground from being afflicted with non-volatile status conditions and confusion."],
+    [['psychic terrain'], "Misty Terrain|"+
+        "*Boosts the power of Psychic-type moves used by pokémon on the ground."+
+        "*Prevents pokémon on the ground from being hit by moves with increased priority."],
+    [['terrain'], "Terrain|All the field-type effects that affect pokémon on the ground (Electric, Grassy, Misty and Psychic)."],
+    [['sunlight', 'sunny'], "Harsh Sunlight|"+
         "*Increases the damage of Fire-type moves by 50%."+
         "*Decreases the damage of Water-type moves by 50%."+
+        "*Prevents pokémon from becoming frozen."+
         "*Allows Solar Beam and Solar Blade to be used instantly."+
         "*Causes Growth to raise Attack and Special Attack two stages each."+
-        "*Prevents pokemon from becoming frozen."+
+        "*Changes Weather Ball to a Fire-type move and doubles its power."+        
         "*Causes Moonlight, Synthesis, and Morning Sun to recover 2/3 of max HP."+
         "*Lowers accuracy of Thunder and Hurricane to 50%."],
-    [['rain'], "Rain|"+
+    [['rain', 'downpour'], "Rain|"+
         "*Increases the damage of Water-type moves by 50%."+
         "*Decreases the damage of Fire-type moves by 50%."+
         "*Halves the power of Solar Beam and Solar Blade."+
-        "*Causes Growth to raise Attack and Special Attack two stages each."+
-        "*Prevents pokemon from becoming frozen."+
+        "*Changes Weather Ball to a Water-type move and doubles its power."+
         "*Causes Moonlight, Synthesis, and Morning Sun to recover 1/4 of max HP."+
         "*Allows Thunder and Hurricane to bypass the accuracy check."],
-    [['hail'], "Hail|"+
-        "*Deals 1/16 max HP as damage to pokemon at the end of each turn, unless they are Ice-type."+
-        "*Allows Blizzard to bypass accuracy check."+
+    [['sandstorm'], "Sandstorm|"+
+        "*Deals 1/16 max HP as damage to pokémon at the end of each turn, unless their types include Rock, Steel, or Ground."+
+        "*Raises the Special Defense of all Rock-type pokémon by 50%."+
         "*Halves the power of Solar Beam and Solar Blade."+
-        "*Causes Moonlight, Synthesis, and Morning Sun to recover 1/4 of max HP."], 
+        "*Changes Weather Ball to a Rock-type move and doubles its power."+
+        "*Causes Moonlight, Synthesis, and Morning Sun to recover 1/4 of max HP."+
+        "*Causes Shore Up to recover 2/3 of max HP instead of 1/2."],
+    [['hail'], "Hail|"+
+        "*Deals 1/16 max HP as damage to pokémon at the end of each turn, unless they are Ice-type."+        
+        "*Halves the power of Solar Beam and Solar Blade."+
+        "*Changes Weather Ball to an Ice-type move and doubles its power."+
+        "*Causes Moonlight, Synthesis, and Morning Sun to recover 1/4 of max HP."+
+        "*Allows Blizzard to bypass accuracy check."+
+        "*Allows Aurora Veil to be used, though the effect lingers even after Hail ends."],
+    [['strong winds'], "Strong Winds|"+
+        "*Super effective moves against pure Flying-type Pokémon count as normally effective."+
+        "*Weather Ball remains a Normal-type move."+
+        "*Moonlight, Morning Sun, and Synthesis continue to recover 1/2 of max HP."],
+    [['weather'], "Weather|All the environment effects that affect pokémon in battle (Harsh Sunlight, Rain, Sandstorm, Hail and Strong Winds)."],         
 ];
 
 export {
