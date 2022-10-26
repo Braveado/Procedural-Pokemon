@@ -27,10 +27,13 @@ const moveFilter = [ // Exclude moves with this keywords.
 'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
 'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
 // Unusable in format.
-'natural', 'stuff', 'teatime', 'happy', 'belch', 'return', 'frustration', 'gear', 'spotlight', 'helping', 'aromatic',
-'coaching', 'wide-guard', 'veevee', 'quash', 'magnetic', 'decorate', 
+'struggle', 'happy', 'return', 'frustration', 'veevee',
+// Doubles
+'helping', 'aromatic', 'hands', 'coaching', 'gear', 'magnetic', 'spotlight', 'quash', 'decorate',
+// Berries
+'natural', 'stuff', 'teatime', 'belch',
 // No effect.
-'splash', 'celebrate', 'hands', 'struggle',    
+'splash', 'celebrate',
 // BRANCH LOGIC. All accounted for.
 // Combo moves.
 //'stockpile', 'swallow', 'spit',     
@@ -49,10 +52,12 @@ const moveAllow = [ // Include moves with this keywords even when excluded by fi
 // Abilities
 const abilityFilter = [ // Exclude abilities with this keywords.
 // Unusable in format.
-'illuminate', 'run', 'plus', 'minus', 'gluttony', 'honey', 'unnerve', 'healer', 'friend', 'harvest',
-'telepathy', 'star', 'cheek', 'battery', 'receiver', 'alchemy', 'ball', 'ripen', 'spot',
-'medicine', 'one', 'symbiosis',
-// Unusable with info.
+'illuminate', 'ball', 'honey', 'run', 
+// Berries.
+'one', 'unnerve', 'cheek', 'gluttony', 'harvest', 'ripen',
+// Doubles.
+'plus', 'minus', 'battery', 'healer', 'friend', 'alchemy', 'spot', 'receiver', 'symbiosis', 'telepathy', 'medicine',
+// Info.
 'anticipation', 'forewarn', 'frisk',
 // Filtered pokemon forms specific.
 'schooling',          

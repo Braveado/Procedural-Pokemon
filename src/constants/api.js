@@ -9,7 +9,8 @@ const moveCount = 826;
 const abilityCount = 267;
 const itemCountOffset = [
     [2, 111], [115, 189], [4, 256], [1, 441], [24, 581], 
-    [2, 666], [9, 678], [1, 727], [1, 831], [23, 844], [2, 1109]
+    [2, 666], [9, 678], [1, 727], [1, 831], [23, 844], [2, 1109],
+    // Berries [64, 125], [3, 719]
 ];
 const typeCount = 18;
 const natureCount = 25;
