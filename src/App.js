@@ -923,6 +923,22 @@ export default function App() {
                 // Check for terrain moves or abilities.
                 usable = (getMoveMechanicUsability('terrain') || getAbilityMechanicUsability('terrain'));
                 break;
+              case 'electric-seed':
+                // Check for electric terrain moves or abilities.
+                usable = (getMoveMechanicUsability('', ['electric-terrain']) || getAbilityMechanicUsability('electric-surge'));
+                break;
+              case 'grassy-seed':
+                // Check for grassy terrain moves or abilities.
+                usable = (getMoveMechanicUsability('', ['grassy-terrain']) || getAbilityMechanicUsability('grassy-surge'));
+                break;
+              case 'misty-seed':
+                // Check for misty terrain moves or abilities.
+                usable = (getMoveMechanicUsability('', ['misty-terrain']) || getAbilityMechanicUsability('misty-surge'));
+                break;
+              case 'psychic-seed':
+                // Check for psychic terrain moves or abilities.
+                usable = (getMoveMechanicUsability('', ['psychic-terrain']) || getAbilityMechanicUsability('psychic-surge'));
+                break;
               case 'heat-rock':                
                 // Check for harsh sunlight weather moves or abilities.
                 usable = (getMoveMechanicUsability('', ['sunny-day']) || getAbilityMechanicUsability('', ['drought']));
@@ -950,7 +966,13 @@ export default function App() {
               case 'ring-target':                
                 // Check for bad item moves.
                 usable = getMoveMechanicUsability('bad-item');
-                break;            
+                break;  
+              case 'throat-spray':
+                // Check for sound moves.
+                usable = getMoveMechanicUsability('sound');
+              case 'room-service':
+                // Check for specific move.
+                usable = getMoveMechanicUsability('', ['trick-room']);
               default:
                 break;
             }

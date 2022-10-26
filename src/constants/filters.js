@@ -91,7 +91,9 @@ const itemFilter = [ // Exclude items with this keywords.
 'pure', 'ability', 
 // Evolution related or filtered pokemon specific.    
 'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
-'reaper', 'whipped', 'sachet', 'light',    
+'reaper', 'whipped', 'sachet', 'light',  
+// Berries
+  
 // BRANCH LOGIC. All accounted for.
 // Pokemon specific.
 // 'dew', 'thick', 'stick'

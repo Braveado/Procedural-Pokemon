@@ -76,7 +76,7 @@ const effects = [ // Keys, content
     [['misty terrain'], "Misty Terrain|"+
         "*Halves the damage taken by pokémon on the ground from Dragon-type moves."+
         "*Prevents pokémon on the ground from being afflicted with non-volatile status conditions and confusion."],
-    [['psychic terrain'], "Misty Terrain|"+
+    [['psychic terrain'], "Psychic Terrain|"+
         "*Boosts the power of Psychic-type moves used by pokémon on the ground."+
         "*Prevents pokémon on the ground from being hit by moves with increased priority."],
     [['terrain'], "Terrain|All the field-type effects that affect pokémon on the ground (Electric, Grassy, Misty and Psychic)."],
