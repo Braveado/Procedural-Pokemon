@@ -33,6 +33,7 @@ export default function Item({item, index}) {
                 break;
             case 'cell-battery':
             case 'absorb-bulb':
+            case 'luminous-moss':
             case 'snowball':
             case 'eject-button':
                 formattedEffect = formattedEffect.concat(" Consumed after use.");

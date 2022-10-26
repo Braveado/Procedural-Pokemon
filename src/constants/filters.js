@@ -30,8 +30,6 @@ const moveFilter = [ // Exclude moves with this keywords.
 'struggle', 'happy', 'return', 'frustration', 'veevee',
 // Doubles
 'helping', 'aromatic', 'hands', 'coaching', 'gear', 'magnetic', 'spotlight', 'quash', 'decorate',
-// Berries
-'natural', 'stuff', 'teatime', 'belch',
 // No effect.
 'splash', 'celebrate',
 // BRANCH LOGIC. All accounted for.
@@ -41,6 +39,8 @@ const moveFilter = [ // Exclude moves with this keywords.
 //'techno', 'judgement',
 // Specific pokemons.
 //'hyperspace'
+// Berries
+//'natural', 'stuff', 'teatime', 'belch',
 // REVERSE BRANCH LOGIC. All accounted for.
 // Need lost or consumed held items to work.
 //'recycle',  
@@ -53,8 +53,6 @@ const moveAllow = [ // Include moves with this keywords even when excluded by fi
 const abilityFilter = [ // Exclude abilities with this keywords.
 // Unusable in format.
 'illuminate', 'ball', 'honey', 'run', 
-// Berries.
-'one', 'unnerve', 'cheek', 'gluttony', 'harvest', 'ripen',
 // Doubles.
 'plus', 'minus', 'battery', 'healer', 'friend', 'alchemy', 'spot', 'receiver', 'symbiosis', 'telepathy', 'medicine',
 // Info.
@@ -76,6 +74,8 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 //'multitype', 'rks', 'rusted',
 // Harmful to owner.
 //'truant', 'stall', 'klutz', 'slow', 'defeatist',
+// Berries.
+//'one', 'unnerve', 'cheek', 'gluttony', 'harvest', 'ripen',
 // REVERSE BRANCH LOGIC. All accounted for.
 // Need lost or consumed held items to work.
 // 'pickup', 'unburden', 'pickpocket', 'magician',

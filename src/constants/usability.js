@@ -85,6 +85,9 @@ const badItemMoves = [ // Bad items.
 const badAbilityMoves = [ // Bad abilities.
 'entrainment', 'skill-swap'
 ];
+const berryMoves = [ // Berries.
+'natural-gift', 'stuff-cheeks', 'teatime', 'belch'
+];
 
 // Abilities.
 const terrainAbilities = [ // Terrain extender.
@@ -96,6 +99,9 @@ const orbAbilities = [ // Toxic and flame orb.
 const consumableItemAbilities = [ // Consumable items. Reverse branch logic trigger.
 'pickup', 'unburden', 'pickpocket', 'magician'
 ];  
+const berryAbilities = [ // Berries. Reverse branch logic trigger.
+'cheek-pouch', 'gluttony', 'harvest', 'ripen',
+];
 
 // Items.
 const consumableItems = [ // Consumable items. Reverse branch logic.
@@ -112,11 +118,18 @@ const memoryItems = [ // Memory items. Reverse branch logic.
 'bug-memory', 'dark-memory', 'dragon-memory', 'electric-memory', 'fairy-memory', 'fighting-memory', 'fire-memory', 'flying-memory',
 'ghost-memory', 'grass-memory', 'ground-memory', 'ice-memory', 'poison-memory', 'psychic-memory', 'rock-memory', 'steel-memory', 'water-memory'
 ];
+const berryItems = [ // Berry items. Reverse branch logic.
+'cheri-berry', 'chesto-berry', 'pecha-berry', 'rawst-berry', 'aspear-berry', 'leppa-berry', 'persim-berry', 'lum-berry', 'sitrus-berry',
+'figy-berry', 'wiki-berry', 'mago-berry', 'aguav-berry', 'iapapa-berry', 'occa-berry', 'passho-berry', 'wacan-berry', 'rindo-berry', 
+'yache-berry', 'chople-berry', 'kebia-berry', 'shuca-berry', 'coba-berry', 'payapa-berry', 'tanga-berry', 'charti-berry', 'kasib-berry',
+'haban-berry', 'colbur-berry', 'babiri-berry', 'chilan-berry', 'liechi-berry', 'ganlon-berry', 'salac-berry', 'petaya-berry', 
+'apicot-berry', 'lansat-berry', 'starf-berry', 'enigma-berry', 'micle-berry', 'custap-berry', 'jaboca-berry', 'rowap-berry'
+];
 
 export {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
     barrierMoves, healMoves, drainMoves, recoilMoves, terrainMoves,
-    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves,
-    terrainAbilities, orbAbilities, consumableItemAbilities,
-    plateItems, memoryItems, consumableItems
+    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves,
+    terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
+    plateItems, memoryItems, consumableItems, berryItems
 }

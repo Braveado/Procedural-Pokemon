@@ -844,6 +844,8 @@ export default function App() {
           rOptions.push('plate');
         else if(!rOptions.includes('memory') && opt === 'rks-system')
           rOptions.push('memory');
+        else if(!rOptions.includes('berry') && [...usability.berryMoves, ...usability.berryAbilities].includes(opt))
+          rOptions.push('berry');
       });          
 
       if(!cancel){
@@ -893,6 +895,9 @@ export default function App() {
           case 'memory':
             item = {name: usability.memoryItems[Math.floor(Math.random()*usability.memoryItems.length)]};
             break;
+          case 'berry':
+            item = {name: usability.berryItems[Math.floor(Math.random()*usability.berryItems.length)]};
+            break;
           default:
             item = itemList[Math.floor(Math.random()*itemList.length)];      
             break;
@@ -900,7 +905,7 @@ export default function App() {
         newItem = await axios.get(`${api.url}item/${item.name}`);   
         usable = true;    
                                
-        switch(newItem.data.category.name){
+        switch(newItem.data.category.name){          
           case 'held-items':
             switch(newItem.data.name){
               case 'power-herb': 
@@ -970,9 +975,11 @@ export default function App() {
               case 'throat-spray':
                 // Check for sound moves.
                 usable = getMoveMechanicUsability('sound');
+                break;
               case 'room-service':
                 // Check for specific move.
                 usable = getMoveMechanicUsability('', ['trick-room']);
+                break;
               default:
                 break;
             }
