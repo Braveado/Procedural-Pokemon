@@ -37,6 +37,27 @@ export default function Item({item, index}) {
             case 'eject-button':
                 formattedEffect = formattedEffect.concat(" Consumed after use.");
                 break;
+            case 'adrenaline-orb':
+                formattedEffect = formattedEffect.replace("Makes wild Pokémon more likely to summon allies.  increases", "Increases");
+                break;
+            case 'micle-berry':
+                formattedEffect = formattedEffect.replace(" (Gen IV: Perfect accuracy)", "");
+                break;
+            case 'figy-berry':
+                formattedEffect = formattedEffect.replace("that dislike spicy flavor", "with an Attack reducing nature");
+                break;
+            case 'wiki-berry':
+                formattedEffect = formattedEffect.replace("that dislike dry flavor", "with a Special Attack reducing nature");
+                break;
+            case 'mago-berry':
+                formattedEffect = formattedEffect.replace("that dislike sweet flavor", "with a Speed reducing nature");
+                break;
+            case 'aguav-berry':
+                formattedEffect = formattedEffect.replace("that dislike bitter flavor", "with a Special Defense reducing nature");
+                break;
+            case 'iapapa-berry':
+                formattedEffect = formattedEffect.replace("that dislike sour flavor", "with a Defense reducing nature");
+                break;
             default:
                 break;
         }        

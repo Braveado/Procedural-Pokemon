@@ -93,7 +93,7 @@ const itemFilter = [ // Exclude items with this keywords.
 'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
 'reaper', 'whipped', 'sachet', 'light',  
 // Berries
-  
+'oran',
 // BRANCH LOGIC. All accounted for.
 // Pokemon specific.
 // 'dew', 'thick', 'stick'
