@@ -930,19 +930,19 @@ export default function App() {
                 break;
               case 'electric-seed':
                 // Check for electric terrain moves or abilities.
-                usable = (getMoveMechanicUsability('', ['electric-terrain']) || getAbilityMechanicUsability('electric-surge'));
+                usable = (getMoveMechanicUsability('', ['electric-terrain']) || getAbilityMechanicUsability('', ['electric-surge']));
                 break;
               case 'grassy-seed':
                 // Check for grassy terrain moves or abilities.
-                usable = (getMoveMechanicUsability('', ['grassy-terrain']) || getAbilityMechanicUsability('grassy-surge'));
+                usable = (getMoveMechanicUsability('', ['grassy-terrain']) || getAbilityMechanicUsability('', ['grassy-surge']));
                 break;
               case 'misty-seed':
                 // Check for misty terrain moves or abilities.
-                usable = (getMoveMechanicUsability('', ['misty-terrain']) || getAbilityMechanicUsability('misty-surge'));
+                usable = (getMoveMechanicUsability('', ['misty-terrain']) || getAbilityMechanicUsability('', ['misty-surge']));
                 break;
               case 'psychic-seed':
                 // Check for psychic terrain moves or abilities.
-                usable = (getMoveMechanicUsability('', ['psychic-terrain']) || getAbilityMechanicUsability('psychic-surge'));
+                usable = (getMoveMechanicUsability('', ['psychic-terrain']) || getAbilityMechanicUsability('', ['psychic-surge']));
                 break;
               case 'heat-rock':                
                 // Check for harsh sunlight weather moves or abilities.
