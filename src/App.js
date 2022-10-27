@@ -844,8 +844,10 @@ export default function App() {
       getAbilityOptions();
     }
     return () => cancel = true;
+
+    // eslint-disable-next-line
   }, [generating, generationStep, abilityList, 
-      getMoveMechanicUsability, getAbilityMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
+      getMoveMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
 
   // Respond to ability options generated completely.
   useEffect (() => {  
