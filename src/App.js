@@ -845,7 +845,7 @@ export default function App() {
     }
     return () => cancel = true;
   }, [generating, generationStep, abilityList, 
-      getMoveMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
+      getMoveMechanicUsability, getAbilityMechanicUsability, getMovesetTypeUsability, getPokemonUsability]);
 
   // Respond to ability options generated completely.
   useEffect (() => {  
