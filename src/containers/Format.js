@@ -308,7 +308,7 @@ export default function Format() {
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Legendary pokémon forms above 720 total stats.</li>                        
                                         <li>Pokémon forms as strong as legendaries.</li>
-                                        <li>Notably weaker mythical pokémon.</li>
+                                        <li>Notably weaker legendary and mythical pokémon.</li>
                                         <li>Pokémon and pokémon forms below 360 total stats.</li>
                                     </ul>
                                 </li>

@@ -389,7 +389,19 @@ export default function App() {
                     usable = false;
                 }
               }
-              break;            
+              break;
+            case 'aurora-veil':
+              // Check space for combo moves.
+              if(!newMoveset.find(m => m.name === 'hail')){
+                usable = (team.randomOptions.moves - newMoveset.length) >= 2;
+                if(usable){
+                  if((team.moveStatusLimit - statusMoves) >= 2)
+                    combo = 'hail';
+                  else if((team.moveStatusLimit - statusMoves) <= 1)
+                    usable = false;
+                }
+              }
+              break;             
             case 'hyperspace-fury':
               // Check for specific pokemon.
               usable = getPokemonUsability(['hoopa-unbound']);
@@ -539,6 +551,8 @@ export default function App() {
           return moveNames.find(name => usability.drainMoves.includes(name));
         case 'terrain':
           return moveNames.find(name => usability.terrainMoves.includes(name));
+        case 'weather':
+          return moveNames.find(name => usability.weatherMoves.includes(name));
         case 'barrier':        
           return moveNames.find(name => usability.barrierMoves.includes(name));
         case 'orb':        
@@ -579,6 +593,8 @@ export default function App() {
       switch(mechanic){
         case 'terrain':
           return abilityNames.find(name => usability.terrainAbilities.includes(name));      
+        case 'weather':
+          return abilityNames.find(name => usability.weatherAbilities.includes(name)); 
         case 'orb':
           return abilityNames.find(name => usability.orbAbilities.includes(name));
         default:
@@ -676,11 +692,7 @@ export default function App() {
           case 'scrappy':
             // Check for normal or fighting moves.
             usable = getMovesetTypeUsability(['normal', 'fighting']);
-            break;
-          case 'sand-force':
-            // Check for rock, ground and steel moves.
-            usable = getMovesetTypeUsability(['rock', 'ground', 'steel']);
-            break;
+            break;          
           case 'gale-wings':
             // Check for flying moves.
             usable = getMovesetTypeUsability(['flying']);
@@ -735,11 +747,12 @@ export default function App() {
             break;
           case 'forecast':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['castform']);
+            usable = (getPokemonUsability(['castform']) && (getMoveMechanicUsability('weather') || getAbilityMechanicUsability('weather')));
             break;
           case 'flower-gift':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['cherrim']);
+            usable = (getPokemonUsability(['cherrim']) && 
+              (getMoveMechanicUsability('', ['sunny-day']) || getAbilityMechanicUsability('', ['drought', 'desolate-land'])));
             break;
           case 'zen-mode':
             // Check for specific pokemon.
@@ -754,8 +767,8 @@ export default function App() {
             usable = (getPokemonUsability(['aegislash-shield']) && getMoveMechanicUsability('', ['kings-shield']));
             break;
           case 'power-construct':
-            // Check for specific pokemon. No effect: 'zygarde-complete'
-            usable = getPokemonUsability(['zygarde-10', 'zygarde-50',]);
+            // Check for specific pokemon.
+            usable = getPokemonUsability(['zygarde-50']);
             break;
           case 'shields-down':
             // Check for specific pokemon.
@@ -777,6 +790,46 @@ export default function App() {
           case 'defeatist': 
             // Check for bad abilities.
             usable = getMoveMechanicUsability('bad-ability');
+            break;
+          case 'mimicry':
+            // Check for terrain moves or abilities.
+            usable = (getMoveMechanicUsability('terrain') || getAbilityMechanicUsability('terrain'));
+            break;
+          case 'grass-pelt':
+            // Check for grassy terrain moves or abilities.
+            usable = (getMoveMechanicUsability('', ['grassy-terrain']) || getAbilityMechanicUsability('', ['grassy-surge']));
+            break;
+          case 'surge-surfer':
+            // Check for electric terrain moves or abilities.
+            usable = (getMoveMechanicUsability('', ['electric-terrain']) || getAbilityMechanicUsability('', ['electric-surge']));
+            break;
+          case 'clorophyll':       
+          case 'leaf-guard':
+          case 'solar-power':                   
+            // Check for harsh sunlight weather moves or abilities.
+            usable = (getMoveMechanicUsability('', ['sunny-day']) || getAbilityMechanicUsability('', ['drought', 'desolate-land']));
+            break;
+          case 'hydration':
+          case 'rain-dish':
+          case 'swift-swim':                   
+            // Check for rain weather moves or abilities.
+            usable = (getMoveMechanicUsability('', ['rain-dance']) || getAbilityMechanicUsability('', ['drizzle', 'primordial-sea']));
+            break;
+          case 'sand-veil':   
+          case 'sand-rush':              
+            // Check for sandstorm weather moves or abilities.
+            usable = (getMoveMechanicUsability('', ['sandstorm']) || getAbilityMechanicUsability('', ['sand-stream', 'sand-spit']));
+            break;
+          case 'sand-force':
+            // Check for sandstorm weather moves or abilities and rock, ground or steel moves.
+            usable = (getMoveMechanicUsability('', ['sandstorm']) || getAbilityMechanicUsability('', ['sand-stream', 'sand-spit'])) &&
+              getMovesetTypeUsability(['rock', 'ground', 'steel']);
+            break;
+          case 'ice-body': 
+          case 'snow-cloak':   
+          case 'slush-rush':              
+            // Check for hail weather moves or abilities.
+            usable = (getMoveMechanicUsability('', ['hail']) || getAbilityMechanicUsability('', ['snow-warning']));
             break;
           default:
             break;

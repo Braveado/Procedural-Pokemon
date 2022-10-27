@@ -88,7 +88,8 @@ const effects = [ // Keys, content
         "*Causes Growth to raise Attack and Special Attack two stages each."+
         "*Changes Weather Ball to a Fire-type move and doubles its power."+        
         "*Causes Moonlight, Synthesis, and Morning Sun to recover 2/3 of max HP."+
-        "*Lowers accuracy of Thunder and Hurricane to 50%."],
+        "*Lowers accuracy of Thunder and Hurricane to 50%."+
+        "*Doubles stat increases from Growth."],
     [['rain', 'downpour'], "Rain|"+
         "*Increases the damage of Water-type moves by 50%."+
         "*Decreases the damage of Fire-type moves by 50%."+
@@ -109,7 +110,7 @@ const effects = [ // Keys, content
         "*Changes Weather Ball to an Ice-type move and doubles its power."+
         "*Causes Moonlight, Synthesis, and Morning Sun to recover 1/4 of max HP."+
         "*Allows Blizzard to bypass accuracy check."+
-        "*Allows Aurora Veil to be used, though the effect lingers even after Hail ends."],
+        "*Allows Aurora Veil to be used, the effect lingers even after Hail ends."],
     [['strong winds'], "Strong Winds|"+
         "*Super effective moves against pure Flying-type Pokémon count as normally effective."+
         "*Weather Ball remains a Normal-type move."+

@@ -10,7 +10,10 @@ const drainMoves = [ // Big root.
 'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed',
 'mega-drain', 'oblivion-wing', 'parabolic-charge', 'strength-sap', 'ingrain', 'aqua-ring'
 ];
-const terrainMoves = [ // Terrain extender.
+const weatherMoves = [ // Weather moves and abilities.
+'sunny-day', 'rain-dance', 'sandstorm', 'hail'
+];
+const terrainMoves = [ // Terrain items and abilities.
 'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
 ];
 const barrierMoves = [ // Light clay.
@@ -90,7 +93,10 @@ const berryMoves = [ // Berries.
 ];
 
 // Abilities.
-const terrainAbilities = [ // Terrain extender.
+const weatherAbilities = [ // Weather moves and abilities.
+'drought', 'desolate-land', 'drizzle', 'primordial-sea', 'sand-stream', 'sand-spit', 'snow-warning', 'delta-stream'
+];
+const terrainAbilities = [ // Terrain moves and items.
 'electric-surge', 'grassy-surge', 'misty-surge', 'psychic-surge'
 ];
 const orbAbilities = [ // Toxic and flame orb.
@@ -128,8 +134,8 @@ const berryItems = [ // Berry items. Reverse branch logic.
 
 export {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, terrainMoves,
+    barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves,
     orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves,
-    terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
+    weatherAbilities, terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
     plateItems, memoryItems, consumableItems, berryItems
 }

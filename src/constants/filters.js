@@ -6,7 +6,7 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 'mega', 'gmax', 'eternal', 'ash',
 // Pokemon form changes
 'sunny', 'rainy', 'snowy', 'origin', 'zen', 'pirouette', 'blade', 'crowned', 'gulping', 'gorging', 
-'noice', 'hangry', 'minior',
+'noice', 'hangry', 'minior', 'zygarde',
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
@@ -16,7 +16,9 @@ const pokemonAllow = [ // Include pokemons with this keywords even when excluded
 // Calyrex forms
 'ice', 'shadow',
 // Minior forms
-'meteor'
+'meteor',
+// Zygarde forms
+'50'
 ];
 
 // Moves
