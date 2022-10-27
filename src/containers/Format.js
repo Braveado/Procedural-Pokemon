@@ -26,13 +26,16 @@ export default function Format() {
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                             <p>
-                                The format aims to generate random yet balanced pokémon teams (singles) using procedural generation.
+                                The format aims to generate random yet balanced pokémon teams using procedural generation.
                                 Randomly generated numbers are used to get pokémon, moves, abilities and items across the first 8 generations of the main Pokémon games.
                                 Potential options are then put through filters to prevent unbalanced or unusable ones.
                             </p>                    
                             <p>
                                 Once all options have been generated, a complete pokémon team must be built with them to then export it.
                                 Teams can be imported to Pokémon Showdown for battles via custom games. 
+                            </p>
+                            <p>
+                                Created teams are intended for use in single battles on generation 8 custom games without the use of dynamax mechanics.                              
                             </p>
                         </div>                                                            
                     </div>
@@ -198,11 +201,67 @@ export default function Format() {
                                     <li>
                                         Go to Pokémon Showdown.
                                         <ul className="pl-4 text-gray-600 text-sm">
-                                            <li><a href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
-                                                Team builder
+                                            <li><a href="https://play.pokemonshowdown.com/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                                Home
                                             </a></li>
                                         </ul>
-                                    </li>                        
+                                    </li>
+                                    <li>
+                                        Find a user.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.playTeam[0]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>   
+                                    <li>
+                                        Start a challenge.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.playTeam[1]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li> 
+                                    <li>
+                                        Send the challenge.
+                                        <ul className="pl-4"> 
+                                            <li className="text-gray-600 text-sm">
+                                                Set the format to "Custom Game" and select an imported team. 
+                                            </li>                                       
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.playTeam[2]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li> 
+                                    <li>
+                                        Wait for the user to accept.
+                                        <ul className="pl-4"> 
+                                            <li className="text-gray-600 text-sm">
+                                                They only need to select an imported team. 
+                                            </li>                                         
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.playTeam[3]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li> 
+                                    <li>
+                                        Done! Choose a team order to start the battle.
+                                        <ul className="pl-4">                                        
+                                            <li>
+                                                <img className="border-2 shadow-md border-gray-200 rounded-md"
+                                                    src={guide.playTeam[4]} alt="guide_create_1" 
+                                                />
+                                            </li>
+                                        </ul>
+                                    </li>                      
                                 </ul> 
                                 : null} 
                             </div>                  
@@ -249,6 +308,7 @@ export default function Format() {
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Legendary pokémon forms above 720 total stats.</li>                        
                                         <li>Pokémon forms as strong as legendaries.</li>
+                                        <li>Notably weaker mythical pokémon.</li>
                                         <li>Pokémon and pokémon forms below 360 total stats.</li>
                                     </ul>
                                 </li>
