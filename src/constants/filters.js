@@ -10,7 +10,7 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'construct', 'phione', 'meltan', 'calyrex',
+'totem', 'bond', 'construct', 'phione', 'meltan', 'calyrex', 'hisui'
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
 // Calyrex forms
