@@ -1459,18 +1459,27 @@ export default function App() {
       let exportText = "";         
       pokemonOptions.forEach(p => {
         if(p.selected){
+
+          let ability = capitalizeWords(abilityOptions[p.ability].name, "-");
+          if(abilityOptions[p.ability].name.includes("as-one")){
+            let abilityKeywords = ability.split(" ");
+            abilityKeywords[abilityKeywords.length - 1] = "(" + abilityKeywords[abilityKeywords.length - 1] + ")";
+            ability = abilityKeywords.join(" ");
+          };
+
           let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {
             if(m.name === "hidden-power"){
               return m.name + " [" + capitalizeWords(m.type.name, "-") + "]";
             }
             else return m.name;
           });
+
           exportText += capitalizeWords(p.name, "-");
           if(p.gender !== "genderless"){
             exportText += " (" + (p.gender === "male" ? "M" : "F") + ")";
           }
           exportText += " @ " + capitalizeWords(itemOptions[p.item].name, "-");
-          exportText += "\r\nAbility: " + capitalizeWords(abilityOptions[p.ability].name, "-");
+          exportText += "\r\nAbility: " + ability;
           exportText += "\r\nLevel: " + p.level;
           if(p.shiny)
             exportText += "\r\nShiny: Yes";
