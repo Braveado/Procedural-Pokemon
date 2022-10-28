@@ -47,8 +47,7 @@ export default function Ability({ability, index}) {
         }
         else {
             let formattedName = ability.name.split('-').filter(key => {
-                if(!['glastrier', 'spectrier'].includes(key))
-                    return key;
+                return (!['glastrier', 'spectrier'].includes(key));
             }).join(" ");
             return (
                 <p className="text-sm">                    
