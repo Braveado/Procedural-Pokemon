@@ -10,7 +10,7 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'construct', 'phione', 'meltan', 'calyrex', 'hisui'
+'totem', 'bond', 'phione', 'meltan', 'calyrex', 'hisui'
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
 // Calyrex forms
@@ -18,7 +18,7 @@ const pokemonAllow = [ // Include pokemons with this keywords even when excluded
 // Minior forms
 'meteor',
 // Zygarde forms
-'50'
+'complete'
 ];
 
 // Moves
@@ -60,7 +60,7 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 // Info.
 'anticipation', 'forewarn', 'frisk',
 // Filtered pokemon forms specific.
-'schooling',          
+'schooling', 'construct'         
 // BRANCH LOGIC. All accounted for.
 // Pokemon forms specific.
 //'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 'forecast', 

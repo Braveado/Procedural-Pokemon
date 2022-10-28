@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import * as guide from '../constants/guide';
+import {AiOutlinePlus, AiOutlineMinus} from 'react-icons/ai';
+import Table from '../components/Table';
+import * as format from '../constants/format';
 
 export default function Format() {
     // Change title.
@@ -9,7 +12,10 @@ export default function Format() {
 
     const [showCreate, setShowCreate] = useState(false);
     const [showImport, setShowImport] = useState(false);
-    const [showPlay, setShowPlay] = useState(false); 
+    const [showPlay, setShowPlay] = useState(false);
+
+    const [showFilteredPokemon, setShowFilteredPokemon] = useState(false);
+    const [showTopPokemon, setShowTopPokemon] = useState(false); 
 
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
@@ -24,19 +30,29 @@ export default function Format() {
                             <p className="text-lg">Basics</p>
                             <p className="text-base text-gray-400">General points about the format.</p>
                         </div>            
-                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            <p>
-                                The format aims to generate random yet balanced pokémon teams using procedural generation.
-                                Randomly generated numbers are used to get pokémon, moves, abilities and items across the first 8 generations of the main Pokémon games.
-                                Potential options are then put through filters to prevent unbalanced or unusable ones.
-                            </p>                    
-                            <p>
-                                Once all options have been generated, a complete pokémon team must be built with them to then export it.
-                                Teams can be imported to Pokémon Showdown for battles via custom games. 
-                            </p>
-                            <p>
-                                Created teams are intended for use in single battles on generation 8 custom games without the use of dynamax mechanics.                              
-                            </p>
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">                               
+                            <ul className="space-y-2">                                                          
+                                <li>
+                                    The format aims to generate random yet balanced pokémon teams using procedural generation.
+                                    <ul className="pl-4 text-gray-600 text-sm">  
+                                        <li>                                    
+                                            Randomly generated numbers are used to get pokémon, moves, abilities and items across the first 8 generations of the main Pokémon games.                                    
+                                        </li>
+                                        <li>                                    
+                                            Potential options are then put through filters to prevent unbalanced or unusable ones.
+                                        </li>
+                                        <li>
+                                            Once all options have been generated, a complete pokémon team must be built with them to then export it.
+                                        </li>                                                     
+                                    </ul>
+                                </li>                                
+                                <li>                                    
+                                    Teams can be imported to Pokémon Showdown for battles via custom games.
+                                    <ul className="pl-4 text-gray-600 text-sm">
+                                        <li>Created teams are intended for use in single battles on generation 8 custom games without the use of dynamax mechanics.                              </li>                                                        
+                                    </ul>
+                                </li>
+                            </ul>                         
                         </div>                                                            
                     </div>
                     <div className="flex flex-col w-full">
@@ -44,8 +60,8 @@ export default function Format() {
                             <p className="text-lg">Guide</p>
                             <p className="text-base text-gray-400">Steps for creating, importing and playing with a team.</p>
                         </div>            
-                        <div className="flex flex-col justify-start items-start gap-8 p-4 w-full border-t-2 border-gray-200">  
-                            <div className={`pl-4 border-l-2 space-y-4 ${showCreate ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                          
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">  
+                            <div className="space-y-4">                          
                                 <div >
                                     <button type="button" onClick={() => setShowCreate(!showCreate)}
                                         className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
@@ -54,7 +70,7 @@ export default function Format() {
                                     </button>
                                 </div>
                                 {showCreate ?
-                                <ul className="space-y-4">                                
+                                <ol className="list-decimal list-inside space-y-4 pl-4 border-l-2 border-dashed border-gray-400">                                
                                     <li>
                                         Generate options inside the Team Builder.
                                         <ul className="pl-4">
@@ -118,10 +134,10 @@ export default function Format() {
                                             </li>
                                         </ul>
                                     </li>                              
-                                </ul> 
+                                </ol> 
                                 : null}   
                             </div> 
-                            <div className={`pl-4 border-l-2 space-y-4 ${showImport ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                          
+                            <div className="space-y-4">                          
                                 <div >
                                     <button type="button" onClick={() => setShowImport(!showImport)}
                                         className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
@@ -130,7 +146,7 @@ export default function Format() {
                                     </button>
                                 </div>
                                 {showImport ?
-                                <ul className="space-y-4">
+                                <ol className="list-decimal list-inside space-y-4 pl-4 border-l-2 border-dashed border-gray-400">
                                     <li>
                                         Go to Pokémon Showdown.
                                         <ul className="pl-4 text-gray-600 text-sm">
@@ -185,10 +201,10 @@ export default function Format() {
                                             </li>
                                         </ul>
                                     </li>                          
-                                </ul>    
+                                </ol>    
                                 : null} 
                             </div>          
-                            <div className={`pl-4 border-l-2 space-y-4 ${showPlay ? 'border-dashed border-gray-400' : 'border-transparent'}`}>                               
+                            <div className="space-y-4">                               
                                 <div >
                                     <button type="button" onClick={() => setShowPlay(!showPlay)}
                                         className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
@@ -197,7 +213,7 @@ export default function Format() {
                                     </button>
                                 </div>
                                 {showPlay ?
-                                <ul className="space-y-4">
+                                <ol className="list-decimal list-inside space-y-4 pl-4 border-l-2 border-dashed border-gray-400">
                                     <li>
                                         Go to Pokémon Showdown.
                                         <ul className="pl-4 text-gray-600 text-sm">
@@ -262,7 +278,7 @@ export default function Format() {
                                             </li>
                                         </ul>
                                     </li>                      
-                                </ul> 
+                                </ol> 
                                 : null} 
                             </div>                  
                         </div>                                                            
@@ -280,9 +296,8 @@ export default function Format() {
                             <p className="text-lg">Pokémon Options</p>
                             <p className="text-base text-gray-400">Process for generating pokémon options.</p>
                         </div>            
-                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            The steps to generate each pokémon option are the following:
-                            <ul className="pl-4 space-y-2">
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">                            
+                            <ul className="space-y-2">
                                 <li>
                                     Get a random pokémon.
                                     <ul className="pl-4 text-gray-600 text-sm">
@@ -310,6 +325,20 @@ export default function Format() {
                                         <li>Pokémon forms as strong as legendaries.</li>
                                         <li>Notably weaker legendary and mythical pokémon.</li>
                                         <li>Pokémon and pokémon forms below 360 total stats.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowFilteredPokemon(!showFilteredPokemon)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showFilteredPokemon ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showFilteredPokemon ? 'Hide' : 'Show' } filtered pokémon</p>
+                                            </button>
+                                            {showFilteredPokemon ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.filteredPokemon} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -317,6 +346,20 @@ export default function Format() {
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Legendary, mythical and pokémon with at least 600 total stats.</li>
                                         <li>Exactly 1 included in options.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowTopPokemon(!showTopPokemon)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showTopPokemon ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showTopPokemon ? 'Hide' : 'Show' } top pokémon</p>
+                                            </button>
+                                            {showTopPokemon ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.topPokemon} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -344,8 +387,7 @@ export default function Format() {
                             <p className="text-base text-gray-400">Process for generating moveset options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            The steps to generate each move option in a moveset are the following:
-                            <ul className="pl-4 space-y-2">
+                            <ul className="space-y-2">
                                 <li>
                                     Get a random move.
                                     <ul className="pl-4 text-gray-600 text-sm">
@@ -385,8 +427,7 @@ export default function Format() {
                             <p className="text-base text-gray-400">Process for generating ability options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            The steps to generate each ability option are the following:
-                            <ul className="pl-4 space-y-2">
+                            <ul className="space-y-2">
                                 <li>
                                     Get a random ability.
                                     <ul className="pl-4 text-gray-600 text-sm">
@@ -419,8 +460,7 @@ export default function Format() {
                             <p className="text-base text-gray-400">Process for generating item options.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            The steps to generate each item option are the following:
-                            <ul className="pl-4 space-y-2">
+                            <ul className="space-y-2">
                                 <li>
                                     Get a random item.
                                     <ul className="pl-4 text-gray-600 text-sm">

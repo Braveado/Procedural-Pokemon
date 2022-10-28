@@ -766,10 +766,10 @@ export default function App() {
             // Check for specific pokemon.
             usable = (getPokemonUsability(['aegislash-shield']) && getMoveMechanicUsability('', ['kings-shield']));
             break;
-          case 'power-construct':
+          /* case 'power-construct':
             // Check for specific pokemon.
             usable = getPokemonUsability(['zygarde-50']);
-            break;
+            break; */
           case 'shields-down':
             // Check for specific pokemon.
             usable = getPokemonUsability(['minior-red-meteor', 'minior-violet-meteor', 'minior-indigo-meteor',
