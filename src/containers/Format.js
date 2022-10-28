@@ -10,12 +10,20 @@ export default function Format() {
         document.title = 'Format - Procedural Pokémon';
     }, []);
 
+    // Guides
     const [showCreate, setShowCreate] = useState(false);
     const [showImport, setShowImport] = useState(false);
     const [showPlay, setShowPlay] = useState(false);
 
+    // Format
     const [showFilteredPokemon, setShowFilteredPokemon] = useState(false);
-    const [showTopPokemon, setShowTopPokemon] = useState(false); 
+    const [showTopPokemon, setShowTopPokemon] = useState(false);
+    const [showFilteredMoves, setShowFilteredMoves] = useState(false); 
+    const [showUsabilityMoves, setShowUsabilityMoves] = useState(false); 
+    const [showFilteredAbilities, setShowFilteredAbilities] = useState(false); 
+    const [showUsabilityAbilities, setShowUsabilityAbilities] = useState(false); 
+    const [showFilteredItems, setShowFilteredItems] = useState(false); 
+    const [showUsabilityItems, setShowUsabilityItems] = useState(false); 
 
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
@@ -315,7 +323,7 @@ export default function Format() {
                                 <li>
                                     Get a random form from its available ones.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li></li>                                                        
+                                        <li>Reroll forms that activate in-battle by a specific ability or held item.</li>                                                        
                                     </ul>
                                 </li>
                                 <li>
@@ -401,7 +409,21 @@ export default function Format() {
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Special type of moves.</li>                        
                                         <li>Unusable in format.</li>
-                                        <li>No effect moves.</li>                                
+                                        <li>No effect moves.</li>  
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowFilteredMoves(!showFilteredMoves)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showFilteredMoves ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showFilteredMoves ? 'Hide' : 'Show' } filtered moves</p>
+                                            </button>
+                                            {showFilteredMoves ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.filteredMoves} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>                              
                                     </ul>
                                 </li>
                                 <li>
@@ -416,6 +438,20 @@ export default function Format() {
                                         <li>Space for combo moves.</li>
                                         <li>Moves only usable by specific pokémon.</li>
                                         <li>Held item requirements.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowUsabilityMoves(!showUsabilityMoves)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showUsabilityMoves ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showUsabilityMoves ? 'Hide' : 'Show' } moves usability</p>
+                                            </button>
+                                            {showUsabilityMoves ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.usabilityMoves} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>  
                                     </ul>
                                 </li>
                             </ul>                  
@@ -440,7 +476,21 @@ export default function Format() {
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">                      
                                         <li>Unusable in format.</li>                                
-                                        <li>Filtered out pokémon specific.</li>                                
+                                        <li>Filtered out pokémon specific.</li>  
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowFilteredAbilities(!showFilteredAbilities)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showFilteredAbilities ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showFilteredAbilities ? 'Hide' : 'Show' } filtered abilities</p>
+                                            </button>
+                                            {showFilteredAbilities ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.filteredAbilities} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>                               
                                     </ul>
                                 </li>
                                 <li>
@@ -449,6 +499,20 @@ export default function Format() {
                                         <li>Pokémon or pokémon form specific.</li>
                                         <li>Move mechanic or type specific.</li>
                                         <li>Held item requirements.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowUsabilityAbilities(!showUsabilityAbilities)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showUsabilityAbilities ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showUsabilityAbilities ? 'Hide' : 'Show' } abilities usability</p>
+                                            </button>
+                                            {showUsabilityAbilities ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.usabilityAbilities} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li> 
                                     </ul>
                                 </li>
                             </ul>                    
@@ -473,7 +537,21 @@ export default function Format() {
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">                      
                                         <li>Unusable in format.</li>                                
-                                        <li>Evolution related or filtered out pokémon specific.</li>                                
+                                        <li>Evolution related or filtered out pokémon specific.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowFilteredItems(!showFilteredItems)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showFilteredItems ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showFilteredItems ? 'Hide' : 'Show' } filtered items</p>
+                                            </button>
+                                            {showFilteredItems ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.filteredItems} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li>                                 
                                     </ul>
                                 </li>
                                 <li>
@@ -482,6 +560,20 @@ export default function Format() {
                                         <li>Pokémon or pokémon form specific.</li>
                                         <li>Move mechanic or type specific.</li>
                                         <li>Ability mechanic specific.</li>
+                                        <li className="space-y-2">
+                                            <button type="button" onClick={() => setShowUsabilityItems(!showUsabilityItems)}
+                                                className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
+                                                { showUsabilityItems ? <AiOutlineMinus /> : <AiOutlinePlus />}
+                                                <p>{ showUsabilityItems ? 'Hide' : 'Show' } items usability</p>
+                                            </button>
+                                            {showUsabilityItems ?
+                                                <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
+                                                    <li>                                                    
+                                                        <Table data={format.usabilityItems} />                                                
+                                                    </li>
+                                                </ul>
+                                            : null}
+                                        </li> 
                                     </ul>
                                 </li>
                             </ul>                    
