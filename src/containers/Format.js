@@ -323,16 +323,15 @@ export default function Format() {
                                 <li>
                                     Get a random form from its available ones.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Reroll forms that activate in-battle by a specific ability or held item.</li>                                                        
+                                        <li></li>
                                     </ul>
                                 </li>
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Legendary pokémon forms above 720 total stats.</li>                        
-                                        <li>Pokémon forms as strong as legendaries.</li>
-                                        <li>Notably weaker legendary and mythical pokémon.</li>
-                                        <li>Pokémon and pokémon forms below 360 total stats.</li>
+                                        <li>Pokémon and pokémon forms outside the 360-720 total base stats range.</li>                        
+                                        <li>Legendary and mythical pokémon below 540 total base stats.</li>
+                                        <li>Pokémon forms that activate in-battle by a specific move, ability or held item.</li>
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredPokemon(!showFilteredPokemon)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">

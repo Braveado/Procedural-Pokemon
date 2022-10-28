@@ -18,7 +18,7 @@ const pokemonAllow = [ // Include pokemons with this keywords even when excluded
 // Minior forms
 'meteor',
 // Zygarde forms
-'complete'
+'50'
 ];
 
 // Moves
@@ -60,7 +60,7 @@ const abilityFilter = [ // Exclude abilities with this keywords.
 // Info.
 'anticipation', 'forewarn', 'frisk',
 // Filtered pokemon forms specific.
-'schooling', 'construct'         
+'schooling', //'construct'         
 // BRANCH LOGIC. All accounted for.
 // Pokemon forms specific.
 //'zen', 'stance', 'shields', 'bond', 'construct', 'face', 'hunger', 'gulp', 'forecast', 
