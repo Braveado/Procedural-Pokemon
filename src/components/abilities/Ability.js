@@ -46,9 +46,13 @@ export default function Ability({ability, index}) {
             )            
         }
         else {
+            let formattedName = ability.name.split('-').filter(key => {
+                if(!['glastrier', 'spectrier'].includes(key))
+                    return key;
+            }).join(" ");
             return (
                 <p className="text-sm">                    
-                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${ability.name.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(Ability)`} target="_blank" rel="noreferrer"
+                    <a onClick={(e) => e.stopPropagation()} href={`https://bulbapedia.bulbagarden.net/wiki/${formattedName.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase()).replace(/ /g, "_")}_(Ability)`} target="_blank" rel="noreferrer"
                         className="flex items-center gap-1 text-blue-400 hover:text-blue-500">
                         <BiSearchAlt /> Bulbapedia
                     </a>
