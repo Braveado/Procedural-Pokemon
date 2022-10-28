@@ -28,12 +28,12 @@ const moveFilter = [ // Exclude moves with this keywords.
 // Specific z moves.
 'catastropika', 'moonsault', 'raid', '000', 'sparksurfer', 'evoboost', 'pancake', 'genesis', 'operetta', 'stormshards',
 'forever', 'soulblaze', 'guardian', 'sunraze', 'moonraze', 'burns', 'stealing',
-// Unusable in format.
-'struggle', 'happy', 'return', 'frustration', 'veevee', 'papow',
+// Friendship.
+'happy', 'return', 'frustration', 'veevee', 'papow',
 // Doubles
 'helping', 'aromatic', 'hands', 'coaching', 'gear', 'magnetic', 'spotlight', 'quash', 'decorate',
 // No effect.
-'splash', 'celebrate',
+'struggle', 'splash', 'celebrate',
 // BRANCH LOGIC. All accounted for.
 // Combo moves.
 //'stockpile', 'swallow', 'spit',     

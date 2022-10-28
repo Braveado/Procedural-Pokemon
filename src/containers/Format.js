@@ -407,7 +407,8 @@ export default function Format() {
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Special type of moves.</li>                        
-                                        <li>Unusable in format.</li>
+                                        <li>Unusable in single battles.</li>
+                                        <li>Friendship moves.</li>
                                         <li>No effect moves.</li>  
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredMoves(!showFilteredMoves)}

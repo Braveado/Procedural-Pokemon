@@ -10,11 +10,11 @@ export default function Table({ data }) {
                         {data ? 
                             data.columns.map((c, i) => {
                                 return (
-                                    <th className="p-2" key={i}>{ c }</th>
+                                    <th className="py-2 px-4" key={i}>{ c }</th>
                                 )
                             })
                         : 
-                            <th className="p-2">Column</th>
+                            <th className="py-2 px-4">Column</th>
                         }
                     </tr>
                 </thead>                                                        
@@ -25,7 +25,7 @@ export default function Table({ data }) {
                                 <tr className={i % 2 === 0 ? '' : 'bg-gray-100'} key={i}>
                                     {r.map((d, i) => {
                                         return (
-                                            <td className="p-2" key={i}>{ d }</td>
+                                            <td className="py-2 px-4" key={i}>{ d }</td>
                                         )
                                     })}
                                 </tr>
@@ -33,7 +33,7 @@ export default function Table({ data }) {
                         })
                     : 
                         <tr>
-                            <td className="p-2">Row</td>
+                            <td className="py-2 px-4">Row</td>
                         </tr>
                     }
                 </tbody>
