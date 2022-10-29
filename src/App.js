@@ -726,6 +726,8 @@ export default function App() {
             break;
           case 'tough-claws':
           case 'unseen-fist':
+          case 'poison-touch':
+          case 'long-reach':
             // Check for contact moves.
             usable = getMoveMechanicUsability('contact');
             break; 
@@ -1034,6 +1036,10 @@ export default function App() {
               case 'room-service':
                 // Check for specific move.
                 usable = getMoveMechanicUsability('', ['trick-room']);
+                break;
+              case 'protective-pads':
+                // Check for contact moves.
+                usable = getMoveMechanicUsability('contact');
                 break;
               default:
                 break;

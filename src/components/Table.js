@@ -3,8 +3,8 @@ import React from 'react'
 export default function Table({ data }) {    
 
     return (
-        <div className="border-2 border-gray-200 rounded-md bg-white">
-            <table className="border-spacing-0 border-collapse border-hidden w-full max-w-full">
+        <div className="border-2 border-gray-200 rounded-md bg-white inline-flex">
+            <table className="border-spacing-0 border-collapse border-hidden">
                 <thead className="border-b-2 border-gray-200">
                     <tr className="bg-gray-200">
                         {data ? 

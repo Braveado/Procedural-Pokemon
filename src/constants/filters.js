@@ -48,7 +48,7 @@ const moveFilter = [ // Exclude moves with this keywords.
 //'recycle',  
 ];
 const moveAllow = [ // Include moves with this keywords even when excluded by filter.
-'bug', 'grind', 'shift'
+'bug', 'grind', 'shift', 'splishy'
 ];
 
 // Abilities

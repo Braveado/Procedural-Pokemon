@@ -406,7 +406,8 @@ export default function Format() {
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Special type of moves.</li>                        
+                                        <li>Special type of moves.</li>     
+                                        <li>Filtered ability or item requirement.</li>                   
                                         <li>Unusable in single battles.</li>
                                         <li>Friendship moves.</li>
                                         <li>No effect moves.</li>  

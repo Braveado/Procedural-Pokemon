@@ -132,8 +132,27 @@ const topPokemon = {
 const filteredMoves = {
     columns: ['Move', 'Applicable Filters'],
     rows: [
-        ['name', 'rule'],
-        ['name', 'rule'],
+        ['G-Max Moves', 'Special type of moves.'],
+        ['Max Moves', 'Special type of moves.'],
+        ['Z-Moves', 'Special type of moves.'],
+        ['Struggle', 'Special type of move.'],
+        ['Gear Up', 'Filtered ability requirement.'],
+        ['Magnetic Flux', 'Filtered ability requirement.'],
+        ['Helping Hand', 'Unusable in single battles.'],
+        ['Aromatic Mist', 'Unusable in single battles.'],
+        ['Hold Hands', 'Unusable in single battles.'],
+        ['Coaching', 'Unusable in single battles.'],        
+        ['Spotlight', 'Unusable in single battles.'],
+        ['Quash', 'Unusable in single battles.'],
+        ['Decorate', 'Unusable in single battles.'],        
+        ['Happy Hour', 'Friendship move.'],
+        ['Return', 'Friendship move.'],
+        ['Frustration', 'Friendship move.'],
+        ['Veevee Volley', 'Friendship move.'],
+        ['Pika Papow', 'Friendship move.'],
+        ['Happy Hour', 'Friendship move.'],
+        ['Splash', 'No effect move.'],
+        ['Celebrate', 'No effect move.'],        
     ]
 }
 const usabilityMoves = {
