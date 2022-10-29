@@ -1,7 +1,7 @@
 import React from 'react'
-import {effects as effectTooltips} from '../constants/tooltips';
+import {effects as effectTooltips, mechanics as mechanicTooltips} from '../constants/tooltips';
 
-export default function TooltipTags({effect}){
+export default function TooltipTags({effect, name}){
 
     const validateTags = (currentData, incomingKey) => {
         return !(
@@ -15,10 +15,10 @@ export default function TooltipTags({effect}){
     }
 
     const getTooltips = () => {
-        if(effect){
+        let tooltipData=[];
 
-            let formattedEffect = effect.toLowerCase().replace(/[.,]/g, "");
-            let tooltipData=[];
+        if(effect){
+            let formattedEffect = effect.toLowerCase().replace(/[.,]/g, "");            
             
             effectTooltips.forEach(data => {                                
                 data[0].forEach(key => {
@@ -27,8 +27,16 @@ export default function TooltipTags({effect}){
                             tooltipData.push(data[1])
                     }
                 });                            
+            });            
+        }
+        if(name){
+            mechanicTooltips.forEach(data => {                                
+                if(data[0].includes(name))
+                    tooltipData.push(data[1]);                                            
             });
+        }
 
+        if(tooltipData.length > 0){
             return (tooltipData.map((d, i) => {
                 return (
                     <p className="border-b border-dashed border-gray-600" key={i} data-tip={[d]} data-for={'effects'}>
@@ -37,7 +45,8 @@ export default function TooltipTags({effect}){
                 )
             }));
         }
-        else return null;
+        else
+            return null;
     }
 
     return(

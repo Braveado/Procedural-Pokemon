@@ -1,3 +1,5 @@
+//import {contactMoves, multistrikeMoves} from '../constants/usability';
+
 const pokemon = [ // Content
     ["Hit Points|Determines the total damage a pokemon can receive before fainting."],
     ["Attack|Determines damage dealt when using a physical move."],
@@ -118,8 +120,16 @@ const effects = [ // Keys, content
     [['weather'], "Weather|All the environment effects that affect pokémon in battle (Harsh Sunlight, Rain, Sandstorm, Hail and Strong Winds)."],         
 ];
 
+const mechanics = [ // Keys, content
+    /* [contactMoves, "Contact|"+
+        "*When a Pokémon physically touches the target when using a move in battle."],
+    [multistrikeMoves, "Multi-strike|"+
+        "*Moves that strike an opponent more than one time in the same turn."], */
+]
+
 export {
     pokemon,
     moves,
-    effects
+    effects,
+    mechanics
 }

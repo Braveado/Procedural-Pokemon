@@ -73,7 +73,7 @@ export default function Ability({ability, index}) {
                     <div className="flex flex-col justify-start items-center text-sm w-full">
                         {getEffect()}
                     </div>  
-                    <TooltipTags effect={formattedEffect} />          
+                    <TooltipTags effect={formattedEffect} name={ability.name} />          
                 </div>
             </div>
         </div>

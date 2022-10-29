@@ -1043,10 +1043,6 @@ export default function App() {
                 // Check for specific move.
                 usable = getMoveMechanicUsability('', ['trick-room']);
                 break;
-              case 'protective-pads':
-                // Check for contact moves.
-                usable = getMoveMechanicUsability('contact');
-                break;
               default:
                 break;
             }

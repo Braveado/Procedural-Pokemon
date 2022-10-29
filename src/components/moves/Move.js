@@ -95,7 +95,7 @@ export default function Move({move, moveset}) {
             <div className="flex flex-col justify-start items-center text-sm w-full">
                 {getEffect()}
             </div>
-            <TooltipTags effect={formattedEffect} />
+            <TooltipTags effect={formattedEffect} name={move.name} />
         </div>
     )
 }
