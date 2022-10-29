@@ -477,7 +477,7 @@ export default function Format() {
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">                      
-                                        <li>No effect in battles.</li>     
+                                        <li>No effect in custom battles.</li>      
                                         <li>Unusable in single battles.</li>
                                         <li>Unusable with opposing team information.</li>                           
                                         <li>Filtered out pokémon specific.</li>  
@@ -540,8 +540,10 @@ export default function Format() {
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">                      
-                                        <li>Unusable in format.</li>                                
+                                        <li>No effect in custom battles.</li>
+                                        <li>Special type of move related.</li>                                
                                         <li>Evolution related or filtered out pokémon specific.</li>
+                                        <li>Notably weaker berries.</li>
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredItems(!showFilteredItems)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">

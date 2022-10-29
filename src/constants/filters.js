@@ -53,7 +53,7 @@ const moveAllow = [ // Include moves with this keywords even when excluded by fi
 
 // Abilities
 const abilityFilter = [ // Exclude abilities with this keywords.
-// Unusable in format.
+// No effect in battles.
 'illuminate', 'ball', 'honey', 'run', 
 // Doubles.
 'plus', 'minus', 'battery', 'healer', 'friend', 'alchemy', 'spot', 'receiver', 'symbiosis', 'telepathy', 'medicine',
@@ -92,7 +92,7 @@ const itemFilter = [ // Exclude items with this keywords.
 'power', 'scarf', 'smoke', 'macho', 'exp', 'soothe', 'coin', 'cleanse', 'egg', 'luck',
 'pure', 'ability', 
 // Evolution related or filtered pokemon specific.    
-'deep', 'scale', 'powder', 'everstone', 'grade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
+'deep', 'scale', 'powder', 'everstone', 'upgrade', 'punch', 'protector', 'disc', 'magmarizer', 'electirizer', 
 'reaper', 'whipped', 'sachet', 'light',  
 // Berries
 'oran',

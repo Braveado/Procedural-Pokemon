@@ -177,10 +177,10 @@ const usabilityMoves = {
 const filteredAbilities = {
     columns: ['Ability', 'Filter'],
     rows: [
-        ['Illuminate', 'No effect in battles'],
-        ['Ball Fetch', 'No effect in battles'],
-        ['Honey Gather', 'No effect in battles'],
-        ['Run Away', 'No effect in battles'],
+        ['Illuminate', 'No effect in custom battles'],
+        ['Ball Fetch', 'No effect in custom battles'],
+        ['Honey Gather', 'No effect in custom battles'],
+        ['Run Away', 'No effect in custom battles'],
         ['Plus', 'Unusable in single battles'],
         ['Minus', 'Unusable in single battles'],
         ['Battery', 'Unusable in single battles'],
@@ -280,8 +280,13 @@ const usabilityAbilities = {
 const filteredItems = {
     columns: ['Item', 'Filter'],
     rows: [
-        ['name', 'rule'],
-        ['name', 'rule'],
+        ['Z-Crystals', 'Z-move related'],
+        ['Mega Stones', 'Mega evolution related'],
+        ['Deep Sea Tooth & Scale', 'Clamperl specific'],
+        ['Light Ball', 'Pikachu specific'],
+        ['Metal & Quick Powder', 'Ditto specific'], 
+        ['Lucky Punch', 'Chansey specific'],
+        ['Oran Berry', 'Notably weaker berry'],        
     ]
 }
 const usabilityItems = {
