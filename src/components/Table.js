@@ -38,7 +38,7 @@ export default function Table({ data }) {
                     }
                 </tbody>
             </table>
-            {data ?
+            {data && data.references ?
                 <ul className="border-t-2 border-gray-200 px-4 py-2 space-y-1 text-xs bg-gray-200 list-disc list-inside">
                     {data.references.map((r, i) => {
                         return (

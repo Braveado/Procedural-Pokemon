@@ -297,7 +297,7 @@ const usabilityItems = {
         ['Stick', 'Pokémon options contain Marowak'],    
         ['Type Enhancement Items', 'Move options contain relevant pokémon type moves'],
         ['Gems', 'Move options contain relevant pokémon type moves'],        
-        ['Power Herb', 'Move options contain charge moves'],
+        ['Power Herb', 'Move options contain charge moves excluding Sky Drop'],
         ['Grip Claw', 'Move options contain bind moves'],
         ['Binding Band', 'Move options contain bind moves'],
         ['Big Root', 'Move options contain drain moves'],

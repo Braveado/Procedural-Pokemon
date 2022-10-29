@@ -41,7 +41,13 @@ export default function Move({move, moveset}) {
                 break;    
             case 'attract':
                 formattedEffect = "Infatuates target if it has the opposite gender.";
-                break;          
+                break;  
+            case 'dynamax-cannon':
+                formattedEffect = "Inflicts regular damage with no additional effect.";
+                break;
+            case 'corrosive-gas':
+                formattedEffect = "Removes the targets' held items for the rest of the battle.";
+                break;
             default:
                 break;
         }           

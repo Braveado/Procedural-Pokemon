@@ -973,7 +973,7 @@ export default function App() {
             switch(newItem.data.name){
               case 'power-herb': 
                 // Check for charge moves.               
-                usable = getMoveMechanicUsability('charge');                
+                usable = getMoveMechanicUsability('charge', null, ['sky-drop']);                
                 break;
               case 'grip-claw':
               case 'binding-band':

@@ -110,7 +110,7 @@ export default function Item({item, index}) {
                     <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>
                         {getEffect()}
                     </div>  
-                    <TooltipTags effect={formattedEffect} name={item.name} />          
+                    <TooltipTags effect={formattedEffect}/>          
                 </div>
             </div>
         </div>

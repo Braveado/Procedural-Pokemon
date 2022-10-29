@@ -1,4 +1,7 @@
-//import {contactMoves, multistrikeMoves} from '../constants/usability';
+import {
+    bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
+    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves
+} from '../constants/usability';
 
 const pokemon = [ // Content
     ["Hit Points|Determines the total damage a pokemon can receive before fainting."],
@@ -63,8 +66,7 @@ const effects = [ // Keys, content
     [['infatuates', 'infatuation'], "Infatuation|"+
         "*Cannot attack 50% of the time."+
         "*Volatile status condition."],        
-    [['flinch', 'flinching'], "Flinch|Unable to make a move for that turn."],        
-    [['traps'], "Trap|Prevents the target from switching out if the user remains in battle."],        
+    [['flinch', 'flinching'], "Flinch|Unable to make a move for that turn."],                
     [['scatters poisoned spikes'], "Poisoned Spikes|Affect foes when they switch in based on layers placed (poisons, badly poisons)."],
     [['scatters spikes'], "Spikes|Damages foes when they switch in based on layers placed (1/8, 1/6, 1/4 max HP)."],    
     [['causes damage when opposing pokémon switch in'], "Stealth Rock|Damages foes when they switch in based on the effectivenes of Rock-type against them (from 1/32 to 1/2 max HP)."],
@@ -121,10 +123,32 @@ const effects = [ // Keys, content
 ];
 
 const mechanics = [ // Keys, content
-    /* [contactMoves, "Contact|"+
-        "*When a Pokémon physically touches the target when using a move in battle."],
+    [bindMoves, "Bind|"+
+        "*Moves that partially trap the foe and deal a small amount of damage for multiple turns."],
+    [biteMoves, "Bite|"+
+        "*Moves based on biting."],
+    [pulseMoves, "Aura or Pulse|"+
+        "*Moves based on aura or pulses."],
+    [punchMoves, "Punch|"+
+        "*Moves based on punching."],
+    [soundMoves, "Sound|"+
+        "*Moves that use sound."],
+    [chargeMoves, "Charge|"+
+        "*Moves that take two turns to complete."],    
+    [contactMoves, "Contact|"+
+        "*Moves that physically touches the target in battle."],
     [multistrikeMoves, "Multi-strike|"+
-        "*Moves that strike an opponent more than one time in the same turn."], */
+        "*Moves that strike an opponent more than one time in the same turn."],
+    [barrierMoves, "Barrier|"+
+        "*Moves that create the effects of Reflect, Light Screen, and Aurora Veil."],
+    [healMoves, "Healing|"+
+        "*Moves that restore HP."],
+    [drainMoves, "Drain|"+
+        "*Moves that restore a portion of their user's HP after damaging an opponent."],
+    [recoilMoves, "Recoil or Crash|"+
+        "*Moves that deal damage to the user."],
+    [trapMoves, "Trap|"+
+        "*Moves that prevent an affected Pokémon from switching out."],
 ]
 
 export {

@@ -1,10 +1,14 @@
 // Moves.
 const chargeMoves = [ // Power herb.
 'bounce', 'dig', 'dive', 'fly', 'freeze-shock', 'geomancy', 'ice-burn', 'meteor-beam', 'phantom-force', 'razor-wind',
-'shadow-force', 'skull-bash', 'sky-attack', 'solar-beam', 'solar-blade'
+'shadow-force', 'skull-bash', 'sky-attack', 'sky-drop', 'solar-beam', 'solar-blade'
 ];
 const bindMoves = [ // Grip claw, binding band.
 'bind', 'clamp', 'fire-spin', 'infestation', 'magma-storm', 'sand-tomb', 'snap-trap', 'thunder-cage', 'whirlpool', 'wrap'
+];
+const trapMoves = [ //
+'anchor-shot', 'block', 'fairy-lock', 'ingrain', 'jaw-lock', 'mean-look', 'no-retreat', 'octolock', 'shadow-hold', 'spider-web',
+'spirit-shackle', 'thousand-waves'
 ];
 const drainMoves = [ // Big root.
 'absorb', 'bouncy-bubble', 'drain-punch', 'draining-kiss', 'dream-eater', 'giga-drain', 'horn-leech', 'leech-life', 'leech-seed',
@@ -17,7 +21,7 @@ const terrainMoves = [ // Terrain items and abilities.
 'electric-terrain', 'grassy-terrain', 'misty-terrain', 'psychic-terrain'
 ];
 const barrierMoves = [ // Light clay.
-'light-screen', 'reflect', 'aurora-veil'
+'light-screen', 'reflect', 'aurora-veil', 'baddy-bad', 'glitzy-glow'
 ];  
 const orbMoves = [ // Toxic and flame orb.
 'facade', 'psycho-shift'
@@ -135,7 +139,7 @@ const berryItems = [ // Berry items. Reverse branch logic.
 
 export {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves,
+    barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves, trapMoves,
     orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves,
     weatherAbilities, terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
     plateItems, memoryItems, consumableItems, berryItems
