@@ -3,7 +3,7 @@ import React from 'react'
 export default function Table({ data }) {    
 
     return (
-        <div className="border-2 border-gray-200 rounded-md bg-white inline-flex">
+        <div className="border-2 border-gray-200 rounded-md bg-white inline-flex flex-col">
             <table className="border-spacing-0 border-collapse border-hidden">
                 <thead className="border-b-2 border-gray-200">
                     <tr className="bg-gray-200">
@@ -30,14 +30,25 @@ export default function Table({ data }) {
                                     })}
                                 </tr>
                             )
-                        })
+                        })                        
                     : 
                         <tr>
                             <td className="py-2 px-4">Row</td>
                         </tr>
                     }
                 </tbody>
-            </table>  
+            </table>
+            {data ?
+                <ul className="border-t-2 border-gray-200 px-4 py-2 space-y-1 text-xs bg-gray-200 list-disc list-inside">
+                    {data.references.map((r, i) => {
+                        return (
+                            <li key={i}>
+                                { r }
+                            </li>
+                        )
+                    })} 
+                </ul> 
+            : null}                         
         </div>
     );
 }

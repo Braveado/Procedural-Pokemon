@@ -363,7 +363,7 @@ export default function Format() {
                                                 <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
                                                     <li>                                                    
                                                         <Table data={format.topPokemon} />                                                
-                                                    </li>
+                                                    </li>                                                    
                                                 </ul>
                                             : null}
                                         </li>

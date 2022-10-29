@@ -976,9 +976,6 @@ export default function App() {
                 usable = getMoveMechanicUsability('charge');                
                 break;
               case 'grip-claw':
-                // Check for bind moves.
-                usable = getMoveMechanicUsability('bind');               
-                break;
               case 'binding-band':
                 // Check for bind moves.
                 usable = getMoveMechanicUsability('bind');
@@ -1025,7 +1022,7 @@ export default function App() {
                 break;
               case 'black-sludge':                
                 // Check for poison pokemons.
-                usable = getPokemonTypeUsability('poison');                
+                usable = (getPokemonTypeUsability('poison') || getMoveMechanicUsability('bad-item'));                
                 break;
               case 'light-clay':                
                 // Check for barrier moves.
@@ -1106,7 +1103,7 @@ export default function App() {
                   break;
                 case 'soul-dew':
                   // Check for a specific pokemon.
-                  usable = getPokemonUsability(['latios', 'latias']);
+                  usable = (getPokemonUsability(['latios', 'latias']) && getMovesetTypeUsability(['dragon', 'psychic']));
                   break;
                 case 'griseous-orb':
                   // Check for a specific pokemon and move types.
