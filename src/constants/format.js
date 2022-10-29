@@ -201,8 +201,8 @@ const filteredAbilities = {
 const usabilityAbilities = {
     columns: ['Ability', 'Requirement'],
     rows: [
-        ['Multitype', 'Pokémon options contain Arceus'],
-        ['RKS System', 'Pokémon options contain Silvally'],
+        ['Multitype', 'Pokémon options contain Arceus & item options will include a plate'],
+        ['RKS System', 'Pokémon options contain Silvally & item options will include a memory'],
         ['Ice Face', 'Pokémon options contain Eiscue'],
         ['Hunger Switch', 'Pokémon options contain Morpeko & Move options contain Aura Wheel'],
         ['Forecast', 'Pokémon options contain Castform & Move or ability options contain Harsh Sunlight, Rain or Hail activation'],
@@ -261,7 +261,15 @@ const usabilityAbilities = {
         ['Sand Force', 'Move or ability options contain Sandstorm activation & Move options contain rock, ground or steel type moves'],        
         ['Ice Body', 'Move or ability options contain Hail activation'],        
         ['Snow Cloak', 'Move or ability options contain Hail activation'],        
-        ['Slush Rush', 'Move or ability options contain Hail activation'],        
+        ['Slush Rush', 'Move or ability options contain Hail activation'],   
+        ['Pickup', 'Item options will include a consumable item'],
+        ['Unburden', 'Item options will include a consumable item'],
+        ['Pickpocket', 'Item options will include a consumable item'],
+        ['Magician', 'Item options will include a consumable item'],
+        ['Cheek Pouch', 'Item options will include a berry'],     
+        ['Gluttony', 'Item options will include a berry'],     
+        ['Harvest', 'Item options will include a berry'],     
+        ['Ripen', 'Item options will include a berry'],     
     ]
 }
 
