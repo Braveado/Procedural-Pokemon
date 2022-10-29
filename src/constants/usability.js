@@ -42,8 +42,9 @@ const pulseMoves = [ // Mega launcher.
 'aura-sphere', 'dark-pulse', 'dragon-pulse', 'heal-pulse', 'origin-pulse', 'terrain-pulse', 'water-pulse'
 ];
 const soundMoves = [ // Liquid voice.
-'boomburst', 'bug-buzz', 'chatter', 'clanging-scales', 'disarming-voice', 'echoed-voice', 'eerie-spell', 'hyper-voice',
-'overdrive', 'relic-song', 'round', 'snarl', 'snore', 'uproar'
+'boomburst', 'bug-buzz', 'chatter', 'clanging-scales', 'clangorous-soul', 'confide', 'disarming-voice', 'echoed-voice', 'eerie-spell',
+'grass-whistle', 'growl', 'heal-bell', 'howl', 'hyper-voice', 'metal-sound', 'noble-roar', 'overdrive', 'parting-shot', 'perish shong',
+'relic-song', 'roar', 'round', 'screech', 'shadow-panic', 'sing', 'snarl', 'snore', 'sparkling-aria', 'supersonic', 'uproar'
 ];
 const healMoves = [ // Triage.
 'draining-kiss', 'floral-healing', 'giga-drain', 'rest', 'synthesis', 'absorb', 'drain-punch', 'dream-eater', 'heal-order',

@@ -534,9 +534,13 @@ export default function App() {
     return usable;
   }, [optionsData, movesetOptions, abilityOptions, getTypeFromEffect]);
 
-  const getMoveMechanicUsability = useCallback((mechanic, exactMoves) => {
+  const getMoveMechanicUsability = useCallback((mechanic, exactMoves, ignoreMoves) => {
     let moveNames = movesetOptions.map(ms => { return ms.map(m => { return m.name } ) });
     moveNames = [].concat.apply([], moveNames);
+
+    if(ignoreMoves && ignoreMoves.length > 0){
+      moveNames = moveNames.filter(name => {return !ignoreMoves.includes(name)})
+    }
     
     if(exactMoves && exactMoves.length > 0){      
       return moveNames.find(name => exactMoves.includes(name));
@@ -662,16 +666,23 @@ export default function App() {
             break;
           case 'liquid-voice':
             // Check for sound moves.
-            usable = getMoveMechanicUsability('sound');
+            usable = getMoveMechanicUsability('sound', null, ['sparkling-aria']);
             break;
           case 'punk-rock':
             // Check for sound moves.
-            usable = (getMoveMechanicUsability('sound') || getMoveMechanicUsability('', ['sparkling-aria']));
+            usable = (getMoveMechanicUsability('sound'));
             break;
           case 'triage':
             // Check for heal moves.
             usable = getMoveMechanicUsability('heal');
-            break;          
+            break;      
+          case 'tough-claws':
+          case 'unseen-fist':
+          case 'poison-touch':
+          case 'long-reach':
+            // Check for contact moves.
+            usable = getMoveMechanicUsability('contact');
+            break;    
           case 'flash-fire':
           case 'blaze':
             // Check for fire moves.
@@ -723,14 +734,7 @@ export default function App() {
           case 'aerilate': 
             // Check for normal moves.
             usable = getMovesetTypeUsability(['normal']);
-            break;
-          case 'tough-claws':
-          case 'unseen-fist':
-          case 'poison-touch':
-          case 'long-reach':
-            // Check for contact moves.
-            usable = getMoveMechanicUsability('contact');
-            break; 
+            break;           
           case 'multitype':
             // Check for specific pokemon.
             usable = getPokemonUsability(['arceus']);
@@ -749,7 +753,9 @@ export default function App() {
             break;
           case 'forecast':
             // Check for specific pokemon.
-            usable = (getPokemonUsability(['castform']) && (getMoveMechanicUsability('weather') || getAbilityMechanicUsability('weather')));
+            usable = (getPokemonUsability(['castform']) && 
+              (getMoveMechanicUsability('', ['sunny-day', 'rain-dance', 'hail']) || 
+              getAbilityMechanicUsability('', ['drought', 'desolate-land', 'drizzle', 'primordial-sea', 'snow-warning'])));
             break;
           case 'flower-gift':
             // Check for specific pokemon.

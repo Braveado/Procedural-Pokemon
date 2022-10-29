@@ -323,7 +323,7 @@ export default function Format() {
                                 <li>
                                     Get a random form from its available ones.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li></li>
+                                        <li>Exclude Gmax forms.</li>
                                     </ul>
                                 </li>
                                 <li>
@@ -357,7 +357,7 @@ export default function Format() {
                                             <button type="button" onClick={() => setShowTopPokemon(!showTopPokemon)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
                                                 { showTopPokemon ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                                <p>{ showTopPokemon ? 'Hide' : 'Show' } top pokémon</p>
+                                                <p>{ showTopPokemon ? 'Hide' : 'Show' } available top pokémon</p>
                                             </button>
                                             {showTopPokemon ?
                                                 <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
@@ -409,7 +409,7 @@ export default function Format() {
                                         <li>Special type of moves.</li>     
                                         <li>Filtered ability or item requirement.</li>                   
                                         <li>Unusable in single battles.</li>
-                                        <li>Friendship moves.</li>
+                                        <li>Friendship based moves.</li>
                                         <li>No effect moves.</li>  
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredMoves(!showFilteredMoves)}
@@ -436,14 +436,15 @@ export default function Format() {
                                 <li>
                                     Check for usability and reroll if needed.
                                     <ul className="pl-4 text-gray-600 text-sm">                                
-                                        <li>Space for combo moves.</li>
+                                        <li>Space for "combo" moves.</li>
                                         <li>Moves only usable by specific pokémon.</li>
                                         <li>Held item requirements.</li>
+                                        <li>Unique cases coverage.</li>
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowUsabilityMoves(!showUsabilityMoves)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
                                                 { showUsabilityMoves ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                                <p>{ showUsabilityMoves ? 'Hide' : 'Show' } moves usability</p>
+                                                <p>{ showUsabilityMoves ? 'Hide' : 'Show' } usability requirements for moves</p>
                                             </button>
                                             {showUsabilityMoves ?
                                                 <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
@@ -476,7 +477,9 @@ export default function Format() {
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">                      
-                                        <li>Unusable in format.</li>                                
+                                        <li>No effect in battles.</li>     
+                                        <li>Unusable in single battles.</li>
+                                        <li>Unusable with opposing team information.</li>                           
                                         <li>Filtered out pokémon specific.</li>  
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredAbilities(!showFilteredAbilities)}
@@ -504,7 +507,7 @@ export default function Format() {
                                             <button type="button" onClick={() => setShowUsabilityAbilities(!showUsabilityAbilities)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
                                                 { showUsabilityAbilities ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                                <p>{ showUsabilityAbilities ? 'Hide' : 'Show' } abilities usability</p>
+                                                <p>{ showUsabilityAbilities ? 'Hide' : 'Show' } usability requirements for abilities</p>
                                             </button>
                                             {showUsabilityAbilities ?
                                                 <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
@@ -565,7 +568,7 @@ export default function Format() {
                                             <button type="button" onClick={() => setShowUsabilityItems(!showUsabilityItems)}
                                                 className="text-blue-400 hover:text-blue-500 inline-flex gap-2 items-center">
                                                 { showUsabilityItems ? <AiOutlineMinus /> : <AiOutlinePlus />}
-                                                <p>{ showUsabilityItems ? 'Hide' : 'Show' } items usability</p>
+                                                <p>{ showUsabilityItems ? 'Hide' : 'Show' } usability requirements for items</p>
                                             </button>
                                             {showUsabilityItems ?
                                                 <ul className="px-4 border-l-2 border-gray-400 border-dashed">                                                
