@@ -31,6 +31,12 @@ export default function App() {
   // Team builder.
   const [generating, setGenerating] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
+  /* const [teamData, setTeamData] = useState({
+    teamAuthor: '',
+    teamName: '',
+    teamNotes: '',
+  }); */
+  const [pokemonPreviews, setPokemonPreviews] = useState([]);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
   const [abilityOptions, setAbilityOptions] = useState([]);
@@ -153,6 +159,7 @@ export default function App() {
         }          
         pokemon.shiny = (index === shinyIndex);
         pokemon.level = pokemon.shiny ? 60 : 50;
+        pokemon.nickname = '';
         // stats        
         pokemon.stats.map(s => {          
           s.ev = 0;
@@ -1441,6 +1448,36 @@ export default function App() {
     setSelectionsMade(s => {return {...s, moves: mSelected}});
   }, [movesetOptions, checkSectionCompleted]);    
 
+  // Respond to changes in slections/assignments for team preview.
+  useEffect (() => {
+    let tPreview = [];
+    let pPreview = null;
+
+    pokemonOptions.forEach((po, i) => {
+      pPreview = null;
+
+      if(po.selected && 
+        po.moveset != null && selectionsMade.moves[po.moveset] >= team.selectionsNeeded.moves &&
+        po.ability != null && 
+        po.item != null){
+
+          pPreview = {
+            pokemon: po,
+            moveset: movesetOptions[po.moveset],
+            ability: abilityOptions[po.ability],
+            item: itemOptions[po.item]
+          }
+
+          tPreview.push(pPreview);
+      }
+    })
+
+    while(tPreview.length < team.selectionsNeeded.pokemons)
+      tPreview.push(null);
+
+    setPokemonPreviews(tPreview)
+  }, [pokemonOptions, movesetOptions, abilityOptions, itemOptions, selectionsMade]);
+
   // ----- HELPER FUNCTIONS -----  
   // Get total stats for a pokemon.
   const getTotalStats = (stats) => {
@@ -1490,6 +1527,19 @@ export default function App() {
   const upperCaseWords = (string) => {
     return string.replace(/\b\w/g, l => l.toUpperCase())
   }      
+
+  // ----- METADATA -----
+  // Set pokemon nicknames.
+  /* const setNickname = (pokemonId, nickname) => {    
+    let options = pokemonOptions;
+    options = options.map(p => {      
+      if(p.id === pokemonId){
+        p.nickname = nickname;
+      }
+      return p;
+    });
+    setPokemonOptions(options);
+  } */
 
   // ----- OTHERS -----
   // Show a toast notification.
@@ -1612,7 +1662,8 @@ export default function App() {
       sectionsCompleted: sectionsCompleted,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
-      assignPokemon: assignPokemon
+      assignPokemon: assignPokemon,
+      //setNickname: setNickname
     }}>
       <div className="bg-gray-50 bg-unown-pattern-tiled min-h-screen">        
         <Router basename="/React-Procedural-Pokemon">
@@ -1629,6 +1680,7 @@ export default function App() {
                   <TeamBuilder
                     loading={loading}
                     randomOptions={team.randomOptions}
+                    pokemonPreviews={pokemonPreviews}
                     pokemonOptions={pokemonOptions}
                     movesetOptions={movesetOptions}
                     abilityOptions={abilityOptions}

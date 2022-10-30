@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react';
+import TeamPreview from '../components/preview/TeamPreview';
 import PokemonOptions from '../components/pokemon/PokemonOptions';
 import MovesetOptions from '../components/moves/MovesetOptions';
 import AbilityOptions from '../components/abilities/AbilityOptions';
@@ -10,7 +11,7 @@ import {GoPencil} from 'react-icons/go';
 import { FiExternalLink } from 'react-icons/fi';
 
 export default function TeamBuilder({
-    loading, randomOptions, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating,
+    loading, randomOptions, pokemonPreviews, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating,
     generateOptions, clearChoices, exportTeam
     }) {   
     const context = React.useContext(TeamBuilderContext);
@@ -45,7 +46,7 @@ export default function TeamBuilder({
                     <button type="button" onClick={() => exportTeam()}
                         className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
                         ${Object.values(context.sectionsCompleted).every(val => val) ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
-                        <FaCopy /> Export Team
+                        <FaCopy /> Copy Team
                     </button>
                     <a type="button" href="https://play.pokemonshowdown.com/teambuilder" target="_blank" rel="noreferrer"
                         className="flex gap-2 items-center justify-center p-4 rounded-md bg-blue-100 hover:bg-gray-200 border-2 border-blue-200 ring ring-blue-100 w-48 transition duration-150 ease-in-out">
@@ -71,7 +72,7 @@ export default function TeamBuilder({
 
     return (           
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
-            <div id="controls" className="flex flex-col w-full">
+            <div id="actions" className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
                     <p className="text-lg">Actions</p>
                     <p className="text-base text-gray-400">Controls for building your team.</p>
@@ -82,6 +83,7 @@ export default function TeamBuilder({
                     </div>                                                                       
                 </div>                                                            
             </div>
+            <TeamPreview previews={pokemonPreviews} />
             <PokemonOptions options={pokemonOptions} />
             <MovesetOptions options={movesetOptions} />  
             <AbilityOptions options={abilityOptions} />   
