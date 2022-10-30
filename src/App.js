@@ -742,6 +742,10 @@ export default function App() {
             // Check for normal moves.
             usable = getMovesetTypeUsability(['normal']);
             break;           
+          case 'flower-veil':
+            // Check for grass pokemon.
+            usable = getPokemonTypeUsability('grass');
+            break;
           case 'multitype':
             // Check for specific pokemon.
             usable = getPokemonUsability(['arceus']);
