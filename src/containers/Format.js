@@ -57,7 +57,7 @@ export default function Format() {
                                 <li>                                    
                                     Teams can be imported to Pokémon Showdown for battles via custom games.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Created teams are intended for use in single battles on generation 8 custom games without the use of dynamax mechanics.                              </li>                                                        
+                                        <li>Created teams are intended for use in single battles on generation 8 custom games, preventing the use of dynamax mechanics is recommended.</li>
                                     </ul>
                                 </li>
                             </ul>                         
