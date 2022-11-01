@@ -1675,7 +1675,7 @@ export default function App() {
       //setNickname: setNickname
     }}>
       <div className="bg-gray-50 bg-unown-pattern-tiled min-h-screen">        
-        <Router basename="/React-Procedural-Pokemon">
+        <Router>
           <div className="flex w-full">
             <div className="h-screen sticky top-0">
               <Sidebar />
