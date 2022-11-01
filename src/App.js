@@ -661,7 +661,10 @@ export default function App() {
             break;
           case 'reckless':
             // Check for recoil/crash moves.
-            usable = getMoveMechanicUsability('recoil');            
+            usable = getMoveMechanicUsability('recoil');    
+          case 'rock-headed':
+            // Check for recoil moves.
+            usable = getMoveMechanicUsability('recoil', null, ['jump-kick', 'high-jump-kick']);        
             break;
           case 'strong-jaw':
             // Check for bite moves.
@@ -724,6 +727,7 @@ export default function App() {
             usable = getMovesetTypeUsability(['fairy']);
             break;
           case 'steelworker':
+          case 'steely-spirit':
             // Check for steel moves.
             usable = getMovesetTypeUsability(['steel']);
             break;
