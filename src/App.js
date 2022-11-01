@@ -661,7 +661,8 @@ export default function App() {
             break;
           case 'reckless':
             // Check for recoil/crash moves.
-            usable = getMoveMechanicUsability('recoil');    
+            usable = getMoveMechanicUsability('recoil');  
+            break;  
           case 'rock-headed':
             // Check for recoil moves.
             usable = getMoveMechanicUsability('recoil', null, ['jump-kick', 'high-jump-kick']);        
