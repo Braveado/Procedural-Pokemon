@@ -2,6 +2,7 @@ import React from 'react'
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import SelectedPokemon from '../pokemon/SelectedPokemon';
 import {BiSearchAlt} from 'react-icons/bi';
+import {MdHideImage} from 'react-icons/md';
 import TooltipTags from '../TooltipTags';
 
 export default function Item({item, index}) {
@@ -104,7 +105,7 @@ export default function Item({item, index}) {
                 <div className={`flex flex-col gap-2 justify-start items-center bg-white rounded-md p-2 w-full h-auto border-2 border-gray-200 transition duration-150 ease-in-out 
                     ${selected ? 'bg-green-100 border-green-200 ring ring-green-100' : ''}`}>                    
                     <div className="flex justify-center items-center w-full gap-2">
-                        {item.sprites.default ? <img src={item.sprites.default} alt="" width="30px" height="30px"/> : null}
+                        {item.sprites.default ? <img src={item.sprites.default} alt="" width="30px" height="30px"/> : <MdHideImage />}
                         <p className="capitalize">{item.name.replace(/-/g, " ")}</p>                
                     </div>            
                     <div className="flex flex-col justify-start items-center text-sm w-full" data-tip={formattedEffect} data-for={'dynamic'}>

@@ -3,6 +3,7 @@ import React from 'react'
 import PokemonSprite from '../pokemon/PokemonSprite';
 import PokemonType from '../pokemon/PokemonType';
 import MoveCategory from '../moves/MoveCategory';
+import {MdHideImage} from 'react-icons/md';
 
 export default function PokemonPreview({preview}) {
     //const context = React.useContext(TeamBuilderContext);
@@ -25,7 +26,7 @@ export default function PokemonPreview({preview}) {
                             {preview.ability.name.replace(/-/g, " ")}
                         </div>    
                         <div className="bg-white rounded-md p-0 w-full h-8 border-2 border-gray-200 flex gap-1 px-1 items-center justify-center text-xs capitalize">
-                            {preview.item.sprites.default ? <img src={preview.item.sprites.default} alt="" width="30px" height="30px"/> : null}
+                            {preview.item.sprites.default ? <img src={preview.item.sprites.default} alt="" width="30px" height="30px"/> : <MdHideImage className="text-base" />}
                             <p className="capitalize">{preview.item.name.replace(/-/g, " ")}</p> 
                         </div>
                     </div>                        
