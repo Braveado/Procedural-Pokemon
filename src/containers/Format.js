@@ -36,7 +36,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Basics</p>
-                            <p className="text-base text-gray-400">General points about the format.</p>
+                            <p className="text-base text-gray-400">General points.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">                               
                             <ul className="space-y-2">                                                          
@@ -66,7 +66,7 @@ export default function Format() {
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Guide</p>
-                            <p className="text-base text-gray-400">Steps for creating, importing and playing with a team.</p>
+                            <p className="text-base text-gray-400">Create, import and play with a team.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">  
                             <div className="space-y-4">                          
@@ -217,7 +217,7 @@ export default function Format() {
                                     <button type="button" onClick={() => setShowPlay(!showPlay)}
                                         className={`text-center p-2 rounded-md hover:bg-gray-200 border-2 w-96 transition duration-150 ease-in-out border-gray-200
                                         ${showPlay ? 'bg-gray-200' : 'bg-white'}`}>
-                                        Play game
+                                        Play match
                                     </button>
                                 </div>
                                 {showPlay ?
@@ -291,6 +291,40 @@ export default function Format() {
                             </div>                  
                         </div>                                                            
                     </div>
+                    <div className="flex flex-col w-full">
+                        <div className="flex justify-start items-center gap-4 text-center">                    
+                            <p className="text-lg">Organized Play</p>
+                            <p className="text-base text-gray-400">A few ways of playing.</p>
+                        </div>            
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
+                            <ul className="">
+                                <li>
+                                    Blind match.
+                                    <ul className="pl-4 text-gray-600 text-sm">                                                                
+                                        <li>2 players create their teams and start a match without knowledge of the opposing team.</li>
+                                        <li>Single matches provide a similar feel to trainer battles on a Randomlocke challenge.</li>
+                                        <li>Best of 3 provides a mix between a blind match and a preview match, as players improvise and adapt.</li>
+                                    </ul>
+                                </li>                        
+                                <li>
+                                    Preview match.
+                                    <ul className="pl-4 text-gray-600 text-sm">                                                                
+                                        <li>2 players create their teams and start a match with knowledge of the opposing team (uploading to PokePaste is recommended).</li>
+                                        <li>Single matches provide a way to plan a strategy ahead of time and then put it in practice.</li>
+                                        <li>Best of 3 provides the feeling of a classic tournament bracket.</li>
+                                    </ul>
+                                </li>                        
+                                <li>
+                                    Community tournament.
+                                    <ul className="pl-4 text-gray-600 text-sm">
+                                        <li>An amount of players create their teams, are organized in tournament brackets, and knowledge of all created teams is provided to every player.</li>
+                                        <li>Single match brackets provide a way to advance a tournament quickly.</li>
+                                        <li>Best of 3 brackets are the classic tournament bracket.</li>
+                                    </ul>
+                                </li>                        
+                            </ul>
+                        </div>                                                            
+                    </div>
                 </div>                                                            
             </div>
             <div id="generation" className="flex flex-col w-full">
@@ -299,6 +333,56 @@ export default function Format() {
                     <p className="text-base text-gray-400">How options are generated.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-2 border-gray-200 rounded-md">
+                    <div className="flex flex-col w-full">
+                        <div className="flex justify-start items-center gap-4 text-center">                    
+                            <p className="text-lg">Design Philosophy</p>
+                            <p className="text-base text-gray-400">Reasoning behind rules.</p>
+                        </div>            
+                        <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">   
+                            <p>
+                                The Pokémon battle system as a baseline offers a lot of options to play with, those can be easily multiplied by allowing unnatural combinations, but this creates a lot of unbalanced and unusable combinations as well.
+                                With the goal of maximizing options while maintaining a healthy balance, the generation process was made with the following design pillars in mind:
+                            </p>                                     
+                            <ul className="space-y-2">   
+                                <li>
+                                    Healthy normal distribution of pokémon.
+                                    <ul className="pl-4 text-gray-600 text-sm">
+                                        <li>Comparing possible pokémon on a normal distribution, extremes had to be trimmed to help the average team remain competitive.</li>
+                                        <li>A total base stats range of 360 to 720 makes it so that most fully evolved pokémon are taken into account and the high end remains populated mostly by iconic pokémon.</li>
+                                    </ul>
+                                </li>                     
+                                <li>
+                                    Maximize team choices.
+                                    <ul className="pl-4 text-gray-600 text-sm">
+                                        <li>Options that allow the use of powerful but restrictive combinations hurt the drafting process by forcing choices, filters had to be used to minimize this.</li>
+                                        <li>A "top" pokémon balance and "shiny bonus" of 1 per team each, helps the average team remain competitive while supporting the drafting process by being consistent.</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    Self team usability.
+                                    <ul className="pl-4 text-gray-600 text-sm">                                
+                                        <li>A team should be able to benefit from their own generated options regardless of any opposing team.</li>
+                                        <li>Prevent the generation of options unusable by themselves.</li>
+                                        <li>Allow options unusable by themselves to appear if they would count as usable in combination with a current option.</li>                                
+                                    </ul>
+                                </li>
+                                <li>
+                                    Imperfect teams.
+                                    <ul className="pl-4 text-gray-600 text-sm">
+                                        <li>Deterministic potential for individual pokémon options hurts the drafting process by limiting viable strategies.</li>
+                                        <li>Multiple layers of randomness helps the average team remain competitive while leaving enough space for high and low rolls to keep things intresting and exciting.</li>                                
+                                    </ul>
+                                </li>
+                                <li>
+                                    Limited draft.
+                                    <ul className="pl-4 text-gray-600 text-sm">                                
+                                        <li>Having a large amount of options hurts the drafting process by causing analysis paralysis to unfamiliar players and increases the chances of reliable combinations for experienced players.</li>
+                                        <li>A healthy amount of options is presented so that luck and knowledge both play a part in drafting good teams.</li>
+                                    </ul>
+                                </li>             
+                            </ul>
+                        </div>                                                            
+                    </div>
                     <div className="flex flex-col w-full">
                         <div className="flex justify-start items-center gap-4 text-center">                    
                             <p className="text-lg">Pokémon Options</p>
@@ -349,7 +433,7 @@ export default function Format() {
                                     </ul>
                                 </li>
                                 <li>
-                                    Check for "top pokémon" balance and reroll if needed.
+                                    Check for "top pokémon" balance and reroll if full.
                                     <ul className="pl-4 text-gray-600 text-sm">
                                         <li>Legendary, mythical and pokémon with at least 600 total stats.</li>
                                         <li>Exactly 1 included in options.</li>
@@ -428,13 +512,13 @@ export default function Format() {
                                     </ul>
                                 </li>
                                 <li>
-                                    Check for "status limit" and reroll if needed.
+                                    Check for "status limit" and reroll if full.
                                     <ul className="pl-4 text-gray-600 text-sm">                                
                                         <li>Maximum of 3 status moves included in options.</li>
                                     </ul>
                                 </li>
                                 <li>
-                                    Check for usability and reroll if needed.
+                                    Check for usability and reroll if unusable.
                                     <ul className="pl-4 text-gray-600 text-sm">                                
                                         <li>Space for "combo" moves.</li>
                                         <li>Moves only usable by specific pokémon.</li>
@@ -498,7 +582,7 @@ export default function Format() {
                                     </ul>
                                 </li>
                                 <li>
-                                    Check for usability and reroll if needed.
+                                    Check for usability and reroll if unusable.
                                     <ul className="pl-4 text-gray-600 text-sm">                                
                                         <li>Pokémon or pokémon form specific.</li>
                                         <li>Move mechanic or type specific.</li>
@@ -561,7 +645,7 @@ export default function Format() {
                                     </ul>
                                 </li>
                                 <li>
-                                    Check for usability and reroll if needed.
+                                    Check for usability and reroll if unusable.
                                     <ul className="pl-4 text-gray-600 text-sm">                                
                                         <li>Pokémon or pokémon form specific.</li>
                                         <li>Move mechanic or type specific.</li>

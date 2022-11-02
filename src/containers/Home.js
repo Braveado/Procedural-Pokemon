@@ -17,7 +17,7 @@ export default function Home() {
             </div>
             <div id="" className="flex flex-col w-full">                
                 <div className="flex justify-center items-center gap-4 text-center">                    
-                    <p className="text-xl">Procedurally generated pokémon teams to use in &nbsp;{showdown}.</p>                                        
+                    <p className="text-xl">Procedurally generated pokémon teams to use in {showdown}.</p>                                        
                 </div>            
                 <div className="flex flex-col justify-start items-center gap-4 p-4 w-full">
                     <div className="flex flex-wrap justify-center items-center gap-4">
@@ -34,7 +34,7 @@ export default function Home() {
                                 How does it works?
                             </Link>   
                             <p className="text-center">                                
-                                Check how the options are generated and the rules behind the format.
+                                Check how to use the format and the the rules behind the generation process.
                             </p>                          
                         </div>                                                                      
                     </div>                                                                       

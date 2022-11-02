@@ -6,9 +6,14 @@ export default function Tools() {
         document.title = 'About - Procedural Pokémon';
     }, []);
 
+    var showdown = <a href="https://pokemonshowdown.com/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">Pokémon Showdown</a>
+    var api = <a href="https://pokeapi.co/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">PokéAPI</a>
+    var repo = <a href="https://github.com/Braveado/React-Procedural-Pokemon" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">GitHub repository</a>
+    var issues = <a href="https://github.com/Braveado/React-Procedural-Pokemon/issues/new" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">file an issue</a>
+
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">              
-            <div id="sectionName" className="flex flex-col w-full">
+            <div className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
                     <p className="text-lg">About</p>
                     <p className="text-base text-gray-400">Where does this come from?</p>
@@ -21,100 +26,41 @@ export default function Tools() {
                         I watched people doing them first to see if I wanted to try something like that, but since the things I liked most was the team drafting and random battles, I decided to instead search for a way of doing just that.
                     </p>
                     <p>
-                        Enter Pokémon Showdown with their random battle formats.
+                        Enter {showdown} with their random battle formats.
                         I tried them out and at first it was a good fix for what I wanted, but the more games I played the more I started to see limitations in their random team generation that left me wanting more.
                         You also don't get to draft your team in those formats, so the other big thing I was looking for wasn't there.
                     </p>
                     <p>
-                        I kept looking and found PokéApi.
+                        I kept looking and found {api}.
                         I immediately began thinking about the possibilities and made a bare bones web app that only gave you 9 random pokémon upon loading...
                         Evidently, I kept going.
                     </p>                
                 </div>                                                            
-            </div>
-            <div id="sectionName" className="flex flex-col w-full">
+            </div> 
+            <div className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
-                    <p className="text-lg">Design Philosophy</p>
-                    <p className="text-base text-gray-400">Reasoning behind the format rules.</p>
-                </div>            
-                <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">   
-                    <p>
-                        The Pokémon battle system as a baseline offers a lot of options to play with, those can be easily multiplied by allowing unnatural combinations, but this creates a lot of unbalanced and unusable combinations as well. With the goal of maximizing options while maintaining balance, the generation process was made with the following design pillars in mind:
-                    </p>                                     
-                    <ul className="space-y-2 list-disc">   
-                        <li>
-                            Healthy normal distribution of pokémon.
-                            <ul className="pl-4 text-gray-600 text-sm">
-                                <li>Comparing possible pokémon on a normal distribution, extremes had to be trimmed to help the average team remain competitive.</li>
-                                <li>A total base stats range of 360 to 720 makes it so that most fully evolved pokémon are taken into account and the high end remains populated mostly by iconic pokémon.</li>
-                            </ul>
-                        </li>                     
-                        <li>
-                            Maximize team choices.
-                            <ul className="pl-4 text-gray-600 text-sm">
-                                <li>Options that allow the use of powerful but restrictive combinations hurt the drafting process by forcing choices, filters had to be used to minimize this.</li>
-                                <li>A "top" pokémon balance and "shiny bonus" of 1 per team each, helps the average team remain competitive while supporting the drafting process by being consistent.</li>
-                            </ul>
-                        </li>
-                        <li>
-                            Self team usability.
-                            <ul className="pl-4 text-gray-600 text-sm">                                
-                                <li>A team should be able to benefit from their own generated options regardless of any opposing team.</li>
-                                <li>Prevent the generation of options unusable by themselves.</li>
-                                <li>Allow options unusable by themselves to appear if they would count as usable in combination with a current option.</li>                                
-                            </ul>
-                        </li>
-                        <li>
-                            Imperfect teams.
-                            <ul className="pl-4 text-gray-600 text-sm">
-                                <li>Multiple layers of randomness helps the average team remain competitive.</li>
-                                <li>Enough space is left for high and low rolls to keep things intresting and exciting without breaking team balance.</li>                                
-                            </ul>
-                        </li>
-                        <li>
-                            Limited draft.
-                            <ul className="pl-4 text-gray-600 text-sm">                                
-                                <li>Having a large amount of options hurts the drafting process by causing analysis paralysis to unfamiliar players and increases the chances of reliable combinations for experienced players.</li>
-                                <li>A healthy amount of options is presented so that luck and knowledge both play a part in drafting good teams.</li>
-                            </ul>
-                        </li>             
-                    </ul>
-                </div>                                                            
-            </div>
-            <div id="sectionName" className="flex flex-col w-full">
-                <div className="flex justify-start items-center gap-4 text-center">                    
-                    <p className="text-lg">Organized Play</p>
-                    <p className="text-base text-gray-400">A few ways of playing.</p>
+                    <p className="text-lg">Maintenance</p>
+                    <p className="text-base text-gray-400">Further development.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                    <ul className="">
+                    <ul className="">                        
                         <li>
-                            Blind match.
+                            Having problems?
                             <ul className="pl-4 text-gray-600 text-sm">                                                                
-                                <li>2 players create their teams and start a match without knowledge of the opposing team.</li>
-                                <li>Single matches provide a similar feel to trainer battles on a Randomlocke challenge.</li>
-                                <li>Best of 3 provides a mix between a blind match and a preview match, as players improvise and adapt.</li>
+                                <li>Feel free to {issues} if you find a bug.</li>                                
+                                <li>Also works for questions, recomendations, etc.</li>
                             </ul>
-                        </li>                        
+                        </li>
                         <li>
-                            Preview match.
+                            Open source.
                             <ul className="pl-4 text-gray-600 text-sm">                                                                
-                                <li>2 players create their teams and start a match with knowledge of the opposing team (pokepaste is recommended).</li>
-                                <li>Single matches provide a way to plan a strategy ahead of time and then put it in practice.</li>
-                                <li>Best of 3 provides the feeling of a classic tournament bracket.</li>
+                                <li>All contributions to the {repo} are welcomed.</li>
+                                <li>Check open issues for a place to start.</li>
                             </ul>
-                        </li>                        
-                        <li>
-                            Community tournament.
-                            <ul className="pl-4 text-gray-600 text-sm">
-                                <li>An amount of players create their teams, are organized in tournament brackets, and knowledge of all created teams is provided to every player.</li>
-                                <li>Single match brackets provide a way to advance a tournament quickly.</li>
-                                <li>Best of 3 brackets are the classic tournament bracket.</li>
-                            </ul>
-                        </li>                        
+                        </li>                                                                                                             
                     </ul>
                 </div>                                                            
-            </div>
+            </div>                       
         </div>
     )
 }
