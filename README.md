@@ -2,6 +2,8 @@
 
 Procedurally generated pokémon teams for custom battles.
 
+https://proceduralpokemon.com
+
 ## Development
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
