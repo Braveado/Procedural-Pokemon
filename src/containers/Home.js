@@ -54,7 +54,10 @@ export default function Home() {
                             </a>
                             <a href="https://www.pkmn.help/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
                                 Pokémon Type Calculator
-                            </a>                   
+                            </a> 
+                            <a href="https://pokepast.es/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">
+                                PokePaste
+                            </a>                  
                         </div>                                                            
                     </div>                    
                 </div>                                                            
