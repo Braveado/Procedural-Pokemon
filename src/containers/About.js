@@ -9,7 +9,8 @@ export default function Tools() {
     var showdown = <a href="https://pokemonshowdown.com/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">Pokémon Showdown</a>
     var api = <a href="https://pokeapi.co/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">PokéAPI</a>
     var repo = <a href="https://github.com/Braveado/React-Procedural-Pokemon" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">GitHub repository</a>
-    var issues = <a href="https://github.com/Braveado/React-Procedural-Pokemon/issues/new" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">file an issue</a>
+    var issues = <a href="https://github.com/Braveado/React-Procedural-Pokemon/issues/new" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">create an issue</a>
+    var discussions = <a href="https://github.com/Braveado/Procedural-Pokemon/discussions/new" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">open a discussion</a>
 
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">              
@@ -39,20 +40,25 @@ export default function Tools() {
             </div> 
             <div className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
-                    <p className="text-lg">Maintenance</p>
-                    <p className="text-base text-gray-400">Further development.</p>
+                    <p className="text-lg">Development</p>
+                    <p className="text-base text-gray-400">Maintenance and improvements.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                     <ul className="">                        
                         <li>
-                            Having problems?
+                            Reach out.
                             <ul className="pl-4 text-gray-600 text-sm">                                                                
-                                <li>Feel free to {issues} if you find a bug.</li>                                
-                                <li>Also works for questions, recomendations, etc.</li>
+                                <li>You can {discussions} for questions, ideas, recommendations, etc.</li>                                
                             </ul>
                         </li>
                         <li>
-                            Open source.
+                            Having problems?
+                            <ul className="pl-4 text-gray-600 text-sm">                                                                
+                                <li>Feel free to {issues} if you find a bug.</li>                                
+                            </ul>
+                        </li>                        
+                        <li>
+                            Want to help?
                             <ul className="pl-4 text-gray-600 text-sm">                                                                
                                 <li>All contributions to the {repo} are welcomed.</li>
                                 <li>Check open issues for a place to start.</li>
