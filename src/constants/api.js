@@ -1,4 +1,7 @@
 const url = 'https://pokeapi.co/api/v2/';
+const storageData = {
+    version: 1.0
+};
 const pokemonCount = 898;
 const topPokemonCountOffset = [
     [8, 143], [9, 242], [3, 286], [16, 370], [3, 442], 
@@ -19,6 +22,7 @@ const natureCount = 25;
 
 export {
     url, 
+    storageData,
     pokemonCount, topPokemonCountOffset,
     moveCount, 
     abilityCount, 

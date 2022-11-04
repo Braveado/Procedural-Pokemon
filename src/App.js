@@ -19,7 +19,7 @@ import {getStatPercentage} from './components/pokemon/PokemonStats';
 export default function App() {
   // ----- STATE -----
   // API
-  const [loading, setLoading] = useState(true);  
+  const [loading, setLoading] = useState(false);  
   const [pokemonList, setPokemonList] = useState([]);
   const [topPokemonList, setTopPokemonList] = useState([]);
   const [moveList, setMoveList] = useState([]);
@@ -64,8 +64,8 @@ export default function App() {
   // ----- GENERATION -----
   // Fetch lists from api on mount.
   useEffect (() => {
-    let cancel = false;
-    setLoading(true);  
+    let cancel = false;  
+    setLoading(true);    
 
     async function fetchData() {      
       const pokemonResults = await axios.get(`${api.url}pokemon?limit=${api.pokemonCount}`);
@@ -89,16 +89,37 @@ export default function App() {
       const natureResults = await axios.get(`${api.url}nature?nature=${api.natureCount}`);
       if(!cancel) {
         setPokemonList(pokemonResults.data.results);
+        localStorage.setItem("pokemonList", JSON.stringify(pokemonResults.data.results));
         setTopPokemonList(topPokemonResults);
+        localStorage.setItem("topPokemonList", JSON.stringify(topPokemonResults))
         setMoveList(moveResults.data.results);
+        localStorage.setItem("moveList", JSON.stringify(moveResults.data.results))
         setAbilityList(abilityResults.data.results);
+        localStorage.setItem("abilityList", JSON.stringify(abilityResults.data.results));
         setItemList(itemResults);
+        localStorage.setItem("itemList", JSON.stringify(itemResults));
         setTypeList(typeResults.data.results);
+        localStorage.setItem("typeList", JSON.stringify(typeResults.data.results));
         setNatureList(natureResults.data.results);
+        localStorage.setItem("natureList", JSON.stringify(natureResults.data.results));
         setLoading(false);              
+        localStorage.setItem("storageData", JSON.stringify(api.storageData));
       }
-    };
-    fetchData();
+    };    
+    const storageData = JSON.parse(localStorage.getItem("storageData"));
+    if(!storageData || storageData.version !== api.storageData.version){      
+      fetchData();
+    }
+    else{
+      setPokemonList(JSON.parse(localStorage.getItem("pokemonList")));
+      setTopPokemonList(JSON.parse(localStorage.getItem("topPokemonList")));
+      setMoveList(JSON.parse(localStorage.getItem("moveList")));
+      setAbilityList(JSON.parse(localStorage.getItem("abilityList")));
+      setItemList(JSON.parse(localStorage.getItem("itemList")));
+      setTypeList(JSON.parse(localStorage.getItem("typeList")));
+      setNatureList(JSON.parse(localStorage.getItem("natureList")));
+      setLoading(false);    
+    }
     
     return () => cancel = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps    

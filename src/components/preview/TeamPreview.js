@@ -1,6 +1,7 @@
 import React from 'react';
 import { TeamBuilderContext } from '../../context/TeamBuilderContext';
 import PokemonPreview from './PokemonPreview';
+import invalid from '../../assets/unown-question.png';
 
 export default function TeamPreview({ previews }) {
     const context = React.useContext(TeamBuilderContext);
@@ -24,7 +25,7 @@ export default function TeamPreview({ previews }) {
                     return (
                         <div key={i} className="relative w-24 h-24 animate-enter" >
                             <div className="absolute w-24 h-24 rounded-full bg-gray-100 border-2 border-gray-200 ring ring-gray-100 animate-pulse" />
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201-question.png"
+                            <img src={invalid}
                                 alt="" width="96px" height="96px"
                                 className="absolute w-24 h-24 animate-wiggle"
                             />
