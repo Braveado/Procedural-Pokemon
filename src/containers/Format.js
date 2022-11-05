@@ -297,7 +297,7 @@ export default function Format() {
                             <p className="text-base text-gray-400">A few ways of playing.</p>
                         </div>            
                         <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                            <ul className="">
+                            <ul className="space-y-2">
                                 <li>
                                     Blind match.
                                     <ul className="pl-4 text-gray-600 text-sm">                                                                

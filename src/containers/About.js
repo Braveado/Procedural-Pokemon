@@ -19,7 +19,7 @@ export default function Tools() {
                     <p className="text-lg">About</p>
                     <p className="text-base text-gray-400">Where does this come from?</p>
                 </div>            
-                    <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
+                <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
                     <p>
                         So... I like games about decisions, opportunity cost, and variables.
                         Pokémon should be a natural fit, but I find the mainline games too easy to keep me engaged.
@@ -44,7 +44,7 @@ export default function Tools() {
                     <p className="text-base text-gray-400">Maintenance and improvements.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                    <ul className="">                        
+                    <ul className="space-y-2">                        
                         <li>
                             Reach out.
                             <ul className="pl-4 text-gray-600 text-sm">                                                                
