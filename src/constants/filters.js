@@ -6,19 +6,20 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 'mega', 'gmax', 'eternal', 'ash',
 // Pokemon form changes
 'sunny', 'rainy', 'snowy', 'origin', 'zen', 'pirouette', 'blade', 'crowned', 'gulping', 'gorging', 
-'noice', 'hangry', 'minior', 'zygarde',
+'noice', 'hangry', 'minior', 'complete', 'construct', 'busted',
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'phione', 'meltan', 'calyrex', 'hisui'
+'totem', 'bond', 'phione', 'meltan', '10', 'calyrex', 'hisui', 'dada'
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
 // Calyrex forms
 'ice', 'shadow',
 // Minior forms
-'meteor',
-// Zygarde forms
-'50'
+'meteor'
+];
+const pokemonFilterSpecific = [ // Filter pokemons whith this specific name even if allowed after keyword filter
+'basculin-white-striped'
 ];
 
 // Moves
@@ -109,7 +110,7 @@ const itemAllow = [ // Include items with this keywords even when excluded by fi
 ];
 
 export {
-    pokemonFilter, pokemonAllow, 
+    pokemonFilter, pokemonAllow, pokemonFilterSpecific,
     moveFilter, moveAllow, 
     abilityFilter, abilityAllow,
     itemFilter, itemAllow

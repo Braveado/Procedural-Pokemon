@@ -106,6 +106,7 @@ export default function App() {
         localStorage.setItem("storageData", JSON.stringify(api.storageData));
       }
     };    
+    //fetchData();
     const storageData = JSON.parse(localStorage.getItem("storageData"));
     if(!storageData || storageData.version !== api.storageData.version){      
       fetchData();
@@ -154,6 +155,11 @@ export default function App() {
       for (let index = 0; index < team.randomOptions.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons, topPokemon);
         const species = await axios.get(pokemon.species.url);
+        // name
+        let tempName = pokemon.name.split('-');
+        if(tempName.includes('minior')){
+          pokemon.name = tempName.filter(key => {return key === 'minior' || key === 'meteor'}).join("-");
+        }
         // gender
         pokemon.gender_rate = species.data.gender_rate;
         if(pokemon.gender_rate < 0)
@@ -314,7 +320,7 @@ export default function App() {
   
           // Filter varieties for more balance.
           varieties = varieties.filter(v => {          
-            return !FindKeywords(v, '-', filters.pokemonFilter, filters.pokemonAllow);            
+            return !FindKeywords(v, '-', filters.pokemonFilter, filters.pokemonAllow, filters.pokemonFilterSpecific);          
           });       
   
           // Get the final pokemon from the varieties.
@@ -1542,11 +1548,13 @@ export default function App() {
   }
 
   // Filter by keywords.
-  const FindKeywords = (string, separator, filter, allow) => {
+  const FindKeywords = (string, separator, filter, allow, filterSpecific) => {
     let found = false;
-    found = string.split(separator).some(keyword => filter.includes(keyword))
+    found = string.split(separator).some(keyword => filter.includes(keyword));
     if(found && allow)
-      found = !string.split(separator).some(keyword => allow.includes(keyword))
+      found = !string.split(separator).some(keyword => allow.includes(keyword));
+    if(!found && filterSpecific)
+      found = filterSpecific.some(fs => fs === string);    
     return found;
   }
 
@@ -1600,12 +1608,24 @@ export default function App() {
       pokemonOptions.forEach(p => {
         if(p.selected){
 
-          let ability = capitalizeWords(abilityOptions[p.ability].name, "-");
-          if(abilityOptions[p.ability].name.includes("as-one")){
-            let abilityKeywords = ability.split(" ");
-            abilityKeywords[abilityKeywords.length - 1] = "(" + abilityKeywords[abilityKeywords.length - 1] + ")";
-            ability = abilityKeywords.join(" ");
-          };
+          // Format pass.
+          let pokemonName = p.name.split('-');
+          if(pokemonName.includes('morpeko')){
+            pokemonName = pokemonName.filter(key => {return key === 'morpeko'});
+          }
+          else if(pokemonName.includes('eiscue')){
+            pokemonName = pokemonName.filter(key => {return key === 'eiscue'});
+          }
+          else if(pokemonName.includes('darmanitan')){
+            pokemonName = pokemonName.filter(key => {return key !== 'standard'});
+          }
+          else if(pokemonName.includes('male')){
+            pokemonName = pokemonName.filter(key => {return key !== 'male'});
+          }
+          else if(pokemonName.includes('female')){
+            pokemonName = pokemonName.map(key => {return key === 'female' ? 'f' : key});
+          }
+          pokemonName = pokemonName.join("-");
 
           let moveset = movesetOptions[p.moveset].filter(m => m.selected).map(m => {
             if(m.name === "hidden-power"){
@@ -1614,7 +1634,15 @@ export default function App() {
             else return m.name;
           });
 
-          exportText += capitalizeWords(p.name, "-");
+          let ability = capitalizeWords(abilityOptions[p.ability].name, "-");
+          if(abilityOptions[p.ability].name.includes("as-one")){
+            let abilityKeywords = ability.split(" ");
+            abilityKeywords[abilityKeywords.length - 1] = "(" + abilityKeywords[abilityKeywords.length - 1] + ")";
+            ability = abilityKeywords.join(" ");
+          };          
+
+          // Prepare export.
+          exportText += capitalizeWords(pokemonName, "-");
           if(p.gender !== "genderless"){
             exportText += " (" + (p.gender === "male" ? "M" : "F") + ")";
           }
