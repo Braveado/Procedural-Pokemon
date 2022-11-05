@@ -32,7 +32,8 @@ const moveFilter = [ // Exclude moves with this keywords.
 // Friendship.
 'happy', 'return', 'frustration', 'veevee', 'papow',
 // Doubles
-'helping', 'aromatic', 'hands', 'coaching', 'gear', 'magnetic', 'spotlight', 'quash', 'decorate',
+'helping', 'aromatic', 'hands', 'coaching', 'gear', 'magnetic', 'spotlight', 'quash', 'decorate', 'follow', 'ally',
+'heal', 'after', 
 // No effect.
 'struggle', 'splash', 'celebrate',
 // BRANCH LOGIC. All accounted for.
@@ -49,7 +50,7 @@ const moveFilter = [ // Exclude moves with this keywords.
 //'recycle',  
 ];
 const moveAllow = [ // Include moves with this keywords even when excluded by filter.
-'bug', 'grind', 'shift', 'splishy'
+'bug', 'grind', 'shift', 'splishy', 'order', 'block', 'bell'
 ];
 
 // Abilities
