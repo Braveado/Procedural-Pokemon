@@ -35,6 +35,10 @@ const multistrikeMoves = [ // Skill link.
 'arm-thrust', 'barrage', 'bone-rush', 'bullet-seed', 'comet-punch', 'double-slap', 'fury-attack', 'fury-swipes', 'icicle-spear',
 'pin-missile', 'rock-blast', 'scale-shot', 'spike-cannon', 'tail-slap', 'triple-axel', 'triple-kick', 'water-shuriken'
 ];
+const fixedMultistrikeMoves = [ // Tooltips.
+'bonemerang', 'double-hit', 'double-iron-bash', 'double-kick', 'dragon-darts', 'dual-chop', 'dual-wingbeat', 'gear-grind',
+'surging-strikes', 'twineedle'
+];
 const recoilMoves = [ // Reckless.
 'brave-bird', 'double-edge', 'flare-blitz', 'head-charge', 'head-smash', 'high-jump-kick', 'jump-kick', 'submission', 'take-down',
 'wild-charge', 'light-of-ruin', 'volt-tackle', 'wood-hammer'
@@ -139,8 +143,8 @@ const berryItems = [ // Berry items. Reverse branch logic.
 
 export {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves, trapMoves,
-    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves,
+    barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves, trapMoves, 
+    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves, fixedMultistrikeMoves,
     weatherAbilities, terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
     plateItems, memoryItems, consumableItems, berryItems
 }

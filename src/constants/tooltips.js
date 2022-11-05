@@ -1,6 +1,6 @@
 import {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves
+    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves
 } from '../constants/usability';
 
 const pokemon = [ // Content
@@ -132,12 +132,13 @@ const mechanics = [ // Keys, content
     [punchMoves, "Punch|"+
         "*Moves based on punching."],
     [soundMoves, "Sound|"+
-        "*Moves that use sound."],
+        "*Moves that use sound."+
+        "*Can hit Pokémon behind a substitute."],
     [chargeMoves, "Charge|"+
         "*Moves that take two turns to complete."],    
     [contactMoves, "Contact|"+
         "*Moves that physically touches the target in battle."],
-    [multistrikeMoves, "Multi-strike|"+
+    [multistrikeMoves.concat(fixedMultistrikeMoves), "Multi-strike|"+
         "*Moves that strike an opponent more than one time in the same turn."],
     [barrierMoves, "Barrier|"+
         "*Moves that create the effects of Reflect, Light Screen, and Aurora Veil."],
