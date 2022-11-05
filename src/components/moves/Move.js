@@ -41,7 +41,7 @@ export default function Move({move, moveset}) {
                 formattedEffect = "Removes the targets' held items for the rest of the battle.";
                 break;
             case 'scale-shot':
-                formattedEffect = "Hits 2-5 times in one turn. Raises the user's Speed by one stage and lowers its Defense by one stage.";
+                formattedEffect = "Hits 2-5 times in one turn. Raises the user's Speed and lowers its Defense by one stage.";
                 break;
             case 'triple-axel':
                 formattedEffect = "Hits three times, increasing power by 100% with each successful hit.";
@@ -55,30 +55,72 @@ export default function Move({move, moveset}) {
             case 'glitzy-glow':
                 formattedEffect = "Sets the effects of Light Screen on the user's side of the field.";
                 break;
-            case 'buzzy-buzz':
-                formattedEffect = "Paralyzes the target.";
-                break;
-            case 'sizzly-slide':
-                formattedEffect = "Burns the target.";
+            case 'sappy-seed':
+                formattedEffect = "Sets the effects of Leech Seed on its target.";
                 break;
             case 'bouncy-bubble':
                 formattedEffect = "Drains half the damage inflicted to heal the user.";
                 break;
             case 'floaty-fall':
                 formattedEffect = "Has a $effect_chance% chance to make the target flinch.";
-                break;
+                break; 
             case 'splishy-splash':
                 formattedEffect = "Has a $effect_chance% chance to paralyze the target.";
                 break;
-            case 'freezy-frost':
-                formattedEffect = "Resets all Pokémon's stats stages.";
+            case 'buzzy-buzz':
+                formattedEffect = "Paralyzes the target.";
                 break;
-            case 'sappy-seed':
-                formattedEffect = "Sets the effects of Leech Seed on its target.";
-                break;
+            case 'sizzly-slide':
+                formattedEffect = "Burns the target.";
+                break;                                                    
             case 'sparkly-swirl':
                 formattedEffect = "Cures the entire party of major status effects.";
                 break;
+            case 'freezy-frost':
+                formattedEffect = "Resets all Pokémon's stats stages.";
+                break; 
+            case 'razor-wind':
+                formattedEffect = formattedEffect + " Has an increased chance for a critical hit.";
+                break;   
+            case 'weather-ball':
+                formattedEffect = formattedEffect.replace('there be weather', 'there is an active weather effect');
+                break;    
+            case 'double-iron-bash':
+                formattedEffect = formattedEffect + " Has a $effect_chance% chance to make the target flinch.";
+                break;
+            case 'pluck':
+            case 'bug-bite':
+                formattedEffect = formattedEffect.replace('inflicts double damage and uses the berry.', 'the user eats it and gains its effect.');
+                break;    
+            case 'curse':
+                formattedEffect = formattedEffect.replace('every turn.', 'every turn by 1/4 max HP.');
+                formattedEffect = formattedEffect.replace('Defense.', 'Defense by one stage.');
+                break;  
+            case 'lunar-dance':
+                formattedEffect = "User faints. Its replacement's HP and PP are fully restored, and any major status effect is removed.";
+                break;
+            case 'sheer-cold':
+                formattedEffect = formattedEffect.replace('KO.', 'KO to non-Ice targets. Base accuracy is 20 for non-Ice users.');
+                break;  
+            case 'plasma-fists':
+                formattedEffect = "Normal moves become Electric type this turn.";
+                break; 
+            case 'photon-geyser':
+                formattedEffect = "Cannot be disrupted by abilities.";
+                break; 
+            case 'psychic-terrain':
+                formattedEffect = formattedEffect.replace('50%', '30%');
+                break;
+            case 'grassy-terrain':
+            case 'electric-terrain':
+                formattedEffect = formattedEffect.replace('1.5x', '1.3x');
+                break;
+            case 'rapid-spin':
+                formattedEffect = formattedEffect + " Raises the user's Speed by one stage.";
+                break;
+            case 'teleport':
+                formattedEffect = "Switches the user out. Priority -6";
+                break; 
             default:
                 break;
         }           
