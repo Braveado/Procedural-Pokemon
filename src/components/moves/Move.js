@@ -28,14 +28,6 @@ export default function Move({move, moveset}) {
             case 'uproar':
                 formattedEffect = formattedEffect.replace('several', '3');
                 break;
-            case 'sand-tomb':
-            case 'magma-storm':
-                formattedEffect = formattedEffect.replace('Prevents the target from fleeing', 'Traps the target');
-                break;
-            case 'thousand-waves':
-            case 'mean-look':
-                formattedEffect = "Traps the target.";
-                break;
             case 'aurora-veil':
                 formattedEffect = formattedEffect.replace('damage', 'damage received for');
                 break;    
@@ -43,10 +35,49 @@ export default function Move({move, moveset}) {
                 formattedEffect = "Infatuates target if it has the opposite gender.";
                 break;  
             case 'dynamax-cannon':
-                formattedEffect = "Inflicts regular damage with no additional effect.";
+                formattedEffect = "If the target is Dynamaxed or Gigantamaxed, its damage is doubled.";
                 break;
             case 'corrosive-gas':
                 formattedEffect = "Removes the targets' held items for the rest of the battle.";
+                break;
+            case 'scale-shot':
+                formattedEffect = "Hits 2-5 times in one turn. Raises the user's Speed by one stage and lowers its Defense by one stage.";
+                break;
+            case 'triple-axel':
+                formattedEffect = "Hits three times, increasing power by 100% with each successful hit.";
+                break;
+            case 'zippy-zap':
+                formattedEffect = "Always scores a critical hit. Priority 2";
+                break;
+            case 'baddy-bad':
+                formattedEffect = "Sets the effects of Reflect on the user's side of the field.";
+                break;
+            case 'glitzy-glow':
+                formattedEffect = "Sets the effects of Light Screen on the user's side of the field.";
+                break;
+            case 'buzzy-buzz':
+                formattedEffect = "Paralyzes the target.";
+                break;
+            case 'sizzly-slide':
+                formattedEffect = "Burns the target.";
+                break;
+            case 'bouncy-bubble':
+                formattedEffect = "Drains half the damage inflicted to heal the user.";
+                break;
+            case 'floaty-fall':
+                formattedEffect = "Has a $effect_chance% chance to make the target flinch.";
+                break;
+            case 'splishy-splash':
+                formattedEffect = "Has a $effect_chance% chance to paralyze the target.";
+                break;
+            case 'freezy-frost':
+                formattedEffect = "Resets all Pokémon's stats stages.";
+                break;
+            case 'sappy-seed':
+                formattedEffect = "Sets the effects of Leech Seed on its target.";
+                break;
+            case 'sparkly-swirl':
+                formattedEffect = "Cures the entire party of major status effects.";
                 break;
             default:
                 break;
