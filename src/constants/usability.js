@@ -100,6 +100,9 @@ const badAbilityMoves = [ // Bad abilities.
 const berryMoves = [ // Berries.
 'natural-gift', 'stuff-cheeks', 'teatime', 'belch'
 ];
+const ohkoMoves = [ // Tooltips.
+'fissure', 'guillotine', 'horn-drill', 'sheer-cold'
+];
 
 // Abilities.
 const weatherAbilities = [ // Weather moves and abilities.
@@ -142,9 +145,9 @@ const berryItems = [ // Berry items. Reverse branch logic.
 ];
 
 export {
-    bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
+    bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, ohkoMoves,
     barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves, trapMoves, 
-    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves, fixedMultistrikeMoves,
+    orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves, multistrikeMoves, fixedMultistrikeMoves,
     weatherAbilities, terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,
     plateItems, memoryItems, consumableItems, berryItems
 }

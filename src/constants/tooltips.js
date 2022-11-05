@@ -1,6 +1,6 @@
 import {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves
+    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves, ohkoMoves
 } from '../constants/usability';
 
 const pokemon = [ // Content
@@ -81,7 +81,7 @@ const effects = [ // Keys, content
         "*Halves the damage taken by pokémon on the ground from Dragon-type moves."+
         "*Prevents pokémon on the ground from being afflicted with non-volatile status conditions and confusion."],
     [['psychic terrain'], "Psychic Terrain|"+
-        "*Boosts the power of Psychic-type moves used by pokémon on the ground."+
+        "*Boosts the power of Psychic-type moves used by pokémon on the ground by 30%."+
         "*Prevents pokémon on the ground from being hit by moves with increased priority."],
     [['terrain'], "Terrain|All the field-type effects that affect pokémon on the ground (Electric, Grassy, Misty and Psychic)."],
     [['sunlight', 'sunny'], "Harsh Sunlight|"+
@@ -150,6 +150,10 @@ const mechanics = [ // Keys, content
         "*Moves that deal damage to the user."],
     [trapMoves, "Trap|"+
         "*Moves that prevent an affected Pokémon from switching out."],
+    [ohkoMoves, "One-Hit Knockout|"+
+        "*Moves that cause the target to instantly faint when they hit."+
+        "*Automatically fails if the target has a higher level than the user."+
+        "*Accuracy increases by 1% for each level the user is above the target."],
 ]
 
 export {
