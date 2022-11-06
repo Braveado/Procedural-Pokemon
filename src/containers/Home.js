@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 import { Link } from "react-router-dom";
 import logo from '../assets/logo.png';
+import updates from '../constants/updates';
+import Update from '../components/Update';
 
 export default function Home() {
     // Change title.
@@ -9,8 +11,7 @@ export default function Home() {
     }, []);
   
     var showdown = <a href="https://pokemonshowdown.com/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">Pokémon Showdown</a>
-    var smogon = <a href="https://www.smogon.com/forums/threads/procedural-pok%C3%A9mon.3710227/" target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-500">Smogon</a>
-    
+       
     return (
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
             <div className="flex flex-col items-center">
@@ -76,13 +77,14 @@ export default function Home() {
                         <p className="text-base text-gray-400">History of changes.</p>
                     </div>            
                     <div className="flex flex-col justify-start items-start gap-4 p-4 w-full border-t-2 border-gray-200">
-                        <ul className="space-y-2">
-                            <li>
-                                1.0
-                                <ul className="pl-4 text-gray-600 text-sm">
-                                    <li>Initial release on {smogon}.</li>
-                                </ul>
-                            </li>
+                        <ul className="space-y-2">                            
+                            {updates.map((u, i) => {
+                                return (
+                                    <li key={i}>
+                                        <Update update={u} showDefault={i === 0 ? true : false} />
+                                    </li>
+                                )
+                            })}
                         </ul>                
                     </div>                                                            
                 </div>                  
