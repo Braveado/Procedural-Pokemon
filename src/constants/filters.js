@@ -10,16 +10,17 @@ const pokemonFilter = [ // Exclude pokemons with this keywords.
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'phione', 'meltan', '10', 'calyrex', 'hisui', 'dada'
+'totem', 'bond', 'meltan', 'hisui', 'dada'
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
-// Calyrex forms
-'ice', 'shadow',
 // Minior forms
 'meteor'
 ];
 const pokemonFilterSpecific = [ // Filter pokemons whith this specific name even if allowed after keyword filter
 'basculin-white-striped'
+];
+const pokemonPreventEvolution = [ // Prevent pokemons with this specific name from evolving.
+'phione'
 ];
 
 // Moves
@@ -111,7 +112,7 @@ const itemAllow = [ // Include items with this keywords even when excluded by fi
 ];
 
 export {
-    pokemonFilter, pokemonAllow, pokemonFilterSpecific,
+    pokemonFilter, pokemonAllow, pokemonFilterSpecific, pokemonPreventEvolution,
     moveFilter, moveAllow, 
     abilityFilter, abilityAllow,
     itemFilter, itemAllow

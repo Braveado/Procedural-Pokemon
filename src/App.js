@@ -67,7 +67,7 @@ export default function App() {
     let cancel = false;  
     setLoading(true);    
 
-    async function fetchData() {      
+    async function fetchData() {
       const pokemonResults = await axios.get(`${api.url}pokemon?limit=${api.pokemonCount}`);
       let topPokemonResults = [];
       for(let i = 0; i < api.topPokemonCountOffset.length; i++){
@@ -150,12 +150,11 @@ export default function App() {
       let pokemons = [];
       let shinyIndex = Math.floor(Math.random()*team.randomOptions.pokemons);  
       let topPokemon = 0;
-      let checkTopPokemon = true;
 
       for (let index = 0; index < team.randomOptions.pokemons; index++) {
         const pokemon = await getNewPokemon(pokemons, topPokemon);
         const species = await axios.get(pokemon.species.url);
-        // name
+        // name        
         let tempName = pokemon.name.split('-');
         if(tempName.includes('minior')){
           pokemon.name = tempName.filter(key => {return key === 'minior' || key === 'meteor'}).join("-");
@@ -175,15 +174,9 @@ export default function App() {
         else {
           pokemon.gender = (Math.random()*101) <= (pokemon.gender_rate * 12.5) ? "female" : "male";
         }        
-        // balance
-        if(topPokemon < team.topPokemonBalance)
-          checkTopPokemon = true;                
+        // balance             
         pokemon.is_mythical = species.data.is_mythical;
-        pokemon.is_legendary = species.data.is_legendary;  
-        if(checkTopPokemon && (pokemon.is_mythical || pokemon.is_legendary)){
-          topPokemon += 1;      
-          checkTopPokemon = false;
-        }          
+        pokemon.is_legendary = species.data.is_legendary;                   
         pokemon.shiny = (index === shinyIndex);
         pokemon.level = pokemon.shiny ? 60 : 50;
         pokemon.nickname = '';
@@ -236,10 +229,13 @@ export default function App() {
         pokemon.highestStats.sort(function(a, b){return b.percentage-a.percentage});
         pokemon.highestStats = pokemon.highestStats.filter(s => s.percentage >= 50);
         pokemon.stats.push({name: 'total', base_stat: getTotalStats(pokemon.stats)});
-        if(checkTopPokemon && (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold)){
-          topPokemon += 1;      
-          checkTopPokemon = false;
-        }   
+        // Check for top pokemon balance
+        if(topPokemon < team.topPokemonBalance && (
+          (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold) ||
+          ((pokemon.is_mythical || pokemon.is_legendary) && pokemon.stats[6].base_stat >= team.normalPokemonTotalStatsThreshold)
+        )){
+          topPokemon += 1;
+        }
         // selections
         pokemon.selected = false;
         pokemon.moveset = null;
@@ -258,7 +254,9 @@ export default function App() {
     async function getNewPokemon(currentPokemons, topPokemon) {    
       let newPokemon = '';
       let finalPokemon = '';
+      let keepEvolving = true;
       let isTopPokemon = false;
+      let pokemonTotalBaseStats = 0;
 
       do {          
           let pokemon = null;
@@ -266,44 +264,49 @@ export default function App() {
             pokemon = topPokemonList[Math.floor(Math.random()*topPokemonList.length)];
           else
             pokemon = pokemonList[Math.floor(Math.random()*pokemonList.length)];
-
           const initialPokemon = await axios.get(`${api.url}pokemon/${pokemon.name}`);
           const species = await axios.get(initialPokemon.data.species.url);
           const evolutions = await axios.get(species.data.evolution_chain.url);
+
+          keepEvolving = !filters.pokemonPreventEvolution.includes(species.data.name);
           
           // Get an array of evolutions.
           let evoChain = [];
           let evoData = evolutions.data.chain;
           do {                        
               // Current.
-              evoChain.push(evoData.species.name);            
-              let numberOfEvolutions = evoData['evolves_to'].length;  
-                                    
-              // Branching evolutions.
-              if(numberOfEvolutions > 1) {
-                let nextSpecies = [];
-                let lastSpecies = [];
-                for (let i = 0; i < numberOfEvolutions; i++) {                  
-                  nextSpecies.push(evoData.evolves_to[i].species.name);
+              if(keepEvolving){
+                evoChain.push(evoData.species.name);            
+                let numberOfEvolutions = evoData['evolves_to'].length;                
+                                      
+                // Branching evolutions.
+                if(numberOfEvolutions > 1) {
+                  let nextSpecies = [];
+                  let lastSpecies = [];
+                  for (let i = 0; i < numberOfEvolutions; i++) {                  
+                    nextSpecies.push(evoData.evolves_to[i].species.name);
+                    
+                    // Branch continuation.
+                    if(evoData.evolves_to[i].hasOwnProperty('evolves_to') && evoData.evolves_to[i].evolves_to.length > 0)
+                      lastSpecies.push(evoData.evolves_to[i].evolves_to[0].species.name);
+                  }
+                  evoChain.push(nextSpecies);
+    
+                  if(lastSpecies.length > 0)
+                  evoChain.push(lastSpecies);
                   
-                  // Branch continuation.
-                  if(evoData.evolves_to[i].hasOwnProperty('evolves_to') && evoData.evolves_to[i].evolves_to.length > 0)
-                    lastSpecies.push(evoData.evolves_to[i].evolves_to[0].species.name);
+                  // Stop the chain, all branching evolutions are symmetrical.
+                  evoData = null;
                 }
-                evoChain.push(nextSpecies);
-  
-                if(lastSpecies.length > 0)
-                evoChain.push(lastSpecies);
-                
-                // Stop the chain, all branching evolutions are symmetrical.
-                evoData = null;
+                else {                
+                  // Evolution.
+                  evoData = evoData['evolves_to'][0];
+                }
               }
-              else {                
-                // Evolution.
-                evoData = evoData['evolves_to'][0];
-              }
+              else
+                evoChain.push(species.data.name);
                         
-          } while (!!evoData && evoData.hasOwnProperty('evolves_to'));   
+          } while (!!evoData && evoData.hasOwnProperty('evolves_to') && keepEvolving);   
           
           // Get the/a final evolution.
           let finalEvolution = evoChain[evoChain.length - 1];
@@ -324,13 +327,16 @@ export default function App() {
           });       
   
           // Get the final pokemon from the varieties.
-          finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];          
+          finalPokemon = varieties[Math.floor(Math.random()*varieties.length)];
 
           if(finalPokemon){
             newPokemon = await axios.get(`${api.url}pokemon/${finalPokemon}`);
             // Check for top pokemon balance
-            isTopPokemon = (finalSpecies.data.is_mythical || finalSpecies.data.is_legendary || 
-              getTotalStats(newPokemon.data.stats) >= team.topPokemonTotalStatsThreshold);            
+            pokemonTotalBaseStats = getTotalStats(newPokemon.data.stats);
+            isTopPokemon = (
+              (pokemonTotalBaseStats >= team.topPokemonTotalStatsThreshold) ||
+              ((finalSpecies.data.is_mythical || finalSpecies.data.is_legendary) && pokemonTotalBaseStats >= team.normalPokemonTotalStatsThreshold)
+            )            
           }
       } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon) ||
               (isTopPokemon && topPokemon >= team.topPokemonBalance) ||
@@ -819,12 +825,11 @@ export default function App() {
             break;
           case 'power-construct':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['zygarde-50']);
+            usable = getPokemonUsability(['zygarde-50', 'zygarde-10']);
             break;
           case 'shields-down':
             // Check for specific pokemon.
-            usable = getPokemonUsability(['minior-red-meteor', 'minior-violet-meteor', 'minior-indigo-meteor',
-              'minior-blue-meteor', 'minior-green-meteor', 'minior-yellow-meteor', 'minior-orange-meteor']);
+            usable = getPokemonUsability(['minior-meteor']);
             break;
           case 'disguise':
             // Check for specific pokemon. No effect: 'mimikyu-busted'

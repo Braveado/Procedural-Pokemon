@@ -1,6 +1,6 @@
 const url = 'https://pokeapi.co/api/v2/';
 const storageData = {
-    version: 1.0
+    version: '1.0'
 };
 const pokemonCount = 898;
 const topPokemonCountOffset = [
