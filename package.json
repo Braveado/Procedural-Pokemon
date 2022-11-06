@@ -1,7 +1,7 @@
 {
   "homepage": "https://proceduralpokemon.com",
   "name": "procedural-pokemon",
-  "version": "0.1.0",
+  "version": "1.1",
   "private": true,
   "dependencies": {
     "@craco/craco": "^6.2.0",
