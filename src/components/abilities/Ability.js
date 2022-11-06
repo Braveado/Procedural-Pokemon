@@ -27,6 +27,9 @@ export default function Ability({ability, index}) {
             case 'delta-stream':
                 formattedEffect = formattedEffect.replace('a mysterious air current', 'strong winds');
                 break;
+            case 'reckless':
+                formattedEffect = formattedEffect.replace('recoil moves', 'recoil and crash');
+                break;
             default:
                 break;
         }           

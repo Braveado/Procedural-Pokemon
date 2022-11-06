@@ -607,6 +607,8 @@ export default function App() {
           return moveNames.find(name => usability.multistrikeMoves.includes(name));
         case 'recoil':        
           return moveNames.find(name => usability.recoilMoves.includes(name));
+        case 'crash':        
+          return moveNames.find(name => usability.crashMoves.includes(name));
         case 'bite':        
           return moveNames.find(name => usability.biteMoves.includes(name));
         case 'pulse':        
@@ -694,11 +696,11 @@ export default function App() {
             break;
           case 'reckless':
             // Check for recoil/crash moves.
-            usable = getMoveMechanicUsability('recoil');  
+            usable = (getMoveMechanicUsability('recoil') || getMoveMechanicUsability('crash'));  
             break;  
-          case 'rock-headed':
+          case 'rock-head':
             // Check for recoil moves.
-            usable = getMoveMechanicUsability('recoil', null, ['jump-kick', 'high-jump-kick']);        
+            usable = getMoveMechanicUsability('recoil');        
             break;
           case 'strong-jaw':
             // Check for bite moves.

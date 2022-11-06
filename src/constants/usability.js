@@ -39,9 +39,12 @@ const fixedMultistrikeMoves = [ // Tooltips.
 'bonemerang', 'double-hit', 'double-iron-bash', 'double-kick', 'dragon-darts', 'dual-chop', 'dual-wingbeat', 'gear-grind',
 'surging-strikes', 'twineedle'
 ];
-const recoilMoves = [ // Reckless.
-'brave-bird', 'double-edge', 'flare-blitz', 'head-charge', 'head-smash', 'high-jump-kick', 'jump-kick', 'submission', 'take-down',
+const recoilMoves = [ // Reckless + rock head.
+'brave-bird', 'double-edge', 'flare-blitz', 'head-charge', 'head-smash', 'submission', 'take-down',
 'wild-charge', 'light-of-ruin', 'volt-tackle', 'wood-hammer'
+];
+const crashMoves = [ // Reckless only
+'high-jump-kick', 'jump-kick'
 ];
 const biteMoves = [ // Strong jaw.
 'bite', 'crunch', 'fire-fang', 'fishious-rend', 'hyper-fang', 'ice-fang', 'jaw-lock', 'poison-fang', 'psychic-fangs', 'thunder-fang'
@@ -145,7 +148,7 @@ const berryItems = [ // Berry items. Reverse branch logic.
 ];
 
 export {
-    bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, ohkoMoves,
+    bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, ohkoMoves, crashMoves,
     barrierMoves, healMoves, drainMoves, recoilMoves, weatherMoves, terrainMoves, trapMoves, 
     orbMoves, badAbilityMoves, badItemMoves, consumableItemMoves, berryMoves, multistrikeMoves, fixedMultistrikeMoves,
     weatherAbilities, terrainAbilities, orbAbilities, consumableItemAbilities, berryAbilities,

@@ -32,12 +32,20 @@ const updates = [
                 'One-hit knockout moves (new tooltip).',
                 'Fixed multi-strike moves (now include the multi-strike tooltip).',
                 'Sound moves (now include their Substitute interaction on tooltip).',
+                'Recoil or Crash moves (separated into 2 different tooltips).',
             ]],
             ['Fixed incorrect descriptions for moves.', [
                 "Let's Go signature moves (Baddy Bad, Bouncy Bubble, Buzzy Buzz, Floaty Fall, Freezy Frost, Glitzy Glow, Sappy Seed, Sizzly Slide, Sparkly Swirl, Splishy Splash, Zippy Zap).",
                 "Terrain moves (Electric Terrain, Grassy Terrain, Psychic Terrain).",
                 "Berry moves (Bug Bite, Pluck).",
+                "Crash moves (Jump Kick, High Jump Kick).",
                 "Miscellaneous moves (Double Iron Bash, Lunar Dance, Photon Geyser, Plasma Fists, Rapid Spin, Razor Wind, Scale Shot, Teleport, Triple Axel, Weather Ball)."
+            ]],
+            ['Fixed usability checks for abilities.', [
+                'Recoil moves related (Rock Head)',
+            ]],
+            ['Fixed incorrect descriptions for abilities.', [
+                'Crash moves related (Reckless)',
             ]],
         ],        
     },

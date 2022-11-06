@@ -118,8 +118,10 @@ export default function Move({move, moveset}) {
             case 'rapid-spin':
                 formattedEffect = formattedEffect + " Raises the user's Speed by one stage.";
                 break;
-            case 'teleport':
-                formattedEffect = "Switches the user out.";
+            case 'high-jump-kick':
+            case 'jump-kick':
+                formattedEffect = formattedEffect.replace('misses', 'fails to use this move');
+                formattedEffect = formattedEffect.replace(' in recoil', '');
                 break; 
             default:
                 break;

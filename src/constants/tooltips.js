@@ -1,6 +1,6 @@
 import {
     bindMoves, biteMoves, pulseMoves, punchMoves, soundMoves, chargeMoves, contactMoves, multistrikeMoves,
-    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves, ohkoMoves
+    barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves, ohkoMoves, crashMoves,
 } from '../constants/usability';
 
 const pokemon = [ // Content
@@ -146,8 +146,10 @@ const mechanics = [ // Keys, content
         "*Moves that restore HP."],
     [drainMoves, "Drain|"+
         "*Moves that restore a portion of their user's HP after damaging an opponent."],
-    [recoilMoves, "Recoil or Crash|"+
+    [recoilMoves, "Recoil|"+
         "*Moves that deal damage to the user."],
+    [crashMoves, "Crash|"+
+        "*Moves that damage the user when they fail to be successfully used."],
     [trapMoves, "Trap|"+
         "*Moves that prevent an affected Pokémon from switching out."],
     [ohkoMoves, "One-Hit Knockout|"+
