@@ -7,7 +7,7 @@
 
 const updates = [
     {
-        version: '1.1',
+        version: '1.1 Notable options',
         contributors: [
             'Braveado',
             'XenonHero126',
@@ -50,7 +50,7 @@ const updates = [
         ],        
     },
     {
-        version: '1.0',
+        version: '1.0 Release',
         contributors: [
             'Braveado',
         ],
