@@ -138,7 +138,7 @@ const mechanics = [ // Keys, content
         "*Moves that take two turns to complete."],    
     [contactMoves, "Contact|"+
         "*Moves that physically touches the target in battle."],
-    [multistrikeMoves.concat(fixedMultistrikeMoves), "Multi-strike|"+
+    [multistrikeMoves.concat(fixedMultistrikeMoves), "Multi-Strike|"+
         "*Moves that strike an opponent more than one time in the same turn."],
     [barrierMoves, "Barrier|"+
         "*Moves that create the effects of Reflect, Light Screen, and Aurora Veil."],
