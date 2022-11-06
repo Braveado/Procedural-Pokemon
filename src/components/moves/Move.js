@@ -47,7 +47,7 @@ export default function Move({move, moveset}) {
                 formattedEffect = "Hits three times, increasing power by 100% with each successful hit.";
                 break;
             case 'zippy-zap':
-                formattedEffect = "Always scores a critical hit. Priority 2";
+                formattedEffect = "Always scores a critical hit.";
                 break;
             case 'baddy-bad':
                 formattedEffect = "Sets the effects of Reflect on the user's side of the field.";
@@ -119,7 +119,7 @@ export default function Move({move, moveset}) {
                 formattedEffect = formattedEffect + " Raises the user's Speed by one stage.";
                 break;
             case 'teleport':
-                formattedEffect = "Switches the user out. Priority -6";
+                formattedEffect = "Switches the user out.";
                 break; 
             default:
                 break;
@@ -129,7 +129,7 @@ export default function Move({move, moveset}) {
         if(move.meta && move.meta.crit_rate > 0)
             formattedEffect = formattedEffect.replace("Has an increased chance for a critical hit.", `Move's critical hit rate is increased by ${move.meta.crit_rate} ${move.meta.crit_rate > 1 ? 'stages' : 'stage'}.`);
         if(move.priority !== 0)
-            formattedEffect = formattedEffect.concat(' Priority '+move.priority);
+            formattedEffect = formattedEffect.concat(' Priority '+ move.priority + '.');
         return formattedEffect;
     }    
 
