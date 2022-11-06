@@ -1199,11 +1199,14 @@ export default function App() {
   useEffect(() => {
     let cancel = false;
 
-    if(generating && generationStep === 6){
-      setToast('Actions', 'Options generated, build your team!', {success: true});
-      if(!cancel)
-        setGenerating(false);   
-    }
+    setTimeout(()=>{
+      if(generating && generationStep === 6){
+        setToast('Actions', 'Options generated, build your team!', {success: true});
+        if(!cancel)
+          setGenerating(false);   
+      }
+     }, 500);
+    
     return () => cancel = true;
   }, [generating, generationStep])  
 

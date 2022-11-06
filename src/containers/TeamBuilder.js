@@ -9,6 +9,7 @@ import { BiLoaderAlt } from 'react-icons/bi';
 import { FaEraser, FaCopy } from 'react-icons/fa';
 import {GoPencil} from 'react-icons/go';
 import { FiExternalLink } from 'react-icons/fi';
+import ProgressBar from '../components/ProgressBar';
 
 export default function TeamBuilder({
     loading, randomOptions, pokemonPreviews, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating,
@@ -21,14 +22,35 @@ export default function TeamBuilder({
         document.title = 'Team Builder - Procedural Pokémon';
     }, []);
 
+    const generationStep = () => {
+        if(pokemonOptions.length < randomOptions.pokemons)
+            return 'Generating Pokémon...';   
+        else if(movesetOptions.length < randomOptions.movesets)
+            return 'Generating Movesets...';
+        else if(abilityOptions.length < randomOptions.abilities)
+            return 'Generating Abilities...';
+        else if(itemOptions.length < randomOptions.items)
+            return 'Generating Items...';
+        else
+            return 'Generation Done!';
+    }
+    
+    const generationProgress = () => {
+        const total = randomOptions.pokemons + randomOptions.movesets + randomOptions.abilities + randomOptions.items;
+        const current = pokemonOptions.length + movesetOptions.length + abilityOptions.length + itemOptions.length;        
+        return Math.floor((current/total * 100));
+    }
+
     const getControls = () => {
-        if(loading || generating){
-            return (                
-                <p className="flex gap-4 items-center justify-center text-lg p-4 border-2 border-transparent">
-                    <BiLoaderAlt className="animate-spin text-2xl" />
-                    {loading ? 'Fetching data from PokeAPI' : (generating ? generationProgress() : 'Generate Options')}
-                </p>                
+        if(loading){
+            return (            
+                <p className="flex gap-4 items-center justify-center text-lg p-4">
+                    Fetching data from PokéAPI... <BiLoaderAlt className="animate-spin text-2xl" />                    
+                </p>                                    
             )
+        }
+        else if(generating){
+            return <ProgressBar progress={generationProgress()} label={generationStep()} />
         }
         else {
             return (
@@ -55,20 +77,7 @@ export default function TeamBuilder({
                 </>
             )
         }        
-    }
-    
-    const generationProgress = () => {
-        if(pokemonOptions.length < randomOptions.pokemons)
-            return `Generating Pokémon (${pokemonOptions.length}/${randomOptions.pokemons})`;   
-        else if(movesetOptions.length < randomOptions.movesets)
-            return `Generating Movesets (${movesetOptions.length}/${randomOptions.movesets})`;
-        else if(abilityOptions.length < randomOptions.abilities)
-            return `Generating Abilities (${abilityOptions.length}/${randomOptions.abilities})`;
-        else if(itemOptions.length < randomOptions.items)
-            return `Generating Items (${itemOptions.length}/${randomOptions.items})`;
-        else
-            return 'Done!';
-    }    
+    }      
 
     return (           
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
@@ -78,7 +87,7 @@ export default function TeamBuilder({
                     <p className="text-base text-gray-400">Controls for building your team.</p>
                 </div>            
                 <div className="flex flex-col justify-start items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
-                    <div className="flex flex-wrap justify-center items-center gap-4">
+                    <div className="flex flex-wrap w-full justify-center items-center gap-4">
                         {getControls()}
                     </div>                                                                       
                 </div>                                                            
