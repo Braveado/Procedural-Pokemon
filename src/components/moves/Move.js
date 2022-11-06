@@ -109,11 +109,11 @@ export default function Move({move, moveset}) {
                 formattedEffect = "Cannot be disrupted by abilities.";
                 break; 
             case 'psychic-terrain':
-                formattedEffect = formattedEffect.replace('50%', '30%');
+                formattedEffect = formattedEffect.replace('50', '30');
                 break;
             case 'grassy-terrain':
             case 'electric-terrain':
-                formattedEffect = formattedEffect.replace('1.5x', '1.3x');
+                formattedEffect = formattedEffect.replace('1.5', '1.3');
                 break;
             case 'rapid-spin':
                 formattedEffect = formattedEffect + " Raises the user's Speed by one stage.";
