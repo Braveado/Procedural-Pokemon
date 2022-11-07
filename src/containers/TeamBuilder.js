@@ -10,10 +10,11 @@ import { FaEraser, FaCopy } from 'react-icons/fa';
 import {GoPencil} from 'react-icons/go';
 import { FiExternalLink } from 'react-icons/fi';
 import ProgressBar from '../components/ProgressBar';
+import GenerationToggles from '../components/GenerationToggles';
 
 export default function TeamBuilder({
-    loading, randomOptions, pokemonPreviews, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating,
-    generateOptions, clearChoices, exportTeam
+    loading, randomOptions, pokemonPreviews, pokemonOptions, movesetOptions, abilityOptions, itemOptions, generating, generationStep,
+    generateOptions, clearChoices, exportTeam,
     }) {   
     const context = React.useContext(TeamBuilderContext);
 
@@ -22,7 +23,7 @@ export default function TeamBuilder({
         document.title = 'Team Builder - Procedural Pokémon';
     }, []);
 
-    const generationStep = () => {
+    const generationPhase = () => {
         if(pokemonOptions.length < randomOptions.pokemons)
             return 'Generating Pokémon...';   
         else if(movesetOptions.length < randomOptions.movesets)
@@ -50,7 +51,7 @@ export default function TeamBuilder({
             )
         }
         else if(generating){
-            return <ProgressBar progress={generationProgress()} label={generationStep()} />
+            return <ProgressBar progress={generationProgress()} label={generationPhase()} />
         }
         else {
             return (
@@ -81,6 +82,7 @@ export default function TeamBuilder({
 
     return (           
         <div className="flex flex-col gap-8 justify-start items-center p-8 w-full">  
+            {!generating ? <GenerationToggles /> : null}
             <div id="actions" className="flex flex-col w-full">
                 <div className="flex justify-start items-center gap-4 text-center">                    
                     <p className="text-lg">Actions</p>
@@ -92,7 +94,7 @@ export default function TeamBuilder({
                     </div>                                                                       
                 </div>                                                            
             </div>
-            <TeamPreview previews={pokemonPreviews} />
+            {!generating && generationStep >= 6 ? <TeamPreview previews={pokemonPreviews} /> : null}
             <PokemonOptions options={pokemonOptions} />
             <MovesetOptions options={movesetOptions} />  
             <AbilityOptions options={abilityOptions} />   

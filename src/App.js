@@ -36,6 +36,12 @@ export default function App() {
     teamName: '',
     teamNotes: '',
   }); */
+  const [generationToggles, setGenerationToggles] = useState({
+    blind: false,
+    doubles: false,
+    megas: false,
+    crystals: false,
+  });
   const [pokemonPreviews, setPokemonPreviews] = useState([]);
   const [pokemonOptions, setPokemonOptions] = useState([]);
   const [movesetOptions, setMovesetOptions] = useState([]);
@@ -62,6 +68,14 @@ export default function App() {
   });  
 
   // ----- GENERATION -----
+  // Get generation toggles on mount.
+  useEffect (() => {
+    const storageToggles = JSON.parse(localStorage.getItem("storageToggles"));
+    if(storageToggles){      
+      setGenerationToggles(storageToggles);
+    }
+  }, []);
+
   // Fetch lists from api on mount.
   useEffect (() => {
     let cancel = false;  
@@ -125,6 +139,16 @@ export default function App() {
     return () => cancel = true;
     // eslint-disable-next-line react-hooks/exhaustive-deps    
   }, []);
+
+  // Toggle generation.
+  function toggleGeneration(toggle) { 
+    const newToggles = {
+      ...generationToggles,
+      ...toggle,
+    };     
+    setGenerationToggles(newToggles); 
+    localStorage.setItem("storageToggles", JSON.stringify(newToggles));   
+  }
 
   // Start generation.
   function generateOptions() {        
@@ -1724,10 +1748,12 @@ export default function App() {
   // Render.
   return (        
     <TeamBuilderContext.Provider value={{
+      generationToggles: generationToggles,
       pokemonOptions: pokemonOptions,
       selectionsNeeded: team.selectionsNeeded,
       selectionsMade: selectionsMade,
       sectionsCompleted: sectionsCompleted,
+      toggleGeneration: toggleGeneration,
       selectPokemon: selectPokemon,
       selectMove: selectMove,
       assignPokemon: assignPokemon,
@@ -1746,7 +1772,7 @@ export default function App() {
                 </Route>
                 <Route path="/builder">        
                   <TeamBuilder
-                    loading={loading}
+                    loading={loading}                    
                     randomOptions={team.randomOptions}
                     pokemonPreviews={pokemonPreviews}
                     pokemonOptions={pokemonOptions}
@@ -1754,7 +1780,8 @@ export default function App() {
                     abilityOptions={abilityOptions}
                     itemOptions={itemOptions}
                     generating={generating}
-                    generateOptions={generateOptions}                
+                    generationStep={generationStep}                    
+                    generateOptions={generateOptions}                                    
                     clearChoices={clearChoices}
                     exportTeam={exportTeam}                  
                   /> 

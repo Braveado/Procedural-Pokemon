@@ -27,6 +27,7 @@ export default function Tooltips() {
 
     return (
         <div>
+            <ReactTooltip id="toggle" delayShow={200} getContent={(dataTip) => formatTooltipData(dataTip)}/>
             <ReactTooltip id="pokemon" delayShow={200} getContent={(dataTip) => formatTooltipData(dataTip)}/>
             <ReactTooltip id="moves" delayShow={200} getContent={(dataTip) => formatTooltipData(dataTip)}/>
             <ReactTooltip id="effects" delayShow={200} getContent={(dataTip) => formatTooltipData(dataTip)}/>

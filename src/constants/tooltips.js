@@ -3,6 +3,13 @@ import {
     barrierMoves, healMoves, drainMoves, recoilMoves, trapMoves, fixedMultistrikeMoves, ohkoMoves, crashMoves,
 } from '../constants/usability';
 
+const toggle = [ // Content
+    ["Blind|Allow team options that are only usable without opposing teams information to spawn."],
+    ["Doubles|Allow team options that are only usable on double battles to spawn."],
+    ["Stoneless Megas|Allow mega evolutions to spawn as pokémon options."],
+    ["Z-Crystals|Allow z-crystals to spawn as item options."],
+];
+
 const pokemon = [ // Content
     ["Hit Points|Determines the total damage a pokemon can receive before fainting."],
     ["Attack|Determines damage dealt when using a physical move."],
@@ -159,6 +166,7 @@ const mechanics = [ // Keys, content
 ]
 
 export {
+    toggle,
     pokemon,
     moves,
     effects,
