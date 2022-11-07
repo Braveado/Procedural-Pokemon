@@ -4,10 +4,16 @@ import {
 } from '../constants/usability';
 
 const toggle = [ // Content
-    ["Blind|Allow team options that are only usable without opposing teams information to spawn."],
-    ["Doubles|Allow team options that are only usable on double battles to spawn."],
+    ["Blind|"+
+    "*Allow team options that are only usable without opposing team information to spawn."+
+    "*Coming soon."],
+    ["Doubles|"+
+    "*Allow team options that are only usable on double battles to spawn."+
+    "*Coming soon."],
     ["Stoneless Megas|Allow mega evolutions to spawn as pokémon options."],
-    ["Z-Crystals|Allow z-crystals to spawn as item options."],
+    ["Z-Crystals|"+
+    "*Allow z-crystals to spawn as item options."+
+    "*Coming soon."],
 ];
 
 const pokemon = [ // Content

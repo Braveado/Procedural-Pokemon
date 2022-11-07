@@ -7,7 +7,24 @@
 
 const updates = [
     {
-        version: '1.1 Notable options',
+        version: '1.2 Stoneless Megas',
+        contributors: [
+            'Braveado',
+            'XenonHero126',
+        ],
+        changes: [
+            ['Added the Toggles section to the Team Builder to allow generation process customization.', [
+                'Added a new toggle to allow Mega Evolutions to spawn as pokémon options.'
+            ]],            
+            ['Improved UI indicators on the site.', [
+                'Added a progress bar to better indicate the generation progress.',
+                'Team Preview now only apprears when drafting a team.',                
+                'Added a "ping" animation to the "export ready" icon on sidebar.'
+            ]],
+        ],        
+    },
+    {
+        version: '1.1 Notable Appearances',
         contributors: [
             'Braveado',
             'XenonHero126',

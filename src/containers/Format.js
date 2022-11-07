@@ -413,8 +413,7 @@ export default function Format() {
                                 <li>
                                     Check filters and reroll if filtered out.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Pokémon and pokémon forms outside the 360 to 720 total base stats range.</li>                        
-                                        <li>Legendary and mythical pokémon below 540 total base stats.</li>
+                                        <li>Pokémon and pokémon forms outside the 360 to 720 total base stats range.</li>
                                         <li>Pokémon forms that activate in-battle by a specific move, ability or held item.</li>
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowFilteredPokemon(!showFilteredPokemon)}
@@ -435,7 +434,9 @@ export default function Format() {
                                 <li>
                                     Check for "top pokémon" balance and reroll if full.
                                     <ul className="pl-4 text-gray-600 text-sm">
-                                        <li>Legendary, mythical and pokémon with at least 600 total stats.</li>
+                                        <li>Legendary or mythical pokémon with at least 540 total stats.</li>
+                                        <li>Pokémon with at least 600 total stats.</li>
+                                        <li>Mega Evolutions with at least 540 total stats.</li>
                                         <li>Exactly 1 included in options.</li>
                                         <li className="space-y-2">
                                             <button type="button" onClick={() => setShowTopPokemon(!showTopPokemon)}
