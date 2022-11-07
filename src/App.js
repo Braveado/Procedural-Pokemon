@@ -379,7 +379,7 @@ export default function App() {
       getPokemonOptions();      
     }
     return () => cancel = true;
-  }, [generating, generationStep, pokemonList, topPokemonList, natureList])
+  }, [generating, generationStep, generationToggles.megas, pokemonList, topPokemonList, natureList])
 
   // Helper functions for usability checks.
   const getPokemonUsability = useCallback((pokemons) => {    
