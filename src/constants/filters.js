@@ -2,26 +2,29 @@
 const pokemonFilter = [ // Exclude pokemons with this keywords.
 // Legendary forms above 720 total stats.
 'eternamax', 'primal', 'ultra',
-// General forms as strong as legendaries.
-'mega', 'gmax', 'eternal', 'ash',
 // Pokemon form changes
 'sunny', 'rainy', 'snowy', 'origin', 'zen', 'pirouette', 'blade', 'crowned', 'gulping', 'gorging', 
-'noice', 'hangry', 'minior', 'complete', 'construct', 'busted',
+'noice', 'hangry', 'minior', 'complete', 'construct', 'busted', 'ash', 'bond',
 // Pokemons and forms below 360 total stats.
 'solo', 'shedinja', 'smeargle', 'ditto', 'delibird', 'luvdisc', 'unown', 'wishiwashi',
 // Others.
-'totem', 'bond', 'meltan', 'hisui',
+'gmax', 'totem', 'eternal', 'meltan', 'hisui',
 ];
 const pokemonAllow = [ // Include pokemons with this keywords even when excluded by filter.
 // Minior forms
 'meteor'
 ];
 const pokemonFilterSpecific = [ // Filter pokemons whith this specific name even if allowed after keyword filter
-'basculin-white-striped'
+'basculin-white-striped',
+// Megas
+'mewtwo-mega-x', 'mewtwo-mega-y', 'rayquaza-mega',
 ];
 const pokemonPreventEvolution = [ // Prevent pokemons with this specific name from evolving.
 'phione'
 ];
+const toggleMegaPokemon = [ // Add keywords to filter if respective toggle is disabled
+'mega',
+]
 
 // Moves
 const moveFilter = [ // Exclude moves with this keywords.
@@ -115,5 +118,6 @@ export {
     pokemonFilter, pokemonAllow, pokemonFilterSpecific, pokemonPreventEvolution,
     moveFilter, moveAllow, 
     abilityFilter, abilityAllow,
-    itemFilter, itemAllow
+    itemFilter, itemAllow,
+    toggleMegaPokemon
 }

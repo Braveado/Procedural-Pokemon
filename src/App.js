@@ -200,7 +200,8 @@ export default function App() {
         }        
         // balance             
         pokemon.is_mythical = species.data.is_mythical;
-        pokemon.is_legendary = species.data.is_legendary;                   
+        pokemon.is_legendary = species.data.is_legendary;  
+        pokemon.is_mega = pokemon.name.split('-').includes('mega');                 
         pokemon.shiny = (index === shinyIndex);
         pokemon.level = pokemon.shiny ? 60 : 50;
         pokemon.nickname = '';
@@ -256,7 +257,8 @@ export default function App() {
         // Check for top pokemon balance
         if(topPokemon < team.topPokemonBalance && (
           (pokemon.stats[6].base_stat >= team.topPokemonTotalStatsThreshold) ||
-          ((pokemon.is_mythical || pokemon.is_legendary) && pokemon.stats[6].base_stat >= team.normalPokemonTotalStatsThreshold)
+          ((pokemon.is_mythical || pokemon.is_legendary) && pokemon.stats[6].base_stat >= team.normalPokemonTotalStatsThreshold) ||
+          (pokemon.is_mega && pokemon.stats[6].base_stat >= team.normalPokemonTotalStatsThreshold)
         )){
           topPokemon += 1;
         }
@@ -346,8 +348,11 @@ export default function App() {
           });                
   
           // Filter varieties for more balance.
+          let finalPokemonFilters = filters.pokemonFilter;
+          if(!generationToggles.megas)
+            finalPokemonFilters = finalPokemonFilters.concat(filters.toggleMegaPokemon);
           varieties = varieties.filter(v => {          
-            return !FindKeywords(v, '-', filters.pokemonFilter, filters.pokemonAllow, filters.pokemonFilterSpecific);          
+            return !FindKeywords(v, '-', finalPokemonFilters, filters.pokemonAllow, filters.pokemonFilterSpecific);          
           });       
   
           // Get the final pokemon from the varieties.
@@ -359,7 +364,8 @@ export default function App() {
             pokemonTotalBaseStats = getTotalStats(newPokemon.data.stats);
             isTopPokemon = (
               (pokemonTotalBaseStats >= team.topPokemonTotalStatsThreshold) ||
-              ((finalSpecies.data.is_mythical || finalSpecies.data.is_legendary) && pokemonTotalBaseStats >= team.normalPokemonTotalStatsThreshold)
+              ((finalSpecies.data.is_mythical || finalSpecies.data.is_legendary) && pokemonTotalBaseStats >= team.normalPokemonTotalStatsThreshold) ||
+              (finalPokemon.split('-').includes('mega') && pokemonTotalBaseStats >= team.normalPokemonTotalStatsThreshold)
             )            
           }
       } while (!finalPokemon || checkDuplicatedName(currentPokemons, finalPokemon) ||

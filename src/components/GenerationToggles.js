@@ -14,20 +14,20 @@ export default function GenerationToggles() {
                 </span>                
             </div>            
             <div className="flex flex-wrap justify-center items-center gap-4 p-4 w-full border-2 rounded-md border-gray-200">
-                <button type="button" onClick={() => context.toggleGeneration({blind: !context.generationToggles.blind})}
+                {/* <button type="button" onClick={() => context.toggleGeneration({blind: !context.generationToggles.blind})}
                     className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
                     ${context.generationToggles.blind ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
                     <p className="border-b border-dashed border-gray-600 text-gray-600" data-tip={toggleTooltips[0]} data-for={'toggle'}>
                         Blind
                     </p>
-                </button>
-                <button type="button" onClick={() => context.toggleGeneration({doubles: !context.generationToggles.doubles})}
+                </button> */}
+                {/* <button type="button" onClick={() => context.toggleGeneration({doubles: !context.generationToggles.doubles})}
                     className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
                     ${context.generationToggles.doubles ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
                     <p className="border-b border-dashed border-gray-600 text-gray-600" data-tip={toggleTooltips[1]} data-for={'toggle'}>
                         Doubles
                     </p>
-                </button>
+                </button> */}
                 <button type="button" onClick={() => context.toggleGeneration({megas: !context.generationToggles.megas})}
                     className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
                     ${context.generationToggles.megas ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
@@ -35,13 +35,13 @@ export default function GenerationToggles() {
                         Stoneless Megas
                     </p>
                 </button>
-                <button type="button" onClick={() => context.toggleGeneration({crystals: !context.generationToggles.crystals})}
+                {/* <button type="button" onClick={() => context.toggleGeneration({crystals: !context.generationToggles.crystals})}
                     className={`flex gap-2 items-center justify-center p-4 rounded-md hover:bg-gray-200 border-2 w-48 transition duration-150 ease-in-out
                     ${context.generationToggles.crystals ? 'bg-green-100 border-green-200 ring ring-green-100' : 'bg-white  border-gray-200 '}`}>
                     <p className="border-b border-dashed border-gray-600 text-gray-600" data-tip={toggleTooltips[3]} data-for={'toggle'}>
                         Z-Crystals
                     </p>
-                </button>
+                </button> */}
             </div>            
         </div>
     );    

@@ -7,14 +7,18 @@ import {getStatColor, getStatName} from './PokemonStats';
 
 export default function PokemonSprite({pokemon, assign, opacity, types = false, stats = false}) {
     const getRarity = () => {
-        if(pokemon.is_legendary && pokemon.stats[6].base_stat >= normalPokemonTotalStatsThreshold)
+        if(pokemon.is_mega && pokemon.stats[6].base_stat >= normalPokemonTotalStatsThreshold)
+            return "bg-red-100 border-2 border-red-200 ring ring-red-100 animate-pulse"
+        else if(pokemon.is_mega)
+            return "border-2 border-red-200 ring ring-red-100 animate-pulse"
+        else if(pokemon.is_legendary && pokemon.stats[6].base_stat >= normalPokemonTotalStatsThreshold)
             return "bg-yellow-100 border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
         else if(pokemon.is_legendary)
             return "border-2 border-yellow-200 ring ring-yellow-100 animate-pulse"
         else if(pokemon.is_mythical && pokemon.stats[6].base_stat >= normalPokemonTotalStatsThreshold)
             return "bg-purple-100 border-2 border-purple-200 ring ring-purple-100 animate-pulse"
         else if(pokemon.is_mythical)
-            return "border-2 border-purple-200 ring ring-purple-100 animate-pulse"
+            return "border-2 border-purple-200 ring ring-purple-100 animate-pulse"        
         else if(pokemon.stats[6].base_stat >= topPokemonTotalStatsThreshold)
             return "bg-blue-100 border-2 border-blue-200 ring ring-blue-100 animate-pulse"
         else if(pokemon.stats[6].base_stat >= normalPokemonTotalStatsThreshold)

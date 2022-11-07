@@ -1,12 +1,14 @@
 const url = 'https://pokeapi.co/api/v2/';
 const storageData = {
-    version: '1.0'
+    version: '1.1'
 };
 const pokemonCount = 898;
 const topPokemonCountOffset = [
     [8, 143], [9, 242], [3, 286], [16, 370], [3, 442], 
     [15, 479], [3, 632], [11, 637], [3, 703], [6, 715], 
-    [2, 771], [11, 781], [3, 799], [3, 806], [14, 884]    
+    [2, 771], [11, 781], [3, 799], [3, 806], [14, 884],
+    // Megas
+    [44, 937]    
 ];
 const moveCount = 826;
 const abilityCount = 267;
